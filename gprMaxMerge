@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source activate gprMax
+
+python -m tools.outputfiles_merge $@
