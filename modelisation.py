@@ -28,7 +28,8 @@ with warnings.catch_warnings():
 
 #Def des paramètres de géométrie du modéle
 class Geometry :
-    pass
+    def __repr__(self):
+        return "dtrou{dtrou}_rtrou{r}_tr{h_eau}".format(dtrou=self.dtrou,r=self.r,h_eau=self.h_eau)        
 
 # Definition des paramètres MVG
 class ParamMVG :
@@ -62,6 +63,11 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D,myDirName):
     
     os.makedirs(myDirName,exist_ok=True)
     os.chdir(myDirName)
+
+    fparam=open("Parameters","w")
+    fparam.write("""ParamMVG(tr={tr},ti={ti},ts={ts},n={n},alpha={alpha},Ks={Ks})\n""".format(ts=paramMVG.ts,ti=paramMVG.ti,tr=paramMVG.tr,n=paramMVG.n,alpha=paramMVG.alpha,Ks=paramMVG.Ks))
+    fparam.close()
+                 
     os.system("cp "+dir+"/gprMax .")
     os.system("cp "+dir+"/gprMaxMerge .")
     os.makedirs("SWMS_2D.IN",exist_ok=True)
@@ -137,9 +143,9 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D,myDirName):
     # Concatenate all nT traces    
     command2="./gprMaxMerge "+ nom + '_'
     os.popen(command2).readlines()
-    #os.popen("rm -rf *.in")
-    #for i in range(0,nT+1) :
-    #    os.popen("rm -rf "+ nom + "_" +str(i+1) + ".out")
+    os.popen("rm -rf *.in")
+    for i in range(0,nT+1) :
+        os.popen("rm -rf "+ nom + "_" + str(i+1) + ".out")
 
     # Picking of the nT TWTs
     #cas, TWT = picking(filename, A_tab, nT, geometry)

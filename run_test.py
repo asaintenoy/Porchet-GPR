@@ -44,7 +44,7 @@ geometry.smooth=[1,5]
 temps=[0.17, 0.33, 0.50, 0.67, 0.83, 1.00, 2.00, 3.00, 4.00, 5.00, 6.00]
 
 # Temps max de calcul SWMS2D au delà duquel on arrète le calcul (secondes)
-tmax_SWMS2D = 300
+tmax_SWMS2D = 600
 
 # Definition des paramètres MVG
 paramMVG=ParamMVG()
@@ -101,8 +101,7 @@ paramGPRMAX.time = 30e-9
 #time_step_stability_factor (pas utilisé pour le moment...)
 paramGPRMAX.fac_dt = 0.2 
 
-    
-myDirName = "OUT/"+repr(paramMVG)
+myDirName = "OUT"+repr(geometry)+"/"+repr(paramMVG)
 
 #myDirName = tempfile.mkdtemp() #Création d'un dossier temporaire pour stocker les données et fichiers
 #print(myDirName)

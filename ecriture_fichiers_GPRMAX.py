@@ -114,7 +114,7 @@ def ecriture_fichiers_GPRMAX(X, Y, grid_z0, trace_number, nom, paramMVG, paramGP
     
     fgrid.write("""------------------------------------------------\n""")
     fgrid.write("""#messages: n\n""")
-    fgrid.write("""#geometry_view: 0 0 0 {} {} {} {} {} {} modele_vue n""".format(2*max(X[0,:])+dx, max(Y[:,0])*2, dl, dl, dl, dl))
+    #fgrid.write("""#geometry_view: 0 0 0 {} {} {} {} {} {} modele_vue n""".format(2*max(X[0,:])+dx, max(Y[:,0])*2, dl, dl, dl, dl))
 
     fgrid.close()
     
