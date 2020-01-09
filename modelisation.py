@@ -54,7 +54,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D,myDirName):
     #try:
 
     nom='radargram'
-    filename = nom + '_merged.out'
+    filename = nom + '__merged.out'
 
     dir = os.getcwd() #répertoire où on a lancer le script
 
@@ -70,6 +70,9 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D,myDirName):
                  
     os.system("cp "+dir+"/gprMax .")
     os.system("cp "+dir+"/gprMaxMerge .")
+    # ce serait mieux de copier l'executable H2D dans le dossier où l'on travaille mais il est gros!
+    #os.system("cp "+dir+"/HD2/H2D .")
+    
     os.makedirs("SWMS_2D.IN",exist_ok=True)
     os.makedirs("SWMS_2D.OUT",exist_ok=True)
     
@@ -93,7 +96,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D,myDirName):
     #Lancement SWMS_2D
     #os.system("/home/clemence/Porchet-GPR/source/HD2/H2D")
 
-    error=os.system("timeout {} /home/clemence/Porchet-GPR/source/HD2/H2D".format(tmax_SWMS2D))
+    error=os.system("timeout {} {}/HD2/H2D".format(tmax_SWMS2D,dir))
     if error : #reagira seulement si error est différent de 0
         return
 
@@ -141,11 +144,11 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D,myDirName):
         os.popen(command).readlines()
 
     # Concatenate all nT traces    
-    command2="./gprMaxMerge "+ nom + '_'
+    command2="./gprMaxMerge "+ nom + "_" 
     os.popen(command2).readlines()
     os.popen("rm -rf *.in")
-    for i in range(0,nT+1) :
-        os.popen("rm -rf "+ nom + "_" + str(i+1) + ".out")
+    #for i in range(0,nT+1) :
+     #   os.popen("rm -rf "+ nom + "_" + str(i+1) + ".out")
 
     # Picking of the nT TWTs
     #cas, TWT = picking(filename, A_tab, nT, geometry)
