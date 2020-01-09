@@ -49,10 +49,11 @@ def longueur_d_onde(theta, freq, paramMVG, paramGPRMAX):
     vitesse = 0.3 / math.sqrt(eps) # m/ns
     return vitesse*(10**9)/freq
 
-def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D,myDirName):
+def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     # try: c'est pour pouvoir prendre la main si ça foire.
     #try:
 
+    myDirName = "OUT"+repr(geometry)+"/"+repr(paramMVG)
     nom='radargram'
     filename = nom + '__merged.out'
 
@@ -147,8 +148,8 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D,myDirName):
     command2="./gprMaxMerge "+ nom + "_" 
     os.popen(command2).readlines()
     os.popen("rm -rf *.in")
-    #for i in range(0,nT+1) :
-     #   os.popen("rm -rf "+ nom + "_" + str(i+1) + ".out")
+    for i in range(0,nT+1) :
+        os.popen("rm -rf "+ nom + "_" + str(i+1) + ".out")
 
     # Picking of the nT TWTs
     #cas, TWT = picking(filename, A_tab, nT, geometry)
