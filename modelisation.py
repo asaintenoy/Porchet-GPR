@@ -99,7 +99,9 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 
     error=os.system("timeout {} {}/HD2/H2D".format(tmax_SWMS2D,dir))
     if error : #reagira seulement si error est différent de 0
-        return
+        print("bla")
+        os.chdir(dir)
+        
 
     #Fichier contenant les thetas
     f_thetas = "SWMS_2D.OUT/th.out" 
