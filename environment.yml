@@ -17,7 +17,7 @@ dependencies:
 - scipy
 - pygimli
 - pip
-- daskhttp://localhost:8888/?token=b695397c774a5cc4c905ef2bfa7fa05ffee00f96b82bf6
+- dask
 
 - pip:
   #- mpi4py
