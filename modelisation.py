@@ -10,14 +10,16 @@ retval = os.getcwd()
 #from pygimli.meshtools import appendTriangleBoundary, merge2Meshes, mesh
 import warnings
 import shutil
-    
+from collections import namedtuple
+
 #Pour aider pyflakes à analyser il vaut mieux importer les fonctions explicitement
 from maillage_SWMS2D import maillage_SWMS2D 
 from initial_conditions import initial_conditions
 from ecriture_fichiers_SWMS2D import ecriture_Selector_in, ecriture_Grid_in 
 from maillage_GPRMAX import CRIM, maillage_GPRMAX
 from ecriture_fichiers_GPRMAX import ecriture_fichiers_GPRMAX
-#from picking_radargramme import picking 
+#from picking_radargramme import picking
+
     
 def fxn():
     warnings.warn("deprecated", DeprecationWarning)
@@ -32,7 +34,8 @@ class Geometry :
         return "dtrou{dtrou}_rtrou{r}_tr{h_eau}".format(dtrou=self.dtrou,r=self.r,h_eau=self.h_eau)        
 
 # Definition des paramètres MVG
-class ParamMVG :
+class ParamMVG(namedtuple("ParamMVG", ["ts", "ti", "tr", "n", "alpha", "Ks"])):
+               
     #Recalcul des h0 à partir des param MVG
     def h0(self):
         return -(1/self.alpha)*(((self.ti-self.tr)/(self.ts-self.tr))**(self.n/(1-self.n))-1)**(1/self.n)
