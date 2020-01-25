@@ -1,5 +1,5 @@
 #!/bin/bash
 
-source activate gprMax
+source `which activate` gprMax
 
 python -m tools.plot_Bscan $@

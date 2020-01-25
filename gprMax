@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source activate gprMax
+source `which activate` gprMax
 
 ###Set number of OpenMP threads for each gprMax model
 export OMP_NUM_THREADS=1
