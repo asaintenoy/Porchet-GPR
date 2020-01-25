@@ -16,6 +16,7 @@ dependencies:
 - psutil
 - scipy
 - pygimli
+- pip
 
 - pip:
   - mpi4py
