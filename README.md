@@ -14,14 +14,19 @@ Simulation code of radargram acquired along a Porchet water infiltration test
 ```
 conda env create -f environment.yml
 ```
+
 - Installer tmux
 
-    sudo apt install tmux
+      sudo apt install tmux
 
 - Installer dask
 
-    sudo apt install dask
-    
+      sudo apt install dask
+
+- Compiler H2D dans ./HD2
+
+      make
+
 ## Running
 
 ```
@@ -32,12 +37,12 @@ Dans le nouveau shell
 
     python Calcul-Multi-Modeles.py
 
-- mettre en arrière plan: CTRL-b d
+- mettre en arrière plan: `ctrl-b d`
 
- -remettre en premier plan:
+- remettre en premier plan:
 
-    tmux attach
+      tmux attach
 
-d'autres infos sur
+D'autres infos sur tmux
 
 - http://www.dayid.org/comp/tm.html

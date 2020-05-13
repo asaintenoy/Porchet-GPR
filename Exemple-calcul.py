@@ -12,11 +12,11 @@ ts = [0.4]
 # Teneur en eau initiale
 ti = [0.1]
 # Perméabilité à saturation
-Ks = np.arange(0.1, 0.42, 0.02, 'float')
+Ks = [0.2]
 # param fitting retention n
-n = np.arange(3, 5.5, 0.5, 'float')
+n = [5]
 # param fitting retention alpha
-alpha = np.arange(0.02, 0.042, 0.002, 'float')
+alpha = [0.03]
 
 geometry = Geometry()
 
@@ -99,10 +99,8 @@ for p in itertools.product(tr, ts, ti, Ks, n, alpha):
     # Définition des paramètres MVG
     paramMVG = ParamMVG(tr=p[0], ts=p[1],ti=p[2], Ks=p[3], n=p[4], alpha=p[5])
     paramMVG.porosity = paramMVG.ts
-    tasks.append(dask.delayed(run)(geometry=geometry,
-                                   paramMVG=paramMVG,
-                                   paramGPRMAX=paramGPRMAX,
-                                   temps=temps,
-                                   tmax_SWMS2D=tmax_SWMS2D))
-
-dask.compute(tasks, scheduler='processes')    
+    run(geometry=geometry,
+        paramMVG=paramMVG,
+        paramGPRMAX=paramGPRMAX,
+        temps=temps,
+        tmax_SWMS2D=tmax_SWMS2D)
