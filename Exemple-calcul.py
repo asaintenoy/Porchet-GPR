@@ -99,8 +99,4 @@ for p in itertools.product(tr, ts, ti, Ks, n, alpha):
     # Définition des paramètres MVG
     paramMVG = ParamMVG(tr=p[0], ts=p[1],ti=p[2], Ks=p[3], n=p[4], alpha=p[5])
     paramMVG.porosity = paramMVG.ts
-    run(geometry=geometry,
-        paramMVG=paramMVG,
-        paramGPRMAX=paramGPRMAX,
-        temps=temps,
-        tmax_SWMS2D=tmax_SWMS2D)
+    run(geometry=geometry,paramMVG=paramMVG,paramGPRMAX=paramGPRMAX,temps=temps,tmax_SWMS2D=tmax_SWMS2D)
