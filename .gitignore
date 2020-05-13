@@ -130,3 +130,8 @@ dmypy.json
 
 # emacs backup files
 *~
+
+#Virer les fichers de HD2 et les jupyter ntebook
+Jupyter-Notebooks/
+HD2/
+OUT*
