@@ -63,6 +63,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     dir = os.getcwd() #répertoire où on a lancer le script
 
     if os.path.isfile(myDirName+"/"+filename) :
+        print('already simulated')
         return
     
     os.makedirs(myDirName,exist_ok=True)
