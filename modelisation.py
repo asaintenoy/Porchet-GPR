@@ -14,6 +14,7 @@ from collections import namedtuple
 
 #Pour aider pyflakes à analyser il vaut mieux importer les fonctions explicitement
 from maillage_SWMS2D import maillage_SWMS2D 
+from maillage_SWMS2D_EL import maillage_SWMS2D_EL
 from initial_conditions import initial_conditions
 from ecriture_fichiers_SWMS2D import ecriture_Selector_in, ecriture_Grid_in 
 from maillage_GPRMAX import CRIM, maillage_GPRMAX
@@ -82,8 +83,8 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     os.makedirs("SWMS_2D.OUT",exist_ok=True)
     
     #Définition du maillage triangulaire pour SWMS2D
-    [mesh, pg_pos, mesh_pos, mesh_cells]=maillage_SWMS2D(geometry)
-
+    #[mesh, pg_pos, mesh_pos, mesh_cells]=maillage_SWMS2D(geometry)
+    [mesh, pg_pos, mesh_pos, mesh_cells]=maillage_SWMS2D_EL(geometry)
     #from pygimli.meshtools import mesh
     #from pygimli.mplviewer import drawMesh
     from pygimli.viewer import showMesh
