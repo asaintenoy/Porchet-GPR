@@ -86,8 +86,8 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 
     #from pygimli.meshtools import mesh
     #from pygimli.mplviewer import drawMesh
-    #from pygimli.viewer import showMesh
-    #showMesh(mesh)
+    from pygimli.viewer import showMesh
+    showMesh(mesh)
 
     #Calcul des charges initiales en chaque noeud du maillage
     p=initial_conditions(mesh_pos, geometry, paramMVG)

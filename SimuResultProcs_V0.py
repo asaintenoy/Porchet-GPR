@@ -52,11 +52,11 @@ for ii in fname:
 df_params=pd.DataFrame(lst,columns=['tr','ti','ts','n','alpha','Ks'])                 
 
 #%% seqborn
-plt.close('all')
-f1, ax1= plt.subplots(1,1,figsize=(25,15))
-sns.set(style="whitegrid")
+# plt.close('all')
+# f1, ax1= plt.subplots(1,1,figsize=(25,15))
+# sns.set(style="whitegrid")
 
-g = sns.PairGrid(df_params, diag_sharey=False,ax=ax1)
+g = sns.PairGrid(df_params, diag_sharey=False)
 g.map_upper(sns.scatterplot)
 g.map_lower(sns.scatterplot)
 #g.map_lower(sns.kdeplot, colors="C0")
