@@ -17,6 +17,8 @@ import datetime as dt
 import os
 import itertools
 import io
+
+
 pd.set_option('max_columns', 7)
 #%% pathounet
 data_path='/home/el/Codes/Porchet-GPR/OUTdtrou30_rtrou4_tr5.0/OUTdtrou30_rtrou4_tr5.0/'
@@ -56,10 +58,10 @@ df_params=pd.DataFrame(lst,columns=['tr','ti','ts','n','alpha','Ks'])
 # f1, ax1= plt.subplots(1,1,figsize=(25,15))
 # sns.set(style="whitegrid")
 
-g = sns.PairGrid(df_params, diag_sharey=False)
-g.map_upper(sns.scatterplot)
-g.map_lower(sns.scatterplot)
+#g = sns.PairGrid(df_params, diag_sharey=False)
+#g.map_upper(sns.scatterplot)
+#g.map_lower(sns.scatterplot)
 #g.map_lower(sns.kdeplot, colors="C0")
-g.map_diag(sns.distplot,kde=False)
+#g.map_diag(sns.distplot,kde=False)
 
 

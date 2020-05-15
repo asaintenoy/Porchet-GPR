@@ -91,9 +91,10 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     
     #from pygimli.viewer import showMesh
     #showMesh(mesh)
+    #Show mesh with quality control from pg doc
     from pygimli.meshtools import quality
-
     showQuality(mesh, quality(mesh))
+    
 
     #Calcul des charges initiales en chaque noeud du maillage
     p=initial_conditions(mesh_pos, geometry, paramMVG)
@@ -109,7 +110,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 
     error=os.system("timeout {} {}/HD2/H2D".format(tmax_SWMS2D,dir))
     if error : #reagira seulement si error est différent de 0
-        print("bla")
+        print("Erreur de timout H2D")
         os.chdir(dir)
         
 

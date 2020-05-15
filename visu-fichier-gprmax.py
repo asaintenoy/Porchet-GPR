@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 # Ouverture du fichier avec le radargramme
 
-filename = '/home/el/Codes/Porchet-GPR/OUTdtrou30_rtrou4_tr5.0/ts0.4_ti0.1_tr0.03_n5_alpha0.03_Ks0.2/radargram__merged.out'
+filename = '/home/el/Codes/Porchet-GPR/OUTdtrou30_rtrou4_tr5.0/ts0.4_ti0.1_tr0.023_n5_alpha0.03_Ks0.2/radargram__merged.out'
 f = h5py.File(filename, 'r')
 # Lecture des données
 path = '/rxs/rx1/'
