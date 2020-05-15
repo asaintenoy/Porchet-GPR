@@ -2,12 +2,15 @@ import h5py
 import math
 import numpy as np
 from scipy.stats import linregress
+from modelisation import Geometry, ParamMVG, ParamGPRMAX
+from maillage_GPRMAX import CRIM
 
-def picking(filename, A_tab, nT, geometry) :
+def picking(filename, nT, geometry, paramMVG, paramGPRMAX, temps): 
     """ Search for TWT of the wave going around the bulb in each traces.
     The minimum TWT is computed using the geometry and min relative permittivity.
     On each trace, it searches the max amplitude TWT. Then the min TWT just before and the min TWT just after.
     It fits the three curves TWT(itrace) with a power law and take the one with the best fit. 
+    
     """
     #TODO:ajuster les tailles de fenetre... C'est un peu bizarre pour le moment.
     
@@ -17,9 +20,9 @@ def picking(filename, A_tab, nT, geometry) :
     dt = f.attrs['dt']*1e9 # en ns
     dx = 1
     data = np.ones((samples, nT+1))
-    t_max = np.zeros(nT+1)
-    t_min1 = np.zeros(nT+1)
-    t_min2 = np.zeros(nT+1)
+    #a_max = np.zeros(nT+1)
+    #a_min1 = np.zeros(nT+1)
+    #a_min2 = np.zeros(nT+1)
     tt=np.zeros(nT+1)
     tt_min1 = np.zeros(nT+1)
     tt_min2 = np.zeros(nT+1)
@@ -28,35 +31,52 @@ def picking(filename, A_tab, nT, geometry) :
     tps_min2 = np.zeros(nT+1)
 
     # Estimate minimun TWT for the first reflexion
-    eps_init = A_tab[0][:,2].min()
-    #h = math.sqrt(((geometry.dtrou-geometry.h_eau)*0.01)**2 + ((geometry.d_emet+geometry.d_recept)/2)**2) #Pourquoi la distance trou-antenne n'est pas mise en m???
-    h = math.sqrt(((geometry.dtrou-geometry.h_eau)*0.01)**2 + ((paramGPRMAX.d_emet+paramGPRMAX.d_recept)*0.01/2)**2) # en m
+    eps_init = CRIM(paramMVG.ti, paramMVG, paramGPRMAX)
+    print('eps_init',eps_init)
+    #h = math.sqrt(((geometry.dtrou-geometry.h_eau)*0.01)**2 +\
+    h = math.sqrt((geometry.dtrou*0.01)**2 +\
+                  ((paramGPRMAX.d_emet+paramGPRMAX.d_recept)/2)**2) # en m
+    print('h',h)
     v_init=0.3/(math.sqrt(eps_init)) # en m/ns
     t_init = (2*h)/v_init # en ns
-    print(t_init)
-    itmin0 = t_init/dt
-    fenetre = 2 #taille de la fenetre de recherche de reflexion max ou min (en ns)
+    it_init = int(t_init/dt)
+    
+    #recherche du delta_init sur la trace 0 (temps d'arrivée du premier max sur l'onde directe)
+    data[:,0] = f['%s%s' % (path, 'Ez')][:,0]
+    delta_init = np.argmax(data[:it_init,0])
+    
+    itmin0 = it_init + delta_init
+    
+    periode = (1/paramGPRMAX.wave_freq)*1e9 #ns 
+    print('periode',periode)
+    fenetre = 2*periode #taille de la fenetre de recherche de reflexion max ou min (en ns)
     ifenetre = int(fenetre/dt)
-
+    print("ifenetre",ifenetre)
     #Picking onde du bas (onde qui fait le tour du bulbe)
 
     for itrace in range(0,nT+1):
         data[:,itrace] = f['%s%s' % (path, 'Ez')][:,itrace]
+        #print(data)
         if itrace==0 :
             itmin = itmin0
         else :
             itmin = tt[itrace-1]
             
-        t_max[itrace] = np.max(data[int(itmin):int(itmin+ifenetre*3.5/(itrace+1)),itrace])
-        tt[itrace] = np.where(data[:,itrace]==t_max[itrace])[0]
+        #tt[itrace] = np.argmax(data[int(itmin):int(itmin+ifenetre/(3*(itrace+1))),itrace])
+        tt[itrace] = itmin + np.argmax(data[int(itmin):int(itmin+ifenetre),itrace])
         tps_max[itrace] = tt[itrace]*dt
-        t_min1[itrace]= np.min(data[int(tt[itrace]-ifenetre*(itrace+1)/4):int(tt[itrace]),itrace])
-        tt_min1[itrace] = np.where(data[:,itrace]==t_min1[itrace])[0]
+        print('itrace',itrace)
+        print("tt",tt[itrace])
+                
+        tt_min1[itrace] = np.argmin(data[int(tt[itrace]-ifenetre):int(tt[itrace]),itrace])
         tps_min1[itrace] = tt_min1[itrace]*dt
-        t_min2[itrace] = np.min(data[int(tt[itrace]):int(tt[itrace]+ifenetre),itrace])
-        tt_min2[itrace] = np.where(data[:,itrace]==t_min2[itrace])[0]
+        
+        tt_min2[itrace] = np.argmin(data[int(tt[itrace]):int(tt[itrace]+ifenetre),itrace])
         tps_min2[itrace] = tt_min2[itrace]*dt
 
+    tps_max0 = tps_max[0]
+    tps_min1_0 = tps_min1[0]
+    tps_min2_0 = tps_min2[0]
     tps_max = tps_max - tps_max[0]
     tps_min1 = tps_min1 - tps_min1[0]
     tps_min2 = tps_min2 - tps_min2[0]
@@ -99,4 +119,4 @@ def picking(filename, A_tab, nT, geometry) :
             twt_fin = tps_max
             cas = 'max'
 
-    return cas, twt_fin
+    return cas, dt, itmin0, ifenetre, tps_min1, tps_min1_0, tps_min2, tps_min2_0, tps_max, tps_max0, twt_fin
