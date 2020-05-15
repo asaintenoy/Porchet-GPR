@@ -47,6 +47,9 @@ for ii in fname:
     temp2=temp3.split(',')
     try:
         ss = io.open('./OUTdtrou30_rtrou4_tr5.0/OUTdtrou30_rtrou4_tr5.0/'+ii+'/TWT').read()
+        temp=(ss[1:-4]).split('\n')
+        temp3=' '.join(temp)
+        temp2=temp3.split(',')
         bibi=0
     except:
         bibi=1
@@ -54,6 +57,10 @@ for ii in fname:
     lst.append([float(temp2[1]),float(temp2[3]),float(temp2[5]),float(temp2[7]),float(temp2[9]),float(temp2[11]),bibi])
     
 df_params=pd.DataFrame(lst,columns=['tr','ti','ts','n','alpha','Ks','Converged'])                 
+
+
+#%% 
+ss = io.open('./OUTdtrou30_rtrou4_tr5.0/OUTdtrou30_rtrou4_tr5.0/ts0.4_ti0.09_tr0.03_n9.75_alpha0.09999999999999999_Ks0.21000000000000002/TWT').read()
 
 #%% seqborn
 # plt.close('all')
