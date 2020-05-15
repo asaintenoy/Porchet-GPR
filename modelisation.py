@@ -19,6 +19,7 @@ from initial_conditions import initial_conditions
 from ecriture_fichiers_SWMS2D import ecriture_Selector_in, ecriture_Grid_in 
 from maillage_GPRMAX import CRIM, maillage_GPRMAX
 from ecriture_fichiers_GPRMAX import ecriture_fichiers_GPRMAX
+from outils import showQuality
 #from picking_radargramme import picking
 
     
@@ -87,8 +88,12 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     [mesh, pg_pos, mesh_pos, mesh_cells]=maillage_SWMS2D_EL(geometry)
     #from pygimli.meshtools import mesh
     #from pygimli.mplviewer import drawMesh
-    from pygimli.viewer import showMesh
-    showMesh(mesh)
+    
+    #from pygimli.viewer import showMesh
+    #showMesh(mesh)
+    from pygimli.meshtools import quality
+
+    showQuality(mesh, quality(mesh))
 
     #Calcul des charges initiales en chaque noeud du maillage
     p=initial_conditions(mesh_pos, geometry, paramMVG)
