@@ -60,10 +60,13 @@ df_params=pd.DataFrame(lst,columns=['tr','ti','ts','n','alpha','Ks','Converged']
 # f1, ax1= plt.subplots(1,1,figsize=(25,15))
 # sns.set(style="whitegrid")
 
-g = sns.PairGrid(df_params, diag_sharey=False)
-g.map_upper(sns.scatterplot)
-g.map_lower(sns.scatterplot)
+#g = sns.PairGrid(df_params, diag_sharey=False)
+#g.map_upper(sns.scatterplot)
+#g.map_lower(sns.scatterplot)
 #g.map_lower(sns.kdeplot, colors="C0")
-g.map_diag(sns.distplot,kde=False)
+#g.map_diag(sns.distplot,kde=False)
 
-
+plt.close('all')
+#f1, ax1= plt.subplots(1,1,figsize=(25,15))
+sns.set(style="ticks")
+sns.pairplot(df_params.loc[:,['n','alpha','Ks','ts','ti','Converged']], hue="Converged")
