@@ -37,19 +37,23 @@ fname=next(os.walk(data_path))[1]
 #s = "Param(a=1, b=2)"
 
 
-df_params=pd.DataFrame(columns=['tr','ti','ts','n','alpha','Ks'])
 
 lst=[]
-
 for ii in fname: 
+
     s = io.open('./OUTdtrou30_rtrou4_tr5.0/OUTdtrou30_rtrou4_tr5.0/'+ii+'/Parameters').read()
-    #eval(s,{'ParamMVG(tr':tr})
     temp=(s[9:-4]).split('=')
     temp3=','.join(temp)
     temp2=temp3.split(',')
-    lst.append([float(temp2[1]),float(temp2[3]),float(temp2[5]),float(temp2[7]),float(temp2[9]),float(temp2[11])])
+    try:
+        ss = io.open('./OUTdtrou30_rtrou4_tr5.0/OUTdtrou30_rtrou4_tr5.0/'+ii+'/TWT').read()
+        bibi=0
+    except:
+        bibi=1
     
-df_params=pd.DataFrame(lst,columns=['tr','ti','ts','n','alpha','Ks'])                 
+    lst.append([float(temp2[1]),float(temp2[3]),float(temp2[5]),float(temp2[7]),float(temp2[9]),float(temp2[11]),bibi])
+    
+df_params=pd.DataFrame(lst,columns=['tr','ti','ts','n','alpha','Ks','Converged'])                 
 
 #%% seqborn
 # plt.close('all')
