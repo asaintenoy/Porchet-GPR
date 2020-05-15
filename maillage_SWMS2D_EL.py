@@ -39,31 +39,31 @@ def maillage_SWMS2D_EL(geometry):
     nStart = poly.createNode(xreg[0], zreg[0], 0.0) # On crée un noeud de départ, on travaille en 2D donc le dernier terme vaut 0.0
 
     nA = nStart # noeud de départ
-    for xx,zz in zip(xreg,zreg): # On démarre de 1 et on se balade sur l'axe des x en créant un noeud à chaque fois
+    for xx,zz in zip(xreg[1::],zreg[1::]): # On démarre de 1 et on se balade sur l'axe des x en créant un noeud à chaque fois
         nB = poly.createNode(xx, zz, 0.0)
         poly.createEdge(nA, nB) # On définit un côté entre le noeud précédemment créé et le nouveau
         nA = nB # On remplace le noeud de départ par le noeud nouvellement créé
     poly.createEdge(nA, nStart)
 
     
-# =============================================================================
-#     c1 = plc.createCircle(pos=[xmin+r/2, etrou+1], radius=20, area=geometry.area*0.3)
-#     mesh1=pg.meshtools.createMesh(c1, quality=geometry.quality, area=geometry.area, smooth=geometry.smooth)
-#     #pg.show(mesh1, markers=True, showMesh=True)
-#     
-#     for ii in range(mesh1.nodeCount()):
-#         if(mesh1.node(ii)[1]>etrou):
-#             if(mesh1.node(ii)[0]>xmin+r):
-#                 poly.createNode(mesh1.node(ii)[0],mesh1.node(ii)[1],0)
-# 
-#         elif(mesh1.node(ii)[1]<etrou):
-#             if(mesh1.node(ii)[0]>xmin):
-#                 poly.createNode(mesh1.node(ii)[0],mesh1.node(ii)[1],0)
-# 
-# 
-# 
-# 
-# =============================================================================
+#=============================================================================
+    c1 = plc.createCircle(pos=[xmin+r/2, etrou+1], radius=20, area=geometry.area*0.3)
+    mesh1=pg.meshtools.createMesh(c1, quality=geometry.quality, area=geometry.area, smooth=geometry.smooth)
+    #pg.show(mesh1, markers=True, showMesh=True)
+    
+    for ii in range(mesh1.nodeCount()):
+        if(mesh1.node(ii)[1]>etrou):
+            if(mesh1.node(ii)[0]>xmin+r):
+                poly.createNode(mesh1.node(ii)[0],mesh1.node(ii)[1],0)
+
+        elif(mesh1.node(ii)[1]<etrou):
+            if(mesh1.node(ii)[0]>xmin):
+                poly.createNode(mesh1.node(ii)[0],mesh1.node(ii)[1],0)
+
+
+
+
+#=============================================================================
 
     
 

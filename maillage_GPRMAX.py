@@ -39,6 +39,8 @@ def maillage_GPRMAX(paramGPRMAX, paramMVG, mesh, mesh_pos, f_thetas, nT):
 
     mesh2 = pg.Mesh(3)
     mesh2.createGrid(xreg, zreg)
+    #fig, axe = plt.subplots(1,1, figsize=(20, 100))
+    #pg.show(mesh2,ax=axe)
     for c in mesh2.cells():
         c.setMarker(3)
         
@@ -78,7 +80,9 @@ def maillage_GPRMAX(paramGPRMAX, paramMVG, mesh, mesh_pos, f_thetas, nT):
         
     #grid_lin=np.zeros([len(mx),nT+1])
     grid_mat={}
-
+    plt.close('all')
+    fig, axe = plt.subplots(1,1, figsize=(20, 100))
+    pg.show(mesh,ax=axe)
     #fig, ax = plt.subplots(nT+1, figsize=(20, 100))
     for i in range(0, nT+1) : #
         grid=np.zeros([len(xv[:,0]), len(xv[0,:])])
