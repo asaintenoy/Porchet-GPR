@@ -12,7 +12,7 @@ def picking(filename, nT, geometry, paramMVG, paramGPRMAX, temps):
     It fits the three curves TWT(itrace) with a power law and take the one with the best fit. 
     
     """
-    #TODO:ajuster les tailles de fenetre... C'est un peu bizarre pour le moment.
+    #TODO:ajuster les tailles de fenetre... C'est un peu bizarre pour le moment. FAIT
     
     f = h5py.File(filename, 'r')
     path = '/rxs/rx1/'
@@ -68,7 +68,7 @@ def picking(filename, nT, geometry, paramMVG, paramGPRMAX, temps):
         print('itrace',itrace)
         print("tt",tt[itrace])
                 
-        tt_min1[itrace] = tt[itrace] + np.argmin(data[int(tt[itrace]-ifenetre):int(tt[itrace]),itrace])
+        tt_min1[itrace] = tt[itrace] - ifenetre + np.argmin(data[int(tt[itrace]-ifenetre):int(tt[itrace]),itrace])
         tps_min1[itrace] = tt_min1[itrace]*dt
         
         tt_min2[itrace] = tt[itrace] + np.argmin(data[int(tt[itrace]):int(tt[itrace]+ifenetre),itrace])
