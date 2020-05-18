@@ -6,21 +6,23 @@ Created on Fri May 15 16:19:41 2020
 @author: sainteno
 """
 
-#%% Import de libraities
-%matplotlib inline
-import itertools
-import numpy as np
-import io
-import sys
+#%% Import de librairies
+#import itertools
+#import numpy as np
+
+#import sys
 import os
 import h5py
-import math
-import numpy as np
-from scipy.stats import linregress
-import matplotlib.pyplot as plt
+#import math
+#import numpy as np
+#from scipy.stats import linregress
+#import matplotlib.pyplot as plt
+from outils import read_parameters
 
 #%% Import du script de définition des param geometrie et GPR max
 from modelisation import Geometry, ParamMVG, ParamGPRMAX
+#from modelisation import ParamMVG
+
 from param_acquisition import *
 
 #%% import le picking
@@ -33,16 +35,17 @@ for element in os.listdir(dirName):
         print("'%s' pas un dossier" % element)
     else:
         ####### Parameters ######
-        filename = 'Parameters'
-        s = io.open(dirName + "/"+ element + "/" + filename).read()    
-        p = eval(s)
+#        filename = 'Parameters'
+#        s = io.open(dirName + "/"+ element + "/" + filename).read()    
+#        p = eval(s)
+        p = read_parameters(dirName + "/" + element + "/")
         print(p)
         print(p[1])
     
         if p[1] == p[1] : #p[1] est ti
             print(p)#Calcul des TWT
             # Definition des paramètres MVG
-            paramMVG=ParamMVG(tr=p[2], ts=p[0], ti=p[1], Ks=p[5], n=p[3], alpha=p[4])
+            paramMVG = ParamMVG(tr=p[2], ts=p[0], ti=p[1], Ks=p[5], n=p[3], alpha=p[4])
             paramMVG.porosity = paramMVG.ts
             
             filename_rada = 'radargram__merged.out'
