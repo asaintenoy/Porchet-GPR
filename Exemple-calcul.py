@@ -1,12 +1,18 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+#%%
 import itertools
 import numpy as np
 import dask
 import os
+ 
+from modelisation import run
+from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
 
-from modelisation import Geometry, ParamMVG, ParamGPRMAX, run
-
+#%% 
 # Teneur en eau résiduelle
-tr = [0.023]
+tr = [0.024]
 # Teneur en eau à saturation
 ts = [0.4]
 # Teneur en eau initiale

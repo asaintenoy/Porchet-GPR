@@ -6,7 +6,34 @@ Created on Fri May 15 16:22:52 2020
 @author: sainteno
 """
 #%%
-from modelisation import Geometry, ParamMVG, ParamGPRMAX
+import math
+from collections import namedtuple
+from maillage_GPRMAX import CRIM
+
+#Def des paramètres de géométrie du modéle
+class Geometry :
+    def __repr__(self):
+        return "dtrou{dtrou}_rtrou{r}_tr{h_eau}".format(dtrou=self.dtrou,r=self.r,h_eau=self.h_eau)        
+
+# Definition des paramètres MVG
+class ParamMVG(namedtuple("ParamMVG", ["ts", "ti", "tr", "n", "alpha", "Ks"])):
+               
+    #Recalcul des h0 à partir des param MVG
+    def h0(self):
+        return -(1/self.alpha)*(((self.ti-self.tr)/(self.ts-self.tr))**(self.n/(1-self.n))-1)**(1/self.n)
+    def __repr__(self):
+        return "ts{ts}_ti{ti}_tr{tr}_n{n}_alpha{alpha}_Ks{Ks}".format(ts=self.ts,ti=self.ti,tr=self.tr,n=self.n,alpha=self.alpha,Ks=self.Ks)        
+
+# Definition des param gprMax
+class ParamGPRMAX :
+    pass
+
+def longueur_d_onde(theta, freq, paramMVG, paramGPRMAX):
+    """Compute the wavelength for a given water content and frequency (Hz)"""
+    eps = CRIM(theta,paramMVG,paramGPRMAX)
+    vitesse = 0.3 / math.sqrt(eps) # m/ns
+    return vitesse*(10**9)/freq
+
 
 #%% def des paramètres géométriques
 geometry=Geometry()

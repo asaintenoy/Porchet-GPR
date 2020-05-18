@@ -22,6 +22,7 @@ from ecriture_fichiers_GPRMAX import ecriture_fichiers_GPRMAX
 from outils import showQuality
 #from picking_radargramme import picking
 
+from param_acquisition import *
     
 def fxn():
     warnings.warn("deprecated", DeprecationWarning)
@@ -30,29 +31,6 @@ with warnings.catch_warnings():
     warnings.simplefilter("ignore")
     fxn()
 
-#Def des paramètres de géométrie du modéle
-class Geometry :
-    def __repr__(self):
-        return "dtrou{dtrou}_rtrou{r}_tr{h_eau}".format(dtrou=self.dtrou,r=self.r,h_eau=self.h_eau)        
-
-# Definition des paramètres MVG
-class ParamMVG(namedtuple("ParamMVG", ["ts", "ti", "tr", "n", "alpha", "Ks"])):
-               
-    #Recalcul des h0 à partir des param MVG
-    def h0(self):
-        return -(1/self.alpha)*(((self.ti-self.tr)/(self.ts-self.tr))**(self.n/(1-self.n))-1)**(1/self.n)
-    def __repr__(self):
-        return "ts{ts}_ti{ti}_tr{tr}_n{n}_alpha{alpha}_Ks{Ks}".format(ts=self.ts,ti=self.ti,tr=self.tr,n=self.n,alpha=self.alpha,Ks=self.Ks)        
-
-# Definition des param gprMax
-class ParamGPRMAX :
-    pass
-
-def longueur_d_onde(theta, freq, paramMVG, paramGPRMAX):
-    """Compute the wavelength for a given water content and frequency (Hz)"""
-    eps = CRIM(theta,paramMVG,paramGPRMAX)
-    vitesse = 0.3 / math.sqrt(eps) # m/ns
-    return vitesse*(10**9)/freq
 
 def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     # try: c'est pour pouvoir prendre la main si ça foire.

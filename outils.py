@@ -13,7 +13,7 @@ import pygimli as pg
 from pygimli.meshtools import polytools as plc
 from pygimli.meshtools import quality
 
-from modelisation import Geometry, ParamMVG, ParamGPRMAX
+from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
 
 def showQuality(mesh, qualities):
     fig, axes = plt.subplots(1, 2)

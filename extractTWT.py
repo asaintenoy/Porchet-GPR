@@ -17,16 +17,15 @@ import h5py
 #import numpy as np
 #from scipy.stats import linregress
 #import matplotlib.pyplot as plt
-from outils import read_parameters
+
 
 #%% Import du script de définition des param geometrie et GPR max
-from modelisation import Geometry, ParamMVG, ParamGPRMAX
-#from modelisation import ParamMVG
 
 from param_acquisition import *
 
 #%% import le picking
 from picking_radargramme import picking
+from outils import read_parameters
 
 #%% parcours le dossier OUTtest
 dirName = "OUTtest"
