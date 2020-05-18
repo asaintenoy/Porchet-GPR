@@ -49,7 +49,7 @@ for ii in fname:
         ss = io.open('./OUTdtrou30_rtrou4_tr5.0/OUTdtrou30_rtrou4_tr5.0/'+ii+'/TWT').read()
         temp=(ss[1:-4]).split('\n')
         temp3=' '.join(temp)
-        temp2=temp3.split(',')
+        #temp2=temp3.split(',')
         bibi=0
     except:
         bibi=1
@@ -76,4 +76,4 @@ ss = io.open('./OUTdtrou30_rtrou4_tr5.0/OUTdtrou30_rtrou4_tr5.0/ts0.4_ti0.09_tr0
 plt.close('all')
 #f1, ax1= plt.subplots(1,1,figsize=(25,15))
 sns.set(style="ticks")
-sns.pairplot(df_params.loc[:,['n','alpha','Ks','ts','ti','Converged']], hue="Converged")
+sns.pairplot(df_params.loc[:,['n','alpha','Ks','ts','ti','Converged']], hue="Converged", markers=["s", "D"])
