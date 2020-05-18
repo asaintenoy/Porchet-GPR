@@ -68,10 +68,10 @@ def picking(filename, nT, geometry, paramMVG, paramGPRMAX, temps):
         print('itrace',itrace)
         print("tt",tt[itrace])
                 
-        tt_min1[itrace] = np.argmin(data[int(tt[itrace]-ifenetre):int(tt[itrace]),itrace])
+        tt_min1[itrace] = tt[itrace] + np.argmin(data[int(tt[itrace]-ifenetre):int(tt[itrace]),itrace])
         tps_min1[itrace] = tt_min1[itrace]*dt
         
-        tt_min2[itrace] = np.argmin(data[int(tt[itrace]):int(tt[itrace]+ifenetre),itrace])
+        tt_min2[itrace] = tt[itrace] + np.argmin(data[int(tt[itrace]):int(tt[itrace]+ifenetre),itrace])
         tps_min2[itrace] = tt_min2[itrace]*dt
 
     tps_max0 = tps_max[0]

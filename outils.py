@@ -8,6 +8,7 @@ Created on Fri May 15 14:24:20 2020
 import matplotlib.pyplot as plt
 import numpy as np
 import io
+import h5py
 
 import pygimli as pg
 from pygimli.meshtools import polytools as plc
@@ -27,7 +28,7 @@ def showQuality(mesh, qualities):
     axes[1].set_ylabel("Frequency")
     axes[1].set_xlim(0, 1)
 
-    # Figure resizing according to mesh dimesions
+    # Figure resizing according to mesh dimensions
     x = mesh.xmax() - mesh.xmin()
     y = mesh.ymax() - mesh.ymin()
     width, height = fig.get_size_inches()
@@ -73,3 +74,14 @@ def read_volumes(filepath):
                 i=i+1
     return volumes
     fVOL.close()
+
+### Plotter un radargramme
+def rada_plot(filepath):
+    filename = 'radargram__merged.out'
+    f = h5py.File(filepath + filename, 'r')
+    path = '/rxs/rx1/'
+    data = f['%s%s' % (path, 'Ez')][:,:]
+    plt.figure(figsize=(10,15))
+    plt.xticks(fontsize=20)
+    plt.yticks(fontsize=20)
+    plt.imshow(data[:,:],aspect=0.005)
