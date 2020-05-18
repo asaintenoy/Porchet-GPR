@@ -84,8 +84,8 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     os.makedirs("SWMS_2D.OUT",exist_ok=True)
     
     #Définition du maillage triangulaire pour SWMS2D
-    #[mesh, pg_pos, mesh_pos, mesh_cells]=maillage_SWMS2D(geometry)
-    [mesh, pg_pos, mesh_pos, mesh_cells]=maillage_SWMS2D_EL(geometry)
+    [mesh, pg_pos, mesh_pos, mesh_cells]=maillage_SWMS2D(geometry)
+    #[mesh, pg_pos, mesh_pos, mesh_cells]=maillage_SWMS2D_EL(geometry)
     #from pygimli.meshtools import mesh
     #from pygimli.mplviewer import drawMesh
     
@@ -109,7 +109,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 
     error=os.system("timeout {} {}/HD2/H2D".format(tmax_SWMS2D,dir))
     if error : #reagira seulement si error est différent de 0
-        print("bla")
+        print("HD2 fut trop long")
         os.chdir(dir)
         
 
@@ -159,7 +159,8 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     # Concatenate all nT traces    
     command2="./gprMaxMerge "+ nom + "_" 
     os.popen(command2).readlines()
-    os.popen("rm -rf *.in")
+    #os.popen("rm -rf *.in")
+    
     for i in range(0,nT+1) :
         os.popen("rm -rf "+ nom + "_" + str(i+1) + ".out")
 

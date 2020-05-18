@@ -112,9 +112,12 @@ def ecriture_fichiers_GPRMAX(X, Y, grid_z0, trace_number, nom, paramMVG, paramGP
     #s=np.where((A[:,0]<=w+dx/2+radius-0.007) & (A[:,0]>=w-dx/2-radius+0.007) & (A[:,1]<=max(Y[:,0])*1.1) & (A[:,1]>=etrou+d+h_eau))
     #A[s,2]=1
     
+    #Juste pour checker la geometrie
+    #fgrid.write("""#geometry_view: 0 0 f3 f4 f5 f6 f7 f8 f9 file1 c1\n""".format(dl, dl, dl))
+    
     fgrid.write("""------------------------------------------------\n""")
     fgrid.write("""#messages: n\n""")
-    #fgrid.write("""#geometry_view: 0 0 0 {} {} {} {} {} {} modele_vue n""".format(2*max(X[0,:])+dx, max(Y[:,0])*2, dl, dl, dl, dl))
+    fgrid.write("""#geometry_view: 0 0 0 {} {} {} {} {} {} modele_vue{} n""".format(2*max(X[0,:])+dx, max(Y[:,0])*2, dl, dl, dl, dl,str(trace_number+1)))
 
     fgrid.close()
     

@@ -5,7 +5,7 @@ from pygimli.mplviewer import drawMesh
 from pygimli.viewer import showMesh
 from scipy.interpolate import griddata
 import matplotlib.pyplot as plt
-#from pygimli.mplviewer import drawMesh, drawModel
+from pygimli.mplviewer import drawMesh, drawModel
 from pygimli.meshtools import interpolate
 from pygimli.meshtools import nodeDataToCellData
 import math
@@ -98,6 +98,7 @@ def maillage_GPRMAX(paramGPRMAX, paramMVG, mesh, mesh_pos, f_thetas, nT):
         b=np.where(grid_mat[i]<=eps[0])
         grid_mat[i][b]=eps[0]
         #drawModel(ax[i], mesh2 , outdata2)
+        
         
     #Même interpolation pour les sigma si nécessaire
     sigma=np.zeros(len(theta))
