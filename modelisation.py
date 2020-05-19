@@ -84,8 +84,8 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     os.makedirs("SWMS_2D.OUT",exist_ok=True)
     
     #Définition du maillage triangulaire pour SWMS2D
-    [mesh, pg_pos, mesh_pos, mesh_cells]=maillage_SWMS2D(geometry)
-    #[mesh, pg_pos, mesh_pos, mesh_cells]=maillage_SWMS2D_EL(geometry)
+    #[mesh, pg_pos, mesh_pos, mesh_cells]=maillage_SWMS2D(geometry)
+    [mesh, pg_pos, mesh_pos, mesh_cells]=maillage_SWMS2D_EL(geometry)
     #from pygimli.meshtools import mesh
     #from pygimli.mplviewer import drawMesh
     
