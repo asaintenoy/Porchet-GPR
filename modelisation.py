@@ -93,7 +93,8 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     #showMesh(mesh)
     from pygimli.meshtools import quality
 
-    showQuality(mesh, quality(mesh))
+    figi=showQuality(mesh, quality(mesh))
+    figi.savefig('mesh.png',format='png')
 
     #Calcul des charges initiales en chaque noeud du maillage
     p=initial_conditions(mesh_pos, geometry, paramMVG)
@@ -150,13 +151,15 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
                 
         # Writing a file.in for running GPRMAX
         A = ecriture_fichiers_GPRMAX(xv.T*0.01, yv.T*0.01, grid_mat[i], i, nom, paramMVG, paramGPRMAX, geometry, dl, materiaux) 
-        plt.close('all')
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        gni=ax.scatter(A[:,0],A[:,1],s=30,c=A[:,2])
-        cbar=fig.colorbar(gni,label='Eps' )
-        cbar.minorticks_on()
-        fig.savefig('Gnard'+str(i)+'.png',format='png')
+       
+        # plt.close('all')
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111)
+        # gni=ax.scatter(A[:,0],A[:,1],s=30,c=A[:,2])
+        # cbar=fig.colorbar(gni,label='Eps' )
+        # cbar.minorticks_on()
+        # fig.savefig('Gnard'+str(i)+'.png',format='png')
+        
         A_tab[i]=A
         #Lancement calcul gprMax
         fichier=nom+'_'+str(i+1)+'.in'

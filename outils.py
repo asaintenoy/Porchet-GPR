@@ -30,3 +30,4 @@ def showQuality(mesh, qualities):
     width, height = fig.get_size_inches()
     fig.set_figheight(height * 1.3 * (y / x))
     fig.tight_layout()
+    return fig
