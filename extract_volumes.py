@@ -16,29 +16,30 @@ import os
 #import numpy as np
 #from scipy.stats import linregress
 import matplotlib.pyplot as plt
-
+import pandas as pd
 
 #%% Import du script de définition des param geometrie et GPR max
-from param_acquisition import *
+from param_acquisition import nT, geometry, ParamMVG, paramGPRMAX, temps
 
-#%% import le picking
-#from picking_radargramme import picking
 from outils import read_parameters, rada_plot
 
-#%% parcours le dossier OUTtest
-dirName = "OUTtest"
+#%% parcours le dossier OUT
+dir_name = "OUTdtrou30_rtrou4_tr5.0"
 PickedVolumes=pd.DataFrame(columns=['Volumes'])
-for element in os.listdir(dirName):
-    if os.path.isfile(element):
-        print("'%s' pas un dossier" % element)
+
+for subdir in os.listdir(dir_name):
+    if os.path.isfile(subdir):
+        print("'%s' pas un dossier" % subdir)
         continue
     
-    p = read_parameters(dirName + "/" + element + "/")
+    print(subdir)
+    subdir_name = os.path.join(dir_name, subdir)
+    p = read_parameters(subdir_name)
     paramMVG = ParamMVG(tr=p[2], ts=p[0], ti=p[1], Ks=p[5], n=p[3], alpha=p[4])
     paramMVG.porosity = paramMVG.ts
-    
-    dirVolume = "SWMS_2D.OUT"
-    if not os.path.isfile(dirName + "/" + element + "/" + dirVolume + "/" + "Balance.out"):
+
+    filename_SWMS = os.path.join(subdir_name, "SWMS_2D.OUT", "Balance.out")
+    if not os.path.isfile(filename_SWMS):
         print("Pas de Balance.out")
         continue
     
@@ -47,7 +48,7 @@ for element in os.listdir(dirName):
     Volume_infiltre=np.zeros(nT+1)
 
     i=0
-    fVOL=open(dirName + "/" + element + "/" + dirVolume + "/" + "Balance.out","r")
+    fVOL=open(filename_SWMS,"r")
 
     for ligne in fVOL:
         if 'InFlow' in ligne:
@@ -63,17 +64,12 @@ for element in os.listdir(dirName):
         dVolume[i] = (temps[i] - temps[i-1]) * InFlow[i+1]
         Volume_infiltre[i+1] = Volume_infiltre[i] + dVolume[i]
 
-#    os.chdir(dir + "OUT"+repr(geometry)+"/"+repr(paramMVG))
-#    fvolsave=open("Volumes","w")
-#    fvolsave.write("""{}\n""".format(Volume_infiltre))
-#    fvolsave.close()
-#    os.chdir(dir)
     PickedVolumes['Volumes']=Volume_infiltre
-    PickedVolumes['Volumes'].to_csv('./' + dirName + "/" + element+'/Volumes.csv', sep=',', encoding='utf-8',index=None,header=True)
+    PickedVolumes['Volumes'].to_csv(subdir_name + 'Volumes_EL.csv', sep=',', encoding='utf-8', index=None, header=True)
     
-
-    axe=np.zeros(nT+1)
-    axe[1:nT+1]=temps
-    plt.xlabel("Time (ns)")
-    plt.ylabel("Infiltrated volume of water (cm^3)")
-    plt.plot(axe,Volume_infiltre)        
+#    Pour plotter le volume au cours du temps d'infiltration
+#    axe=np.zeros(nT+1)
+#    axe[1:nT+1]=temps
+#    plt.xlabel("Time (ns)")
+#    plt.ylabel("Infiltrated volume of water (cm^3)")
+#    plt.plot(axe,Volume_infiltre)        

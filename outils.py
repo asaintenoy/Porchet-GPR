@@ -9,11 +9,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import io
 import h5py
+import os
 
 import pygimli as pg
 from pygimli.meshtools import polytools as plc
 from pygimli.meshtools import quality
 from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
+
 def showQuality(mesh, qualities):
     fig, axes = plt.subplots(1, 2)
     axes[1].hist(qualities, color="grey")
@@ -37,7 +39,7 @@ def showQuality(mesh, qualities):
 ####### Lire les fichiers Parameters ######
 def read_parameters(filepath):
     filename = 'Parameters'
-    s = io.open(filepath + filename).read()    
+    s = io.open(os.path.join(filepath,filename)).read()    
     p = eval(s)
     return p
  

@@ -32,11 +32,11 @@ def picking(filename, nT, geometry, paramMVG, paramGPRMAX, temps):
 
     # Estimate minimun TWT for the first reflexion
     eps_init = CRIM(paramMVG.ti, paramMVG, paramGPRMAX)
-    print('eps_init',eps_init)
+    #print('eps_init',eps_init)
     #h = math.sqrt(((geometry.dtrou-geometry.h_eau)*0.01)**2 +\
     h = math.sqrt((geometry.dtrou*0.01)**2 +\
                   ((paramGPRMAX.d_emet+paramGPRMAX.d_recept)/2)**2) # en m
-    print('h',h)
+    #print('h',h)
     v_init=0.3/(math.sqrt(eps_init)) # en m/ns
     t_init = (2*h)/v_init # en ns
     it_init = int(t_init/dt)
@@ -48,10 +48,10 @@ def picking(filename, nT, geometry, paramMVG, paramGPRMAX, temps):
     itmin0 = it_init + delta_init
     
     periode = (1/paramGPRMAX.wave_freq)*1e9 #ns 
-    print('periode',periode)
+    #print('periode',periode)
     fenetre = 2*periode #taille de la fenetre de recherche de reflexion max ou min (en ns)
     ifenetre = int(fenetre/dt)
-    print("ifenetre",ifenetre)
+    #print("ifenetre",ifenetre)
     #Picking onde du bas (onde qui fait le tour du bulbe)
 
     for itrace in range(0,nT+1):
@@ -65,8 +65,8 @@ def picking(filename, nT, geometry, paramMVG, paramGPRMAX, temps):
         #tt[itrace] = np.argmax(data[int(itmin):int(itmin+ifenetre/(3*(itrace+1))),itrace])
         tt[itrace] = itmin + np.argmax(data[int(itmin):int(itmin+ifenetre),itrace])
         tps_max[itrace] = tt[itrace]*dt
-        print('itrace',itrace)
-        print("tt",tt[itrace])
+        #print('itrace',itrace)
+        #print("tt",tt[itrace])
                 
         tt_min1[itrace] = tt[itrace] - ifenetre + np.argmin(data[int(tt[itrace]-ifenetre):int(tt[itrace]),itrace])
         tps_min1[itrace] = tt_min1[itrace]*dt
