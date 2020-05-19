@@ -175,9 +175,12 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 
     # Concatenate all nT traces    
     fig = plt.figure()
-    ax = fig.add_subplot(111)
-    ax.plot(list(range(0,nT+1)),end_running,c='r')
-    ax.plot(list(range(0,nT+1)),end_ecriture,c='b')
+    ax1 = fig.add_subplot(111)
+    ax2 = ax1.twinx()
+    ax1.plot(list(range(0,nT+1)),end_running,c='r')
+    ax2.plot(list(range(0,nT+1)),end_ecriture,c='b')
+    ax1.grid()
+    ax2.grid()
     command2="./gprMaxMerge "+ nom + "_" 
     os.popen(command2).readlines()
     os.popen("rm -rf *.in")
