@@ -70,7 +70,7 @@ for element in os.listdir(dirName):
 #    os.chdir(dir)
     PickedVolumes['Volumes']=Volume_infiltre
     PickedVolumes['Volumes'].to_csv('./' + dirName + "/" + element+'/Volumes_EL.csv', sep=',', encoding='utf-8',index=None,header=True)
-    rada_plot(dirName + "/" + element + "/")  
+    
 
     axe=np.zeros(nT+1)
     axe[1:nT+1]=temps
