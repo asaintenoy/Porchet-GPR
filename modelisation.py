@@ -143,8 +143,10 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 
     xreg = np.arange(paramGPRMAX.xmin, paramGPRMAX.xmax + paramGPRMAX.dx, paramGPRMAX.dx, 'float')
     zreg = np.arange(paramGPRMAX.zmin, paramGPRMAX.zmax + paramGPRMAX.dx, paramGPRMAX.dx, 'float')
-
+    end_ecriture=[]
+    end_running=[]
     for i in range(0,nT+1):
+        start_ecriture = time.time()
         for j in range(0,len(zreg)):
             for k in range(0,len(xreg)):
                 materiau(grid_mat[i][j,k], sigma_grid_mat[i][j,k])
@@ -162,12 +164,20 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
         # fig.savefig('Gnard'+str(i)+'.png',format='png')
         
         A_tab[i]=A
+        end_ecriture.append(time.time()-start_ecriture)
         #Lancement calcul gprMax
         fichier=nom+'_'+str(i+1)+'.in'
+        start_running = time.time()
         command="./gprMax "+fichier
         os.popen(command).readlines()
+        end_running.append(time.time()-start_running)
+        
 
     # Concatenate all nT traces    
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(list(range(0,nT+1)),end_running,c='r')
+    ax.plot(list(range(0,nT+1)),end_ecriture,c='b')
     command2="./gprMaxMerge "+ nom + "_" 
     os.popen(command2).readlines()
     os.popen("rm -rf *.in")
