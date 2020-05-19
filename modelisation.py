@@ -11,7 +11,7 @@ retval = os.getcwd()
 import warnings
 import shutil
 from collections import namedtuple
-
+import matplotlib.pyplot as plt
 #Pour aider pyflakes à analyser il vaut mieux importer les fonctions explicitement
 from maillage_SWMS2D import maillage_SWMS2D 
 from maillage_SWMS2D_EL import maillage_SWMS2D_EL
@@ -150,6 +150,13 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
                 
         # Writing a file.in for running GPRMAX
         A = ecriture_fichiers_GPRMAX(xv.T*0.01, yv.T*0.01, grid_mat[i], i, nom, paramMVG, paramGPRMAX, geometry, dl, materiaux) 
+        plt.close('all')
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        gni=ax.scatter(A[:,0],A[:,1],s=30,c=A[:,2])
+        cbar=fig.colorbar(gni,label='Eps' )
+        cbar.minorticks_on()
+        fig.savefig('Gnard'+str(i)+'.png',format='png')
         A_tab[i]=A
         #Lancement calcul gprMax
         fichier=nom+'_'+str(i+1)+'.in'
@@ -159,7 +166,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     # Concatenate all nT traces    
     command2="./gprMaxMerge "+ nom + "_" 
     os.popen(command2).readlines()
-    #os.popen("rm -rf *.in")
+    os.popen("rm -rf *.in")
     
     for i in range(0,nT+1) :
         os.popen("rm -rf "+ nom + "_" + str(i+1) + ".out")
