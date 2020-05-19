@@ -7,7 +7,7 @@ from modelisation import run
 from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
 
 # Teneur en eau résiduelle
-tr = [0.011]
+tr = [0.0105]
 # Teneur en eau à saturation
 ts = [0.341]
 # Teneur en eau initiale
