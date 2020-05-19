@@ -16,6 +16,7 @@ import h5py
 #import numpy as np
 #from scipy.stats import linregress
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 #%% Import du script de définition des param geometrie et GPR max
@@ -28,6 +29,7 @@ from outils import read_parameters, rada_plot
 
 #%% parcours le dossier OUTtest
 dirName = "OUTtest"
+PickedTWT=pd.DataFrame(columns=['TWT(ns)','Volumes'])
 for element in os.listdir(dirName):
     if os.path.isfile(element):
         print("'%s' pas un dossier" % element)
@@ -51,7 +53,10 @@ for element in os.listdir(dirName):
     print("Picking radargramme dans " + dirName + "/" + element)
     cas,dt,itmin0,ifenetre,tps_min1,tps_min1_0,tps_min2,tps_min2_0,tps_max,tps_max0,TWT \
         = picking(filename_path, nT, geometry, paramMVG, paramGPRMAX, temps)  
+        
     
+    PickedTWT['TWT(ns)']=TWT
+    PickedTWT['TWT(ns)'].to_csv('./' + dirName + "/" + element+'/TWT_EL.csv', sep=',', encoding='utf-8',index=None,header=True)
     rada_plot(dirName + "/" + element + "/")    
     # plot des points piqués
     axe=np.arange(12)
