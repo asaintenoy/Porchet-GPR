@@ -18,6 +18,7 @@ dependencies:
 - pygimli
 - pip
 - dask
+- h5py
 
 - pip:
   #- mpi4py
