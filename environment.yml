@@ -19,6 +19,7 @@ dependencies:
 - pip
 - dask
 - h5py>=2.10.0
+- spyder
 
 - pip:
   #- mpi4py
