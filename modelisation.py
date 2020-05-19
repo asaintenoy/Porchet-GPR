@@ -166,6 +166,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
         A_tab[i]=A
         end_ecriture.append(time.time()-start_ecriture)
         #Lancement calcul gprMax
+        #fichier=nom+'_'+str(i+1)+'.in'
         fichier=nom+'_'+str(i+1)+'.in'
         start_running = time.time()
         command="./gprMax "+fichier
