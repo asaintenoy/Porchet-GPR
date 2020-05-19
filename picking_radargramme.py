@@ -2,7 +2,7 @@ import h5py
 import math
 import numpy as np
 from scipy.stats import linregress
-from modelisation import Geometry, ParamMVG, ParamGPRMAX
+from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
 from maillage_GPRMAX import CRIM
 
 def picking(filename, nT, geometry, paramMVG, paramGPRMAX, temps): 
