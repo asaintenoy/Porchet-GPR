@@ -186,7 +186,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     ax2.grid()
     command2="./gprMaxMerge "+ nom + "_" 
     os.popen(command2).readlines()
-    os.popen("rm -rf *.in")
+    #os.popen("rm -rf *.in")
     
     for i in range(0,nT+1) :
         os.popen("rm -rf "+ nom + "_" + str(i+1) + ".out")

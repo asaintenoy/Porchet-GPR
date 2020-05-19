@@ -56,7 +56,7 @@ for element in os.listdir(dirName):
         
     
     PickedTWT['TWT(ns)']=TWT
-    PickedTWT['TWT(ns)'].to_csv('./' + dirName + "/" + element+'/TWT_EL.csv', sep=',', encoding='utf-8',index=None,header=True)
+    PickedTWT['TWT(ns)'].to_csv('./' + dirName + "/" + element+'/TWT.csv', sep=',', encoding='utf-8',index=None,header=True)
     rada_plot(dirName + "/" + element + "/")    
     # plot des points piqués
     axe=np.arange(12)
