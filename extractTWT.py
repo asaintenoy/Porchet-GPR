@@ -28,7 +28,7 @@ from picking_radargramme import picking
 from outils import read_parameters, rada_plot
 
 #%% parcours le dossier OUTtest
-dirName = "OUTtest"
+dirName = "OUTCompaMesh"
 PickedTWT=pd.DataFrame(columns=['TWT(ns)'])
 for element in os.listdir(dirName):
     if os.path.isfile(element):
