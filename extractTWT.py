@@ -29,7 +29,7 @@ from outils import read_parameters, rada_plot
 
 #%% parcours le dossier OUTtest
 dirName = "OUTtest"
-PickedTWT=pd.DataFrame(columns=['TWT(ns)','Volumes'])
+PickedTWT=pd.DataFrame(columns=['TWT(ns)'])
 for element in os.listdir(dirName):
     if os.path.isfile(element):
         print("'%s' pas un dossier" % element)
