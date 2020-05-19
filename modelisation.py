@@ -23,7 +23,9 @@ from ecriture_fichiers_GPRMAX import ecriture_fichiers_GPRMAX
 from outils import showQuality
 #from picking_radargramme import picking
 
-    
+from param_acquisition import * 
+
+
 def fxn():
     warnings.warn("deprecated", DeprecationWarning)
 
