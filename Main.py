@@ -107,5 +107,9 @@ paramGPRMAX.fac_dt = 0.2
 #%% Forward
 from Forward import Forward
 [TWT,Vol]=Forward(geometry,pVg,paramGPRMAX,temps,tmax_SWMS2D)
-plt.plot(TWT)
-plt.grid()
+#%%
+fig,ax1=plt.subplots(1,1,figsize=(25,15))
+ax1.plot(temps,TWT,'r',label='TWT(ns)')
+ax1.grid()
+ax2 = ax1.twinx()
+ax2.plot(temps,Vol,'b',label='Volume')

@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from modelisation import run
 from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
 from picking_radargramme import picking
+from F_extract_volumes import F_extract_volumes
 
 def Forward(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 #%%
@@ -22,4 +23,8 @@ def Forward(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
             =picking(os.path.join(folderout, 'radargram__merged.out'), len(temps), geometry, paramMVG, paramGPRMAX, temps)
     except:
         print('Probably already simulated')
-    return TWT
+        
+        
+    Vol=F_extract_volumes(folderout,temps)
+            
+    return TWT,Vol 
