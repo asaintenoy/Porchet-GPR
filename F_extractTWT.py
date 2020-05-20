@@ -29,11 +29,12 @@ from outils import read_parameters, rada_plot
 
 #%% parcours le dossier OUT
 def F_extractTWT(pathounet):
-    try:
-       temp = np.genfromtxt(pathounet+'/TWT_EL.csv', delimiter=',',skip_header=1)
-    except:
-       temp = np.empty((11))
-       temp[:]=np.nan
+    temp = np.genfromtxt(pathounet+'/TWT_EL.csv', delimiter=',',skip_header=1)
+    #try:
+    #    temp = np.genfromtxt(pathounet+'/TWT_EL.csv', delimiter=',',skip_header=1)
+    # except:
+    #    temp = np.empty((11))
+    #    temp[:]=np.nan
        
-       return temp
+    return temp
        
