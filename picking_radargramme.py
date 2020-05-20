@@ -118,5 +118,4 @@ def picking(filename, nT, geometry, paramMVG, paramGPRMAX, temps):
         else:
             twt_fin = tps_max
             cas = 'max'
-
     return cas, dt, itmin0, ifenetre, tps_min1, tps_min1_0, tps_min2, tps_min2_0, tps_max, tps_max0, twt_fin

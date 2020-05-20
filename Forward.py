@@ -14,9 +14,12 @@ from modelisation import run
 from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
 from picking_radargramme import picking
 from F_extract_volumes import F_extract_volumes
+import pandas as pd
 
 def Forward(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 #%%
+    Res=pd.DataFrame(columns=['TWT(ns)','Volumes(ml)'])
+
     folderout=run(geometry=geometry,paramMVG=paramMVG,paramGPRMAX=paramGPRMAX,temps=temps,tmax_SWMS2D=tmax_SWMS2D)
     try:
         cas,dt,itmin0,ifenetre,tps_min1,tps_min1_0,tps_min2,tps_min2_0,tps_max,tps_max0,TWT\
@@ -26,5 +29,12 @@ def Forward(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
         
         
     Vol=F_extract_volumes(folderout,temps)
-            
+      
+#pas forcement bien placé, a voir.
+
+    Res['TWT(ns)'].to_csv(folderout + '/TWT_EL.csv', TWT,sep=',', encoding='utf-8', index=None, header=True)
+    Res['Volumes(ml)'].to_csv(folderout + '/Volumes_EL.csv',Vol, sep=',', encoding='utf-8', index=None, header=True)
+    
+
+      
     return TWT,Vol 
