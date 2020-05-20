@@ -12,21 +12,22 @@ import os
 
 from modelisation import run
 from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
-
+from F_extractTWT import F_extractTWT
 
 # Teneur en eau résiduelle
-tr = [0.0121]
+tr = 0.01
 # Teneur en eau à saturation
-ts = [0.333]
+ts = 0.333
 # Teneur en eau initiale
-ti = [0.1]
+ti = 0.1
 # Perméabilité à saturation
-Ks = [0.2]
+Ks = 0.2
 # param fitting retention n
-n = [5]
+n = 5
 # param fitting retention alpha
-alpha = [0.03]
+alpha = 0.03
 pVg=ParamMVG(tr=tr, ts=ts, ti=ti, Ks=Ks, n=n, alpha=alpha)
+pVg.porosity = pVg.ts
 
 #%% Geometrie
 #def des paramètres géométriques
@@ -106,6 +107,5 @@ paramGPRMAX.time = 30e-9
 #time_step_stability_factor (pas utilisé pour le moment...)
 paramGPRMAX.fac_dt = 0.2 
 #%%
-
-
-
+folderout=run(geometry=geometry,paramMVG=pVg,paramGPRMAX=paramGPRMAX,temps=temps,tmax_SWMS2D=tmax_SWMS2D)
+twt=F_extractTWT(folderout)
