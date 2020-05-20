@@ -13,6 +13,7 @@ import os
 from modelisation import run
 from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
 from F_extractTWT import F_extractTWT
+from picking_radargramme import picking
 
 # Teneur en eau résiduelle
 tr = 0.01
@@ -108,4 +109,6 @@ paramGPRMAX.time = 30e-9
 paramGPRMAX.fac_dt = 0.2 
 #%%
 folderout=run(geometry=geometry,paramMVG=pVg,paramGPRMAX=paramGPRMAX,temps=temps,tmax_SWMS2D=tmax_SWMS2D)
+cas,dt,itmin0,ifenetre,tps_min1,tps_min1_0,tps_min2,tps_min2_0,tps_max,tps_max0,TWT\
+    =picking(os.path.join(folderout, 'radargram__merged.out'), nT, geometry, paramMVG, paramGPRMAX, temps)
 twt=F_extractTWT(folderout)
