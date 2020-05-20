@@ -196,15 +196,6 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 
     os.chdir(dir)
     
-    #except Exception as e:
-    #    os.chdir(dir) #retour au dossier parent pour sortir du dossier local
-    #    print("type error: " + str(e))
-    #    fichier_error = open('/home/clemence/Porchet-GPR/source/Param_error_inv.dat', 'a')
-    #    #fichier_error.write("\n")
-    #    fichier_error.write("{} {}\n".format(e,paramMVG.Ks))
-    #    fichier_error.close()
-    #    TWT=10*np.ones_like(temps) # rentre des temps abérants
-
-    #return TWT
+    return myDirName
     
 #run(0.3,10,0.024,0.097,0.401,) #Ks, n, alpha, tr, ts, ti
