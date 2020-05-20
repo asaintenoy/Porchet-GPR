@@ -31,9 +31,10 @@ def Forward(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     Vol=F_extract_volumes(folderout,temps)
       
 #pas forcement bien placé, a voir.
-
-    Res['TWT(ns)'].to_csv(folderout + '/TWT_EL.csv', TWT,sep=',', encoding='utf-8', index=None, header=True)
-    Res['Volumes(ml)'].to_csv(folderout + '/Volumes_EL.csv',Vol, sep=',', encoding='utf-8', index=None, header=True)
+    Res['TWT(ns)']=TWT
+    Res['Volumes(ml)']=Vol
+    Res['TWT(ns)'].to_csv(folderout + '/TWT_EL.csv',sep=',', encoding='utf-8', index=None, header=True)
+    Res['Volumes(ml)'].to_csv(folderout + '/Volumes_EL.csv', sep=',', encoding='utf-8', index=None, header=True)
     
 
       
