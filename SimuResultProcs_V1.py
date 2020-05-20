@@ -90,8 +90,9 @@ top = 0.987      # the top of the subplots of the figure
 wspace = 0.224   # the amount of width reserved for blank space between subplots
 hspace = 0.290   # the amount of height reserved for white space between subplots
 plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspace, hspace=hspace)
-plt.colorbar()
+
 f1.savefig('RMSE.png',format='png')
+#plt.close(f1)
 #%%
 plt.close('all')
 legendounet=['tr','ts','n','alpha','Ks']
