@@ -96,8 +96,8 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     #showMesh(mesh)
     from pygimli.meshtools import quality
 
-    figi=showQuality(mesh, quality(mesh))
-    figi.savefig('mesh.png',format='png')
+    #figi=showQuality(mesh, quality(mesh))
+    #figi.savefig('mesh.png',format='png')
 
     #Calcul des charges initiales en chaque noeud du maillage
     p=initial_conditions(mesh_pos, geometry, paramMVG)
