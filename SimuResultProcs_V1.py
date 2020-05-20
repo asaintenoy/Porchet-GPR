@@ -16,6 +16,7 @@ import itertools
 import io
 import numpy as np
 from param_acquisition import nT, geometry, ParamMVG, paramGPRMAX, temps
+from Forward import Forward
 
 from outils import read_parameters, rada_plot
 
@@ -37,12 +38,27 @@ else:
 fname=next(os.walk('./OUTdtrou30_rtrou4_tr5.0/'))[1]
 
 #%% pour chaque sous folder, on lit le fichier Params
-#s = "Param(a=1, b=2)"
 
 
 
+#Comparé a pour le RMSE
+tr = 0.03
+# Teneur en eau à saturation
+ts = 0.38
+# Teneur en eau initiale
+ti = 0.09
+# Perméabilité à saturation
+Ks = 0.2
+# param fitting retention n
+n = 4
+# param fitting retention alpha
+alpha = 0.03
+pVg=ParamMVG(tr=tr, ts=ts, ti=ti, Ks=Ks, n=n, alpha=alpha)
+pVg.porosity = pVg.ts
+[TWT_direct,Vol_directe]=Forward(geometry,pVg,paramGPRMAX,temps,600)
+
+#%%
 lst=[]
-
 for ii in fname: 
 
     p=read_parameters('./OUTdtrou30_rtrou4_tr5.0/'+ii)
@@ -50,7 +66,7 @@ for ii in fname:
     try:
         temp = np.genfromtxt('./OUTdtrou30_rtrou4_tr5.0/'+ii+'/TWT_EL.csv', delimiter=',',skip_header=1)
         bibi = 0
-        rmse=np.sqrt(np.mean((temp)**2))
+        rmse=np.sqrt(np.mean((temp-TWT_direct)**2))
     except:
         bibi=1
     
@@ -96,19 +112,25 @@ f1.savefig('RMSE.png',format='png')
 #%%
 plt.close('all')
 legendounet=['tr','ts','n','alpha','Ks']
-(f1, ax)= plt.subplots(3,2,figsize=(25,15))
+(f1, ax)= plt.subplots(2,2,figsize=(25,15))
 ax[0,0].scatter(df_params['alpha'],df_params.RMSE)
 ax[0,0].set_xlabel('alpha')
+ax[0,0].set_ylabel('RMSE')
 ax[0,0].grid()
 ax[0,1].scatter(df_params['Ks'],df_params.RMSE)
 ax[0,1].set_xlabel('Ks')
+ax[0,1].set_ylabel('RMSE')
 ax[0,1].grid()
-ax[1,1].scatter(df_params['n'],df_params.RMSE)
-ax[1,1].set_xlabel('n')
+ax[1,0].scatter(df_params['n'],df_params.RMSE)
+ax[1,0].set_xlabel('n')
+ax[1,0].grid()
+ax[1,0].set_ylabel('RMSE')
+
+ax[1,1].scatter(df_params['ts'],df_params.RMSE)
+ax[1,1].set_xlabel('ts')
 ax[1,1].grid()
-ax[2,1].scatter(df_params['ts'],df_params.RMSE)
-ax[2,1].set_xlabel('ts')
-ax[2,1].grid()
+ax[1,1].set_ylabel('RMSE')
+f1.savefig('RMSE-simple.png',format='png')
 # for ii in range(3):
 #     for jj in range(2):
 #         ax[ii,jj].scatter(df_params[legendounet[ii]],df_params.RMSE)
