@@ -106,6 +106,6 @@ paramGPRMAX.time = 30e-9
 paramGPRMAX.fac_dt = 0.2 
 #%% Forward
 from Forward import Forward
-TWT=Forward(geometry,pVg,paramGPRMAX,temps,tmax_SWMS2D)
+[TWT,Vol]=Forward(geometry,pVg,paramGPRMAX,temps,tmax_SWMS2D)
 plt.plot(TWT)
 plt.grid()
