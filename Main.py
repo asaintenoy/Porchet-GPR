@@ -10,7 +10,7 @@ from param_acquisition import Geometry,ParamMVG, ParamGPRMAX
 
 #%% Param MVG
 # Teneur en eau résiduelle
-tr = 0.0301
+tr = 0.03005
 # Teneur en eau à saturation
 ts = 0.38
 # Teneur en eau initiale
