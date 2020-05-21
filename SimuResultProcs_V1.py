@@ -15,7 +15,7 @@ import seaborn as sns
 import itertools
 import io
 import numpy as np
-from param_acquisition import nT, geometry, ParamMVG, paramGPRMAX, temps
+from param_acquisition import ParamMVG
 from Forward import Forward
 from F_extractTWT import F_extractTWT
 from F_extract_volumes import F_extract_volumes
@@ -42,6 +42,7 @@ fname=next(os.walk('./OUTdtrou30_rtrou4_tr5.0/'))[1]
 #%% pour chaque sous folder, on lit le fichier Params
 
 
+temps=[0.17, 0.33, 0.50, 0.67, 0.83, 1.00, 2.00, 3.00, 4.00, 5.00, 6.00]
 
 #Comparé a pour le RMSE
 tr = 0.03
@@ -102,7 +103,7 @@ norm=plt.Normalize(0,2)
 for ii in range(5):
     for jj in range(5):
         if(ii==jj):
-            ax[ii,jj].hist(df_params[legendounet[ii]], weights=np.zeros_like(df_params[legendounet[ii]]) + 1. / size(df_params[legendounet[ii]]))
+            ax[ii,jj].hist(df_params[legendounet[ii]], weights=np.zeros_like(df_params[legendounet[ii]]) + 1. / df_params[legendounet[ii]].size)
             ax[ii,jj].set_xlabel(legendounet[ii])
             ax[ii,jj].set_ylabel('Rel Freq.')
             ax[ii,jj].grid()
