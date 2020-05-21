@@ -13,6 +13,7 @@ import warnings
 import shutil
 from collections import namedtuple
 import matplotlib.pyplot as plt
+
 #Pour aider pyflakes à analyser il vaut mieux importer les fonctions explicitement
 from maillage_SWMS2D import maillage_SWMS2D 
 from maillage_SWMS2D_EL import maillage_SWMS2D_EL
@@ -21,6 +22,7 @@ from ecriture_fichiers_SWMS2D import ecriture_Selector_in, ecriture_Grid_in
 from maillage_GPRMAX import CRIM, maillage_GPRMAX
 from ecriture_fichiers_GPRMAX import ecriture_fichiers_GPRMAX
 from outils import showQuality
+from pygimli.meshtools import quality
 #from picking_radargramme import picking
 
 from param_acquisition import * 
@@ -94,8 +96,8 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     
     #from pygimli.viewer import showMesh
     #showMesh(mesh)
-    from pygimli.meshtools import quality
-
+    
+    #matplotlib.use('Agg')
     #figi=showQuality(mesh, quality(mesh))
     #figi.savefig('mesh.png',format='png')
 

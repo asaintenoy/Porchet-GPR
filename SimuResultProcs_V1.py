@@ -75,7 +75,7 @@ for ii in fname:
         vol=np.genfromtxt('./OUTdtrou30_rtrou4_tr5.0/'+ii+'/Volumes_EL.csv',delimiter=',',skip_header=1)
         bibi = 0
         rmseTwt=np.sqrt(np.mean((temp-TWT_direct)**2))
-        rmsevol=np.sqrt(np.mean(((0.01*(vol-Vol_direct))**2)))
+        rmsevol=np.sqrt(np.mean(((0.001*(vol-Vol_direct))**2)))
         rmse=np.sqrt(rmseTwt**2+rmsevol**2)
     except:
         bibi=1
@@ -98,7 +98,7 @@ df_params=df_params[(df_params['tr']==0.03) & (df_params['Ks']<0.49) & (df_param
 (f1, ax)= plt.subplots(5,5,figsize=(25,15))
 #cmap = mpl.cm.jet(vmin=0, vmax=1)
 #norma = mpl.colors.Normalize(vmin=0, vmax=1)
-norm=plt.Normalize(0,10)
+norm=plt.Normalize(0,2)
 for ii in range(5):
     for jj in range(5):
         if(ii==jj):
@@ -134,6 +134,7 @@ plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspac
 # bordeldenomdedieudemerde.set_clim(0, 1)
 
 f1.savefig('RMSEVOLANDTWT.png',format='png')
+#df_params.to_csv('blibalou.csv',sep=',',encoding='utf-8')
 #plt.close(f1)
 #%%
 plt.close('all')
