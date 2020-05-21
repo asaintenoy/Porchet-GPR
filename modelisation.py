@@ -3,7 +3,7 @@
 import numpy as np
 import os
 import time
-retval = os.getcwd()
+
 #import matplotlib.pyplot as plt
 #import sys, h5py, binascii
 #import tempfile
@@ -22,8 +22,8 @@ from maillage_GPRMAX import maillage_GPRMAX
 #from picking_radargramme import picking
 
 from param_acquisition import longueur_d_onde 
-from joblib import Parallel, delayed
-import subprocess
+#from joblib import Parallel, delayed
+#import subprocess
 
 def fxn():
     warnings.warn("deprecated", DeprecationWarning)
@@ -152,53 +152,55 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     zreg = np.arange(paramGPRMAX.zmin, paramGPRMAX.zmax + paramGPRMAX.dx, paramGPRMAX.dx, 'float')
     end_running=[]
     start_running = time.time()
-    def rungprmax(ite,xreg,zreg,grid_mat,sigma_grid_mat,xv,yv,nom, paramMVG, paramGPRMAX, geometry, dl,materiaux):
-        from ecriture_fichiers_GPRMAX import ecriture_fichiers_GPRMAX
-
-        for j in range(0,len(zreg)):
-            for k in range(0,len(xreg)):
-                materiau(grid_mat[ite][j,k], sigma_grid_mat[ite][j,k])
-        
-        A = ecriture_fichiers_GPRMAX(xv.T*0.01, yv.T*0.01, grid_mat[ite], ite, nom, paramMVG, paramGPRMAX, geometry, dl, materiaux) 
-        fichier=nom+'_'+str(ite+1)+'.in'
-        
-        command="./gprMax "+fichier
-        os.popen(command).readlines()
-        #subprocess.run(command)
-    Parallel(n_jobs=7,verbose=10)(delayed(rungprmax)(ite,xreg,zreg,grid_mat,sigma_grid_mat,xv,yv,nom, paramMVG, paramGPRMAX, geometry, dl,materiaux) for ite in range(0,nT+1))
-
-
-
-
-
 # =============================================================================
-#     for i in range(0,nT+1):
-#         #start_ecriture = time.time()
+#     def rungprmax(ite,xreg,zreg,grid_mat,sigma_grid_mat,xv,yv,nom, paramMVG, paramGPRMAX, geometry, dl,materiaux):
+#         from ecriture_fichiers_GPRMAX import ecriture_fichiers_GPRMAX
+# 
 #         for j in range(0,len(zreg)):
 #             for k in range(0,len(xreg)):
-#                 materiau(grid_mat[i][j,k], sigma_grid_mat[i][j,k])
-# 
-#                 
-#         # Writing a file.in for running GPRMAX
-#         A = ecriture_fichiers_GPRMAX(xv.T*0.01, yv.T*0.01, grid_mat[i], i, nom, paramMVG, paramGPRMAX, geometry, dl, materiaux) 
-#        
-#         # plt.close('all')
-#         # fig = plt.figure()
-#         # ax = fig.add_subplot(111)
-#         # gni=ax.scatter(A[:,0],A[:,1],s=30,c=A[:,2])
-#         # cbar=fig.colorbar(gni,label='Eps' )
-#         # cbar.minorticks_on()
-#         # fig.savefig('Gnard'+str(i)+'.png',format='png')
+#                 materiau(grid_mat[ite][j,k], sigma_grid_mat[ite][j,k])
 #         
-#         #A_tab[i]=A
-#         #end_ecriture.append(time.time()-start_ecriture)
-#         #Lancement calcul gprMax
-#         #fichier=nom+'_'+str(i+1)+'.in'
-#         fichier=nom+'_'+str(i+1)+'.in'
+#         A = ecriture_fichiers_GPRMAX(xv.T*0.01, yv.T*0.01, grid_mat[ite], ite, nom, paramMVG, paramGPRMAX, geometry, dl, materiaux) 
+#         fichier=nom+'_'+str(ite+1)+'.in'
 #         
 #         command="./gprMax "+fichier
 #         os.popen(command).readlines()
+#         #subprocess.run(command)
+#     Parallel(n_jobs=7,verbose=10)(delayed(rungprmax)(ite,xreg,zreg,grid_mat,sigma_grid_mat,xv,yv,nom, paramMVG, paramGPRMAX, geometry, dl,materiaux) for ite in range(0,nT+1))
+# 
 # =============================================================================
+
+
+
+
+
+    for i in range(0,nT+1):
+        #start_ecriture = time.time()
+        for j in range(0,len(zreg)):
+            for k in range(0,len(xreg)):
+                materiau(grid_mat[i][j,k], sigma_grid_mat[i][j,k])
+
+                
+        # Writing a file.in for running GPRMAX
+        A = ecriture_fichiers_GPRMAX(xv.T*0.01, yv.T*0.01, grid_mat[i], i, nom, paramMVG, paramGPRMAX, geometry, dl, materiaux) 
+        
+        # plt.close('all')
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111)
+        # gni=ax.scatter(A[:,0],A[:,1],s=30,c=A[:,2])
+        # cbar=fig.colorbar(gni,label='Eps' )
+        # cbar.minorticks_on()
+        # fig.savefig('Gnard'+str(i)+'.png',format='png')
+        
+        #A_tab[i]=A
+        #end_ecriture.append(time.time()-start_ecriture)
+        #Lancement calcul gprMax
+        #fichier=nom+'_'+str(i+1)+'.in'
+        fichier=nom+'_'+str(i+1)+'.in'
+        
+        command="./gprMax "+fichier
+        os.popen(command).readlines()
+
         
         
 

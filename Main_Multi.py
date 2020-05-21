@@ -11,7 +11,7 @@ from Forward import Forward
 from param_acquisition import ParamGPRMAX, ParamMVG, Geometry
 import itertools
 import numpy as np
-#import dask
+import dask
 #from joblib import Parallel, delayed
 
 #%% Geometrie
@@ -95,7 +95,7 @@ paramGPRMAX.fac_dt = 0.2
 
 #%% Pqrqm mvg
 # Teneur en eau résiduelle
-tr = [0.03]
+tr = [0.01]
 # Teneur en eau à saturation
 ts = np.arange(0.36, 0.42, 0.02, 'float')
 # Teneur en eau initiale
