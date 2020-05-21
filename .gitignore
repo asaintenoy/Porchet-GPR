@@ -139,3 +139,4 @@ OUT*
 tmp/
 *.png
 Test/
+plots/
