@@ -10,7 +10,7 @@ from param_acquisition import Geometry,ParamMVG, ParamGPRMAX
 
 #%% Param MVG
 # Teneur en eau résiduelle
-tr = 0.03
+tr = 0.031
 # Teneur en eau à saturation
 ts = 0.381
 # Teneur en eau initiale
@@ -104,6 +104,10 @@ paramGPRMAX.fac_dt = 0.2
 #%% Forward
 from Forward import Forward
 [TWT,Vol]=Forward(geometry,pVg,paramGPRMAX,temps,tmax_SWMS2D)
+
+#import multiprocessing as mp
+#print("Number of processors: ", mp.cpu_count())
+
 #%%
 #temps=[0.17, 0.33, 0.50, 0.67, 0.83, 1.00, 2.00, 3.00, 4.00, 5.00, 6.00]
 
@@ -125,7 +129,7 @@ fig.legend()
 #%%
 from outils import rada_plot
 import h5py
-filepath='OUTTESTdtrou30_rtrou4_tr5.0/ts0.381_ti0.07_tr0.021_n5_alpha0.03_Ks0.12/'
+filepath='OUTTESTdtrou30_rtrou4_tr5.0/ts0.381_ti0.07_tr0.031_n5_alpha0.03_Ks0.2/'
 filename='radargram__merged.out'
 f = h5py.File(filepath + filename, 'r')
 

@@ -163,9 +163,9 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
         fichier=nom+'_'+str(ite+1)+'.in'
         
         command="./gprMax "+fichier
-        #os.popen(command).readlines()
-        subprocess.run(command)
-    Parallel(n_jobs=10,verbose=10)(delayed(rungprmax)(ite,xreg,zreg,grid_mat,sigma_grid_mat,xv,yv,nom, paramMVG, paramGPRMAX, geometry, dl,materiaux) for ite in range(0,nT+1))
+        os.popen(command).readlines()
+        #subprocess.run(command)
+    Parallel(n_jobs=7,verbose=10)(delayed(rungprmax)(ite,xreg,zreg,grid_mat,sigma_grid_mat,xv,yv,nom, paramMVG, paramGPRMAX, geometry, dl,materiaux) for ite in range(0,nT+1))
 
 
 
