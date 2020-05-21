@@ -6,11 +6,11 @@ Created on Wed May 20 14:22:11 2020
 @author: el
 """
 import matplotlib.pyplot as plt
-from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
+from param_acquisition import Geometry,ParamMVG, ParamGPRMAX
 
 #%% Param MVG
 # Teneur en eau résiduelle
-tr = 0.032
+tr = 0.0301
 # Teneur en eau à saturation
 ts = 0.38
 # Teneur en eau initiale

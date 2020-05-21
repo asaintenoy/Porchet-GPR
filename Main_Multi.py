@@ -11,8 +11,8 @@ from Forward import Forward
 from param_acquisition import ParamGPRMAX, ParamMVG, Geometry
 import itertools
 import numpy as np
-import dask
-from joblib import Parallel, delayed
+#import dask
+#from joblib import Parallel, delayed
 
 #%% Geometrie
 #def des paramètres géométriques

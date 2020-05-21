@@ -22,6 +22,7 @@ from maillage_GPRMAX import maillage_GPRMAX
 #from picking_radargramme import picking
 
 from param_acquisition import longueur_d_onde 
+from joblib import Parallel, delayed
 
 
 def fxn():
@@ -151,6 +152,20 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     zreg = np.arange(paramGPRMAX.zmin, paramGPRMAX.zmax + paramGPRMAX.dx, paramGPRMAX.dx, 'float')
     end_running=[]
     start_running = time.time()
+# =============================================================================
+#     def rungprmax(ite,xreg,zreg,grid_mat,sigma_grid_mat,xv,yv,nom, paramMVG, paramGPRMAX, geometry, dl,materiaux):
+#         for j in range(0,len(zreg)):
+#             for k in range(0,len(xreg)):
+#                 materiau(grid_mat[ite][j,k], sigma_grid_mat[ite][j,k])
+#         
+#         A = ecriture_fichiers_GPRMAX(xv.T*0.01, yv.T*0.01, grid_mat[ite], ite, nom, paramMVG, paramGPRMAX, geometry, dl, materiaux) 
+#         fichier=nom+'_'+str(ite+1)+'.in'
+#         
+#         command="./gprMax "+fichier
+#         os.popen(command).readlines()
+#         
+#     Parallel(n_jobs=4)(delayed(rungprmax)(ite,xreg,zreg,grid_mat,sigma_grid_mat,xv,yv,nom, paramMVG, paramGPRMAX, geometry, dl,materiaux) for ite in range(0,nT+1))
+# =============================================================================
     for i in range(0,nT+1):
         #start_ecriture = time.time()
         for j in range(0,len(zreg)):
@@ -169,7 +184,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
         # cbar.minorticks_on()
         # fig.savefig('Gnard'+str(i)+'.png',format='png')
         
-        A_tab[i]=A
+        #A_tab[i]=A
         #end_ecriture.append(time.time()-start_ecriture)
         #Lancement calcul gprMax
         #fichier=nom+'_'+str(i+1)+'.in'
