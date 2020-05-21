@@ -10,13 +10,13 @@ from param_acquisition import Geometry,ParamMVG, ParamGPRMAX
 
 #%% Param MVG
 # Teneur en eau résiduelle
-tr = 0.021
+tr = 0.03
 # Teneur en eau à saturation
 ts = 0.381
 # Teneur en eau initiale
-ti = 0.09
+ti = 0.07
 # Perméabilité à saturation
-Ks = 0.12
+Ks = 0.2
 # param fitting retention n
 n = 5
 # param fitting retention alpha
@@ -120,3 +120,18 @@ ax2.plot(XX,Vol,'b',label='Volume')
 ax2.grid()
 ax2.set_ylabel('Volume(mL)')
 fig.legend()
+
+
+#%%
+from outils import rada_plot
+import h5py
+filepath='OUTTESTdtrou30_rtrou4_tr5.0/ts0.381_ti0.07_tr0.021_n5_alpha0.03_Ks0.12/'
+filename='radargram__merged.out'
+f = h5py.File(filepath + filename, 'r')
+
+path = '/rxs/rx1/'
+data = f['%s%s' % (path, 'Ez')][:,:]
+plt.figure(figsize=(10,15))
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+plt.imshow(data[:,:],aspect=0.005)
