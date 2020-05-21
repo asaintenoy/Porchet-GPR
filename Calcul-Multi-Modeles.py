@@ -3,7 +3,7 @@ import numpy as np
 import dask
 import os
 
-from modelisation import Geometry, ParamMVG, ParamGPRMAX, run
+from modelisation import Geometry, ParamMVG, ParamGPRMAX,run 
 
 # Teneur en eau résiduelle
 tr = [0.03]
