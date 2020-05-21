@@ -171,7 +171,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import pyplot
 fig = pyplot.figure()
 ax = Axes3D(fig)
-gni=ax.scatter(df_params['alpha'],df_params['Ks'],df_params['n'],c=df_params.RMSE,s=abs(df_params.RMSE-df_params.RMSE.max()),cmap = 'jet',vmin=0, vmax=10)
+gni=ax.scatter(df_params['alpha'],df_params['Ks'],df_params['n'],c=df_params.RMSE,s=abs(df_params.RMSE-df_params.RMSE.max()),cmap = 'jet',vmin=0, vmax=2)
 #ax.scatter(df_params['alpha'], df_params['n'], c=df_params.RMSE, zdir='y', zs=1.5)
 # ax.plot(y, z, 'g+', zdir='x', zs=-0.5)
 # ax.plot(x, y, 'k+', zdir='z', zs=-1.5)

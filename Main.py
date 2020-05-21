@@ -5,19 +5,16 @@ Created on Wed May 20 14:22:11 2020
 
 @author: el
 """
-import os
 import matplotlib.pyplot as plt
-from modelisation import run
 from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
-from picking_radargramme import picking
 
 #%% Param MVG
 # Teneur en eau résiduelle
-tr = 0.0102
+tr = 0.03
 # Teneur en eau à saturation
-ts = 0.333
+ts = 0.38
 # Teneur en eau initiale
-ti = 0.1
+ti = 0.09
 # Perméabilité à saturation
 Ks = 0.2
 # param fitting retention n

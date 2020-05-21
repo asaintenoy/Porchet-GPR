@@ -11,7 +11,7 @@ Created on Wed May 20 11:42:18 2020
 import os
 import matplotlib.pyplot as plt
 from modelisation import run
-from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
+#from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
 from picking_radargramme import picking
 from F_extract_volumes import F_extract_volumes
 import pandas as pd
