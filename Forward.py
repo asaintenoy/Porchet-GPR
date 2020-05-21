@@ -14,6 +14,7 @@ from modelisation import run
 from picking_radargramme import picking
 from F_extract_volumes import F_extract_volumes
 import pandas as pd
+import numpy as np
 
 def Forward(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 #%%
@@ -25,7 +26,7 @@ def Forward(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
         TWT=picking(os.path.join(folderout, 'radargram__merged.out'), len(temps), geometry, paramMVG, paramGPRMAX, temps)
     except:
         print('Probably already simulated')
-        
+        TWT=np.nan
         
     Vol=F_extract_volumes(folderout,temps)
       

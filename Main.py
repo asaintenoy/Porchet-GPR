@@ -10,13 +10,13 @@ from param_acquisition import Geometry,ParamMVG, ParamGPRMAX
 
 #%% Param MVG
 # Teneur en eau résiduelle
-tr = 0.03005
+tr = 0.021
 # Teneur en eau à saturation
-ts = 0.38
+ts = 0.381
 # Teneur en eau initiale
 ti = 0.09
 # Perméabilité à saturation
-Ks = 0.2
+Ks = 0.12
 # param fitting retention n
 n = 5
 # param fitting retention alpha
