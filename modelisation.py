@@ -1,4 +1,4 @@
-import math
+#import math
 #from scipy.interpolate import griddata
 import numpy as np
 import os
@@ -10,22 +10,18 @@ retval = os.getcwd()
 #import pygimli as pg
 #from pygimli.meshtools import appendTriangleBoundary, merge2Meshes, mesh
 import warnings
-import shutil
-from collections import namedtuple
-import matplotlib.pyplot as plt
 
 #Pour aider pyflakes à analyser il vaut mieux importer les fonctions explicitement
-from maillage_SWMS2D import maillage_SWMS2D 
 from maillage_SWMS2D_EL import maillage_SWMS2D_EL
 from initial_conditions import initial_conditions
 from ecriture_fichiers_SWMS2D import ecriture_Selector_in, ecriture_Grid_in 
-from maillage_GPRMAX import CRIM, maillage_GPRMAX
 from ecriture_fichiers_GPRMAX import ecriture_fichiers_GPRMAX
-from outils import showQuality
-from pygimli.meshtools import quality
+from maillage_GPRMAX import maillage_GPRMAX
+#from outils import showQuality
+#from pygimli.meshtools import quality
 #from picking_radargramme import picking
 
-from param_acquisition import * 
+from param_acquisition import longueur_d_onde 
 
 
 def fxn():
@@ -112,12 +108,18 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
             
     #Lancement SWMS_2D
     #os.system("/home/clemence/Porchet-GPR/source/HD2/H2D")
-
+    start_running = time.time()
+    end_running=[]
     error=os.system("timeout {} {}/HD2/H2D".format(tmax_SWMS2D,dir))
     if error : #reagira seulement si error est différent de 0
         print("HD2 fut trop long")
         os.chdir(dir)
         
+    end_running.append(time.time()-start_running)
+
+    #os.popen("rm -rf *.in")
+    print('Running Hydrus time:'+str(end_running))   
+     
 
     #Fichier contenant les thetas
     f_thetas = "SWMS_2D.OUT/th.out" 
@@ -147,10 +149,10 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 
     xreg = np.arange(paramGPRMAX.xmin, paramGPRMAX.xmax + paramGPRMAX.dx, paramGPRMAX.dx, 'float')
     zreg = np.arange(paramGPRMAX.zmin, paramGPRMAX.zmax + paramGPRMAX.dx, paramGPRMAX.dx, 'float')
-    end_ecriture=[]
     end_running=[]
+    start_running = time.time()
     for i in range(0,nT+1):
-        start_ecriture = time.time()
+        #start_ecriture = time.time()
         for j in range(0,len(zreg)):
             for k in range(0,len(xreg)):
                 materiau(grid_mat[i][j,k], sigma_grid_mat[i][j,k])
@@ -168,14 +170,14 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
         # fig.savefig('Gnard'+str(i)+'.png',format='png')
         
         A_tab[i]=A
-        end_ecriture.append(time.time()-start_ecriture)
+        #end_ecriture.append(time.time()-start_ecriture)
         #Lancement calcul gprMax
         #fichier=nom+'_'+str(i+1)+'.in'
         fichier=nom+'_'+str(i+1)+'.in'
-        start_running = time.time()
+        
         command="./gprMax "+fichier
         os.popen(command).readlines()
-        end_running.append(time.time()-start_running)
+        
         
 
     # Concatenate all nT traces    
@@ -188,8 +190,10 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     # ax2.grid()
     command2="./gprMaxMerge "+ nom + "_" 
     os.popen(command2).readlines()
+    end_running.append(time.time()-start_running)
+
     #os.popen("rm -rf *.in")
-    
+    print('Running GPR time:'+str(end_running))
     for i in range(0,nT+1) :
         os.popen("rm -rf "+ nom + "_" + str(i+1) + ".out")
 

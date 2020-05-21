@@ -2,7 +2,6 @@ import h5py
 import math
 import numpy as np
 from scipy.stats import linregress
-from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
 from maillage_GPRMAX import CRIM
 
 def picking(filename, nT, geometry, paramMVG, paramGPRMAX, temps): 
@@ -18,7 +17,6 @@ def picking(filename, nT, geometry, paramMVG, paramGPRMAX, temps):
     path = '/rxs/rx1/'
     samples = f.attrs['Iterations']
     dt = f.attrs['dt']*1e9 # en ns
-    dx = 1
     data = np.ones((samples, nT+1))
     #a_max = np.zeros(nT+1)
     #a_min1 = np.zeros(nT+1)
@@ -118,4 +116,5 @@ def picking(filename, nT, geometry, paramMVG, paramGPRMAX, temps):
         else:
             twt_fin = tps_max
             cas = 'max'
-    return cas, dt, itmin0, ifenetre, tps_min1, tps_min1_0, tps_min2, tps_min2_0, tps_max, tps_max0, twt_fin
+    #return cas, dt, itmin0, ifenetre, tps_min1, tps_min1_0, tps_min2, tps_min2_0, tps_max, tps_max0, twt_fin
+    return twt_fin
