@@ -114,14 +114,31 @@ for p in itertools.product(tr, ts, ti, Ks, n, alpha):
     # Définition des paramètres MVG
     paramMVG = ParamMVG(tr=p[0], ts=p[1],ti=p[2], Ks=p[3], n=p[4], alpha=p[5])
     paramMVG.porosity = paramMVG.ts
-    tasks.append(dask.delayed(Forward(geometry=geometry,paramMVG=paramMVG,paramGPRMAX=paramGPRMAX,temps=temps,tmax_SWMS2D=tmax_SWMS2D)))
+    tasks.append(dask.delayed(Forward)(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D))
 
 
 dask.compute(tasks, scheduler='processes')
 
 
 
+#%% test
+import time
+def connerie(ola):
+    print(str(ola))
+    time.sleep(ola)
+    
+    
+    
+tasks = []
 
+for p in range(3000):#itertools.product(tr, ts, ti, Ks, n, alpha):
+    # Définition des paramètres MVG
+    #paramMVG = ParamMVG(tr=p[0], ts=p[1],ti=p[2], Ks=p[3], n=p[4], alpha=p[5])
+    #paramMVG.porosity = paramMVG.ts
+    tasks.append(dask.delayed(connerie)(p))
+
+
+dask.compute(tasks, scheduler='multiprocessing')
 
 
 
