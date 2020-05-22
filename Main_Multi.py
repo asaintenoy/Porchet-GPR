@@ -55,7 +55,7 @@ geometry.smooth=[1,5]
 temps=[0.17, 0.33, 0.50, 0.67, 0.83, 1.00, 2.00, 3.00, 4.00, 5.00, 6.00]
 
 # Temps max de calcul SWMS2D au delà duquel on arrète le calcul (secondes)
-tmax_SWMS2D = 600
+tmax_SWMS2D = 60
 #tmax_SWMS2D = 10
 
 nT=len(temps)
@@ -101,11 +101,11 @@ ts = np.arange(0.36, 0.42, 0.02, 'float')
 # Teneur en eau initiale
 ti = [0.09]
 # Perméabilité à saturation
-Ks = np.arange(0.1, 1.3, 0.1, 'float')
+Ks = np.arange(0.2, 1.3, 0.1, 'float')
 # param fitting retention n
 n = np.arange(3, 11, 0.5, 'float')
 # param fitting retention alpha
-alpha = np.arange(0.01, 0.07, 0.01, 'float')
+alpha = np.arange(0.02, 0.07, 0.01, 'float')
 
 #%% Lancement du calcul
 tasks = []
@@ -122,23 +122,23 @@ dask.compute(tasks, scheduler='processes')
 
 
 #%% test
-import time
-def connerie(ola):
-    print(str(ola))
-    time.sleep(ola)
+# import time
+# def connerie(ola):
+#     print(str(ola))
+#     time.sleep(ola)
     
     
     
-tasks = []
+# tasks = []
 
-for p in range(3000):#itertools.product(tr, ts, ti, Ks, n, alpha):
-    # Définition des paramètres MVG
-    #paramMVG = ParamMVG(tr=p[0], ts=p[1],ti=p[2], Ks=p[3], n=p[4], alpha=p[5])
-    #paramMVG.porosity = paramMVG.ts
-    tasks.append(dask.delayed(connerie)(p))
+# for p in range(3000):#itertools.product(tr, ts, ti, Ks, n, alpha):
+#     # Définition des paramètres MVG
+#     #paramMVG = ParamMVG(tr=p[0], ts=p[1],ti=p[2], Ks=p[3], n=p[4], alpha=p[5])
+#     #paramMVG.porosity = paramMVG.ts
+#     tasks.append(dask.delayed(connerie)(p))
 
 
-dask.compute(tasks, scheduler='multiprocessing')
+# dask.compute(tasks, scheduler='multiprocessing')
 
 
 
