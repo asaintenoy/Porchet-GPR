@@ -95,7 +95,7 @@ paramGPRMAX.fac_dt = 0.2
 
 #%% Pqrqm mvg
 # Teneur en eau résiduelle
-tr = [0.01]
+tr = [0.03]
 # Teneur en eau à saturation
 ts = np.arange(0.36, 0.42, 0.02, 'float')
 # Teneur en eau initiale
@@ -106,6 +106,7 @@ Ks = np.arange(0.2, 1.3, 0.1, 'float')
 n = np.arange(3, 11, 0.5, 'float')
 # param fitting retention alpha
 alpha = np.arange(0.02, 0.07, 0.01, 'float')
+print(len(list(itertools.product(tr, ts, ti, Ks, n, alpha))))
 
 #%% Lancement du calcul
 tasks = []

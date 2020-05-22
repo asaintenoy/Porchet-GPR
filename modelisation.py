@@ -57,10 +57,20 @@ with warnings.catch_warnings():
 #     return vitesse*(10**9)/freq
 
 def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
+    """
+    Run a simulation on the model with the given parameters
+
+    The input and output files are created in a directory
+    myDirName whose name depends on the parameters.
+
+    If the simulation was already computed, return immediately.
+
+    Return the directory containing the results of the simulation
+    """
     # try: c'est pour pouvoir prendre la main si ça foire.
     #try:
 
-    myDirName = "OUTTEST"+repr(geometry)+"/"+repr(paramMVG)
+    myDirName = "OUT"+repr(geometry)+"/"+repr(paramMVG)
     nom='radargram'
     filename = nom + '__merged.out'
 
@@ -68,7 +78,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 
     if os.path.isfile(myDirName+"/"+filename) :
         print('already simulated')
-        return
+        return myDirName
     
     os.makedirs(myDirName,exist_ok=True)
     os.chdir(myDirName)
@@ -216,7 +226,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     os.popen(command2).readlines()
     end_running.append(time.time()-start_running)
 
-    #os.popen("rm -rf *.in")
+    os.popen("rm -rf *.in")
     print('Running GPR time:'+str(end_running))
     for i in range(0,nT+1) :
         os.popen("rm -rf "+ nom + "_" + str(i+1) + ".out")
