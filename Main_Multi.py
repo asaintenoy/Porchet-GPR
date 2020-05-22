@@ -116,7 +116,9 @@ for p in itertools.product(tr, ts, ti, Ks, n, alpha):
     paramMVG.porosity = paramMVG.ts
     tasks.append(dask.delayed(Forward(geometry=geometry,paramMVG=paramMVG,paramGPRMAX=paramGPRMAX,temps=temps,tmax_SWMS2D=tmax_SWMS2D)))
 
-somme=tasks.
+
+dask.compute(tasks, scheduler='processes')
+
 
 
 
