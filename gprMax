@@ -4,6 +4,6 @@ CONDA_BIN=`dirname $CONDA_EXE`
 source $CONDA_BIN/activate gprMax
 
 ###Set number of OpenMP threads for each gprMax model
-###export OMP_NUM_THREADS=1
+export OMP_NUM_THREADS=1
 
 python -m gprMax "$@"
