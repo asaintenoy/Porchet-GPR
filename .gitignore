@@ -140,3 +140,4 @@ tmp/
 *.png
 Test/
 plots/
+test/
