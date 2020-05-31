@@ -1,0 +1,29 @@
+ Example                                                                 
+
+ Program SWMS_2D
+ Time independent boundary conditions
+ Axisymmetric flow, V = L*L*L
+ Units: L = cm   , T = min  , M = -    
+
+ Max. number of iterations             25
+ Absolute water content tolerance [-] 0.00100
+ Absolute pressure head tolerance [L] 0.50000
+
+
+ MatNum,        thR    thS    tha    thm      alpha         n          Ks          Kk          thk
+
+    1          0.030  0.400  0.030  0.400   0.200E-01   0.900E+01   0.850E+00   0.850E+00   0.400E+00
+
+
+ MatNum          Qe     Q        h         C         K
+
+    1          1.000  0.400    -1.090  0.30E-14   0.850E+00
+    1          0.990  0.396   -30.405  0.11E-02   0.815E+00
+    1          0.900  0.363   -39.715  0.75E-02   0.593E+00
+    1          0.850  0.345   -41.827  0.10E-01   0.497E+00
+    1          0.750  0.308   -44.932  0.14E-01   0.341E+00
+    1          0.650  0.271   -47.444  0.16E-01   0.225E+00
+    1          0.500  0.215   -50.933  0.16E-01   0.106E+00
+    1          0.350  0.160   -54.735  0.13E-01   0.389E-01
+    1          0.200  0.104   -59.941  0.83E-02   0.819E-02
+    1          0.100  0.067   -66.101  0.41E-02   0.120E-02

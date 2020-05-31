@@ -21,7 +21,7 @@ import pandas as pd
 
 #%% Import du script de définition des param geometrie et GPR max
 
-from param_acquisition import nT, geometry, ParamMVG, paramGPRMAX, temps
+from param_acquisition import Geometry,ParamMVG, ParamGPRMAX
 
 #%% import le picking
 from picking_radargramme import picking

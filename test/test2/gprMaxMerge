@@ -1,0 +1,6 @@
+#!/bin/bash
+
+CONDA_BIN=`dirname $CONDA_EXE`
+source $CONDA_BIN/activate gprMax
+
+python -m tools.outputfiles_merge "$@"
