@@ -125,6 +125,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     if error : #reagira seulement si error est différent de 0
         print("HD2 fut trop long")
         os.chdir(dir)
+        return myDirName
         
     end_running.append(time.time()-start_running)
 

@@ -140,11 +140,11 @@ n = 4
 alpha = 0.03
 pVg=ParamMVG(tr=tr, ts=ts, ti=ti, Ks=Ks, n=n, alpha=alpha)
 pVg.porosity = pVg.ts
-[TWT_direct,Vol_direct]=Forward(geometry,pVg,paramGPRMAX,temps,600)
+#[TWT_direct,Vol_direct]=Forward(geometry,pVg,paramGPRMAX,temps,600)
 #temps=[0.17, 0.33, 0.50, 0.67, 0.83, 1.00, 2.00, 3.00, 4.00, 5.00, 6.00]
 
-#TWT_direct=F_extractTWT('./OUTdtrou30_rtrou4_tr5.0/ts0.38_ti0.09_tr0.03_n4_alpha0.03_Ks0.2')
-#Vol_direct=F_extract_volumes('./OUTdtrou30_rtrou4_tr5.0/ts0.38_ti0.09_tr0.03_n4_alpha0.03_Ks0.2',temps)
+TWT_direct=F_extractTWT('./OUTdtrou30_rtrou4_tr5.0/ts0.38_ti0.09_tr0.03_n4_alpha0.03_Ks0.2')
+Vol_direct=F_extract_volumes('./OUTdtrou30_rtrou4_tr5.0/ts0.38_ti0.09_tr0.03_n4_alpha0.03_Ks0.2',temps)
 
 #%%
 lst=[]
@@ -216,7 +216,7 @@ plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspac
 # bordeldenomdedieudemerde=f1.colorbar(sc, ax=ax.ravel().tolist())
 # bordeldenomdedieudemerde.set_clim(0, 1)
 
-f1.savefig('RMSEVOLANDTWT_3105.png',format='png')
+f1.savefig('RMSEVOLANDTWT_0306.png',format='png')
 #df_params.to_csv('blibalou.csv',sep=',',encoding='utf-8')
 #plt.close(f1)
 #%%
