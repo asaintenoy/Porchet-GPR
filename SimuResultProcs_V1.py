@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+#Comparaison pour des données numériques
+
 """
 Created on Wed May 13 22:49:07 2020
 
