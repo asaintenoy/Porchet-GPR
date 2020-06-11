@@ -17,8 +17,8 @@ from initial_conditions import initial_conditions
 from ecriture_fichiers_SWMS2D import ecriture_Selector_in, ecriture_Grid_in 
 from ecriture_fichiers_GPRMAX import ecriture_fichiers_GPRMAX
 from maillage_GPRMAX import maillage_GPRMAX
-#from outils import showQuality
-#from pygimli.meshtools import quality
+from outils import showQuality
+from pygimli.meshtools import quality
 #from picking_radargramme import picking
 
 from param_acquisition import longueur_d_onde 
@@ -101,8 +101,8 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     #from pygimli.meshtools import mesh
     #from pygimli.mplviewer import drawMesh
     
-    #from pygimli.viewer import showMesh
-    #showMesh(mesh)
+    from pygimli.viewer import showMesh
+    showMesh(mesh,markers=True)
     
     #matplotlib.use('Agg')
     #figi=showQuality(mesh, quality(mesh))

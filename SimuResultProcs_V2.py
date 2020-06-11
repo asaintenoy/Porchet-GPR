@@ -42,7 +42,7 @@ else:
 fname=next(os.walk('./OUTdtrou30_rtrou4_tr5.0/'))[1]
 
 #%% pour chaque sous folder, on lit le fichier Params
-Nama='BilbP1_0_30'
+Nama='BilbP2_20_30'
 temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/twts_'+Nama+'.txt', delimiter=' ')
 TWT_XP=temp[:,1]
 Time_TWT_XP=temp[:,0]
@@ -121,7 +121,7 @@ plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspac
 # bordeldenomdedieudemerde=f1.colorbar(sc, ax=ax.ravel().tolist())
 # bordeldenomdedieudemerde.set_clim(0, 1)
 
-f1.savefig('RMSEVOLANDTWT_'+Nama+'.png',format='png')
+f1.savefig('./plots/RMSEVOLANDTWT_'+Nama+'.png',format='png')
 #df_params.to_csv('blibalou.csv',sep=',',encoding='utf-8')
 #plt.close(f1)
 #%% On va regarder la distribution des paramètres pour les 5% des meilleurs modeles
@@ -138,13 +138,13 @@ plt.close('all')
 legendounet=['ts','n','alpha','Ks']
 (f2, ax)= plt.subplots(2,2,figsize=(25,15))
 kk=0
+fontouney=20
 for ii in range(2):
     for jj in range(2):
         ax[ii,jj].hist(df_params_sorted_cut[legendounet[kk]], weights=np.zeros_like(df_params_sorted_cut[legendounet[kk]]) + 1. / df_params_sorted_cut[legendounet[kk]].size)
-        ax[ii,jj].set_xlabel(legendounet[kk])
-        ax[ii,jj].set_ylabel('Rel Freq.')
-        ax[ii,jj].grid()
-        
+        ax[ii,jj].set_xlabel(legendounet[kk],fontsize=fontouney)
+        ax[ii,jj].set_ylabel('Rel Freq.',fontsize=fontouney)
+        ax[ii,jj].grid()        
         kk=kk+1
-
-f2.savefig('Histo_'+str(100*pc)+'pc_'+Nama+'.png',format='png')
+f2.suptitle(str(100*pc)+'% du meilleur modele - '+Nama, fontsize=fontouney)
+f2.savefig('./plots/Histo_'+str(100*pc)+'pc_'+Nama+'.png',format='png')

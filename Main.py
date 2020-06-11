@@ -40,7 +40,7 @@ geometry.dtrou = 30
 # elevation du fond du trou
 geometry.etrou = geometry.emax - geometry.dtrou
  # rayon du trou en cm
-geometry.r=4
+geometry.r=3
 # hauteur d'eau imposée au fond du trou en cm
 geometry.h_eau=5.0
 # pas de la maille en cm
