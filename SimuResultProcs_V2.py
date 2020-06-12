@@ -15,6 +15,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
 import itertools
+import glob
 import io
 import numpy as np
 from param_acquisition import ParamGPRMAX, ParamMVG, Geometry
@@ -39,28 +40,34 @@ if(hehe==X_path):
 else:
     os.chdir(X_path)
 #%% Reading the folder names
-fname=next(os.walk('./OUTdtrou30_rtrou4_tr5.0/'))[1]
+wata='OUTdtrou30_rtrou2_tr10.0/'
+fname=next(os.walk('./'+wata))[1]
 
-#%% pour chaque sous folder, on lit le fichier Params
-Nama='BilbP2_20_30'
-temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/twts_'+Nama+'.txt', delimiter=' ')
+#%% pour config on lit le fichier de data juste pour un
+Nama='P1-72-40'
+#temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/TWT_'+Nama+'.txt', delimiter=' ')
+temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/Auffargis/Twts_Auffar_'+Nama+'.csv', delimiter=',',skip_header=1)
 TWT_XP=temp[:,1]
 Time_TWT_XP=temp[:,0]
-temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/volumes_'+Nama+'.txt',delimiter=',')
-VOL_XP_temp=temp[:,1]
+#temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/Volumes_'+Nama+'.txt',delimiter=',')
+#VOL_XP_temp=temp[:,1]
+#Time_VOL_XP=temp[:,0]
+#VOL_XP=np.interp(Time_TWT_XP,Time_VOL_XP,VOL_XP_temp)
+temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/Auffargis/Volumes_Auffar_'+Nama+'.csv', delimiter=',',skip_header=1)
+VOL_XP=temp[:,1]
 Time_VOL_XP=temp[:,0]
-VOL_XP=np.interp(Time_TWT_XP,Time_VOL_XP,VOL_XP_temp)
+
 
 #%%
 lst=[]
 for ii in fname: 
 
-    p=read_parameters('./OUTdtrou30_rtrou4_tr5.0/'+ii)
+    p=read_parameters('./'+wata+ii)
     paramMVG = ParamMVG(tr=p[2], ts=p[0], ti=p[1], Ks=p[5], n=p[3], alpha=p[4])
     try:
         #temp = np.genfromtxt('./OUTdtrou30_rtrou4_tr5.0/'+ii+'/TWT_EL.csv', delimiter=',',skip_header=1)
-        temp=F_extractTWT('./OUTdtrou30_rtrou4_tr5.0/'+ii)
-        vol=np.genfromtxt('./OUTdtrou30_rtrou4_tr5.0/'+ii+'/Volumes_EL.csv',delimiter=',',skip_header=1)
+        temp=F_extractTWT('./'+wata+ii)
+        vol=np.genfromtxt('./'+wata+ii+'/Volumes_EL.csv',delimiter=',',skip_header=1)
         bibi = 0
         rmseTwt=np.sqrt(np.mean((temp-TWT_XP)**2))
         rmsevol=np.sqrt(np.mean(((0.001*(vol-VOL_XP))**2)))
@@ -148,3 +155,164 @@ for ii in range(2):
         kk=kk+1
 f2.suptitle(str(100*pc)+'% du meilleur modele - '+Nama, fontsize=fontouney)
 f2.savefig('./plots/Histo_'+str(100*pc)+'pc_'+Nama+'.png',format='png')
+
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Compa Un par un mais en boucle
+hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/TWT*.txt')
+hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/Vol*.txt')
+lst=[]
+#%% Reading the folder names
+fname=next(os.walk('./OUTdtrou30_rtrou4_tr5.0/'))[1]
+
+#%%
+ouca='Poligny'
+for filit,filiv in zip(hahat,hahav):
+    lst=[]
+    Nama=filit[-11:-4]
+    temp=np.genfromtxt(filit, delimiter=' ')
+    TWT_XP=temp[:,1]
+    Time_TWT_XP=temp[:,0]
+    temp=np.genfromtxt(filiv,delimiter=',')
+    VOL_XP_temp=temp[:,1]
+    Time_VOL_XP=temp[:,0]
+    VOL_XP=np.interp(Time_TWT_XP,Time_VOL_XP,VOL_XP_temp)
+    
+    for ii in fname: 
+    
+        p=read_parameters('./OUTdtrou30_rtrou4_tr5.0/'+ii)
+        paramMVG = ParamMVG(tr=p[2], ts=p[0], ti=p[1], Ks=p[5], n=p[3], alpha=p[4])
+        try:
+            #temp = np.genfromtxt('./OUTdtrou30_rtrou4_tr5.0/'+ii+'/TWT_EL.csv', delimiter=',',skip_header=1)
+            temp=F_extractTWT('./OUTdtrou30_rtrou4_tr5.0/'+ii)
+            vol=np.genfromtxt('./OUTdtrou30_rtrou4_tr5.0/'+ii+'/Volumes_EL.csv',delimiter=',',skip_header=1)
+            bibi = 0
+            rmseTwt=np.sqrt(np.mean((temp-TWT_XP)**2))
+            rmsevol=np.sqrt(np.mean(((0.001*(vol-VOL_XP))**2)))
+            rmse=np.sqrt(rmseTwt**2+rmsevol**2)
+        except:
+            bibi=1
+            rmseTwt=np.nan
+            rmsevol=np.nan
+            rmse=np.nan
+        
+        lst.append([paramMVG.tr,paramMVG.ts,paramMVG.ti,paramMVG.n,paramMVG.alpha,paramMVG.Ks,rmseTwt,rmsevol,rmse,bibi])
+        
+    df_params=pd.DataFrame(lst,columns=['tr','ts','ti','n','alpha','Ks','RMSETWT','RMSEVOL','RMSE','Converged']) 
+    df_params_sorted=df_params.sort_values(by=['RMSE'],inplace=False)
+    df_params_sorted.reset_index(drop=True, inplace=True)
+    pc=0.1#10percent
+    
+    df_params_sorted_cut=df_params_sorted[0:np.int(np.round(pc*len(df_params_sorted)))]
+    df_params_sorted_cut.reset_index(drop=True, inplace=True)
+    
+    #df_params=df_params[(df_params['RMSE']0.03) & (df_params['Ks']<0.49) & (df_params['Ks']>0.07) & (df_params['n']<10.1) ]
+    plt.close('all')
+    legendounet=['ts','n','alpha','Ks']
+    (f2, ax)= plt.subplots(2,2,figsize=(25,15))
+    kk=0
+    fontouney=20
+    for ii in range(2):
+        for jj in range(2):
+            ax[ii,jj].hist(df_params_sorted_cut[legendounet[kk]], weights=np.zeros_like(df_params_sorted_cut[legendounet[kk]]) + 1. / df_params_sorted_cut[legendounet[kk]].size)
+            ax[ii,jj].set_xlabel(legendounet[kk],fontsize=fontouney)
+            ax[ii,jj].set_ylabel('Rel Freq.',fontsize=fontouney)
+            ax[ii,jj].tick_params(axis='both', which='major', labelsize=fontouney)
+            ax[ii,jj].grid() 
+            ax[ii,jj].set_ylim([0, 0.3])
+            kk=kk+1
+    f2.suptitle(str(100*pc)+'% du meilleur modele '+ ouca+'-'+Nama, fontsize=fontouney)
+    f2.savefig('./plots/Histo_'+str(100*pc)+'pc_'+ouca+'-'+Nama+'.png',format='png')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Compa total les sommant tous
+
+#%% on lit les fichiers de data
+#filiname=next(os.walk('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/*.txt'))[2]
+
+
+
+hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/TWT*.txt')
+hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/Vol*.txt')
+lst=[]
+#%% Reading the folder names
+fname=next(os.walk('./OUTdtrou30_rtrou4_tr5.0/'))[1]
+#%%
+for filit,filiv in zip(hahat,hahav):
+    #Nama=fili[-16:-4]
+    temp=np.genfromtxt(filit, delimiter=' ')
+    TWT_XP=temp[:,1]
+    Time_TWT_XP=temp[:,0]
+    temp=np.genfromtxt(filiv,delimiter=',')
+    VOL_XP_temp=temp[:,1]
+    Time_VOL_XP=temp[:,0]
+    VOL_XP=np.interp(Time_TWT_XP,Time_VOL_XP,VOL_XP_temp)
+    
+    for ii in fname: 
+    
+        p=read_parameters('./OUTdtrou30_rtrou4_tr5.0/'+ii)
+        paramMVG = ParamMVG(tr=p[2], ts=p[0], ti=p[1], Ks=p[5], n=p[3], alpha=p[4])
+        try:
+            #temp = np.genfromtxt('./OUTdtrou30_rtrou4_tr5.0/'+ii+'/TWT_EL.csv', delimiter=',',skip_header=1)
+            temp=F_extractTWT('./OUTdtrou30_rtrou4_tr5.0/'+ii)
+            vol=np.genfromtxt('./OUTdtrou30_rtrou4_tr5.0/'+ii+'/Volumes_EL.csv',delimiter=',',skip_header=1)
+            bibi = 0
+            rmseTwt=np.sqrt(np.mean((temp-TWT_XP)**2))
+            rmsevol=np.sqrt(np.mean(((0.001*(vol-VOL_XP))**2)))
+            rmse=np.sqrt(rmseTwt**2+rmsevol**2)
+        except:
+            bibi=1
+            rmseTwt=np.nan
+            rmsevol=np.nan
+            rmse=np.nan
+        
+        lst.append([paramMVG.tr,paramMVG.ts,paramMVG.ti,paramMVG.n,paramMVG.alpha,paramMVG.Ks,rmseTwt,rmsevol,rmse,bibi])
+        
+    df_params=pd.DataFrame(lst,columns=['tr','ts','ti','n','alpha','Ks','RMSETWT','RMSEVOL','RMSE','Converged'])  
+
+#%%
+df_params_sorted=df_params.sort_values(by=['RMSE'],inplace=False)
+df_params_sorted.reset_index(drop=True, inplace=True)
+pc=0.1#10percent
+
+df_params_sorted_cut=df_params_sorted[0:np.int(np.round(pc*len(df_params_sorted)))]
+df_params_sorted_cut.reset_index(drop=True, inplace=True)
+
+#df_params=df_params[(df_params['RMSE']0.03) & (df_params['Ks']<0.49) & (df_params['Ks']>0.07) & (df_params['n']<10.1) ]
+plt.close('all')
+legendounet=['ts','n','alpha','Ks']
+(f2, ax)= plt.subplots(2,2,figsize=(25,15))
+kk=0
+fontouney=20
+for ii in range(2):
+    for jj in range(2):
+        ax[ii,jj].hist(df_params_sorted_cut[legendounet[kk]], weights=np.zeros_like(df_params_sorted_cut[legendounet[kk]]) + 1. / df_params_sorted_cut[legendounet[kk]].size)
+        ax[ii,jj].set_xlabel(legendounet[kk],fontsize=fontouney)
+        ax[ii,jj].set_ylabel('Rel Freq.',fontsize=fontouney)
+        ax[ii,jj].grid()        
+        kk=kk+1
+f2.suptitle(str(100*pc)+'% du meilleur modele - Total-Poligny', fontsize=fontouney)
+f2.savefig('./plots/Histo_'+str(100*pc)+'pc_Total-Poligny.png',format='png')
+
+
+
+
+
+
+
+
+
+
