@@ -70,7 +70,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     # try: c'est pour pouvoir prendre la main si ça foire.
     #try:
 
-    myDirName = "OUT"+repr(geometry)+"/"+repr(paramMVG)
+    myDirName = "OUTTESR"+repr(geometry)+"/"+repr(paramMVG)
     nom='radargram'
     filename = nom + '__merged.out'
 
@@ -101,8 +101,8 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     #from pygimli.meshtools import mesh
     #from pygimli.mplviewer import drawMesh
     
-    from pygimli.viewer import showMesh
-    showMesh(mesh,markers=True)
+    # from pygimli.viewer import showMesh
+    # showMesh(mesh,markers=True)
     
     #matplotlib.use('Agg')
     #figi=showQuality(mesh, quality(mesh))

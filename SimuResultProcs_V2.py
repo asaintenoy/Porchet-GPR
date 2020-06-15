@@ -161,37 +161,44 @@ f2.savefig('./plots/Histo_'+str(100*pc)+'pc_'+Nama+'.png',format='png')
 #hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/twt*.txt')
 #hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/vol*.txt')
 
-hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/TWT*.txt')
-hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/Vol*.txt')
+# hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/TWT*.txt')
+# hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/Vol*.txt')
+hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/Auffargis/Twts_*.csv')
+hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/Auffargis/Volumes_*.csv')
 
 
 lst=[]
 #%% Reading the folder names
-fname=next(os.walk('./OUTdtrou30_rtrou4_tr5.0/'))[1]
+foldernama='./OUTdtrou30_rtrou2_tr10.0/'
+fname=next(os.walk(foldernama))[1]
 
 #%%
-ouca='Poligny'
+#ouca='Poligny'
+#ouca='Bilbo'
+ouca='Auffargis_30'
 fontouney=20
 for filit,filiv in zip(hahat,hahav):
     lst=[]
-    Nama=filit[-11:-4] #Poligny
+    #Nama=filit[-11:-4] #Poligny
     #Nama=filit[-12:-4]#Bilbo
-    temp=np.genfromtxt(filit, delimiter=' ')
+    Nama=filit[-12:-4]#Auffargis
+    #temp=np.genfromtxt(filit, delimiter=' ')
+    temp=np.genfromtxt(filit, delimiter=',',skip_header=1)
     TWT_XP=temp[:,1]
     Time_TWT_XP=temp[:,0]
-    temp=np.genfromtxt(filiv,delimiter=',')
+    temp=np.genfromtxt(filiv,delimiter=',',skip_header=1)
     VOL_XP_temp=temp[:,1]
     Time_VOL_XP=temp[:,0]
     VOL_XP=np.interp(Time_TWT_XP,Time_VOL_XP,VOL_XP_temp)
     
     for ii in fname: 
     
-        p=read_parameters('./OUTdtrou30_rtrou4_tr5.0/'+ii)
+        p=read_parameters(foldernama+ii)
         paramMVG = ParamMVG(tr=p[2], ts=p[0], ti=p[1], Ks=p[5], n=p[3], alpha=p[4])
         try:
             #temp = np.genfromtxt('./OUTdtrou30_rtrou4_tr5.0/'+ii+'/TWT_EL.csv', delimiter=',',skip_header=1)
-            temp=F_extractTWT('./OUTdtrou30_rtrou4_tr5.0/'+ii)
-            vol=np.genfromtxt('./OUTdtrou30_rtrou4_tr5.0/'+ii+'/Volumes_EL.csv',delimiter=',',skip_header=1)
+            temp=F_extractTWT(foldernama+ii)
+            vol=np.genfromtxt(foldernama+ii+'/Volumes_EL.csv',delimiter=',',skip_header=1)
             bibi = 0
             rmseTwt=np.sqrt(np.mean((temp-TWT_XP)**2))
             rmsevol=np.sqrt(np.mean(((0.001*(vol-VOL_XP))**2)))
