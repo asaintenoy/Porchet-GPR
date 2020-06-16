@@ -22,6 +22,7 @@ from param_acquisition import ParamGPRMAX, ParamMVG, Geometry
 from Forward import Forward
 from F_extractTWT import F_extractTWT
 from F_extract_volumes import F_extract_volumes
+import math
 
 from outils import read_parameters, rada_plot
 
@@ -40,23 +41,28 @@ if(hehe==X_path):
 else:
     os.chdir(X_path)
 #%% Reading the folder names
-wata='OUTdtrou30_rtrou2_tr10.0/'
+wata='OUTdtrou30_rtrou4_tr5.0/'
 fname=next(os.walk('./'+wata))[1]
 
 #%% pour config on lit le fichier de data juste pour un
-Nama='P1-72-40'
+Nama='BilbP1_0_30'
 #temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/TWT_'+Nama+'.txt', delimiter=' ')
-temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/Auffargis/Twts_Auffar_'+Nama+'.csv', delimiter=',',skip_header=1)
+#temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/Auffargis/Twts_Auffar_'+Nama+'.csv', delimiter=',',skip_header=1)
+
+#hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/twt*.txt')
+#hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/vol*.txt')
+
+temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/twts_'+Nama+'.csv', delimiter=',',skip_header=0)
 TWT_XP=temp[:,1]
 Time_TWT_XP=temp[:,0]
 #temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/Volumes_'+Nama+'.txt',delimiter=',')
 #VOL_XP_temp=temp[:,1]
 #Time_VOL_XP=temp[:,0]
-#VOL_XP=np.interp(Time_TWT_XP,Time_VOL_XP,VOL_XP_temp)
-temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/Auffargis/Volumes_Auffar_'+Nama+'.csv', delimiter=',',skip_header=1)
-VOL_XP=temp[:,1]
+#VOL_XP=np.interp(Time_TWT_XP,Time_VOL_XP,VOL_XP_temp)volumes_BilbP1_0_30.txt
+temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/volumes_'+Nama+'.csv', delimiter=',',skip_header=0)
+VOL_XP_temp=temp[:,1]
 Time_VOL_XP=temp[:,0]
-
+VOL_XP=np.interp(Time_TWT_XP,Time_VOL_XP,VOL_XP_temp)
 
 #%%
 lst=[]
@@ -83,9 +89,49 @@ for ii in fname:
 df_params=pd.DataFrame(lst,columns=['tr','ts','ti','n','alpha','Ks','RMSETWT','RMSEVOL','RMSE','Converged'])                 
 
 
-#%% 
+#%%
 plt.close('all')
-df_params=pd.DataFrame(lst,columns=['tr','ts','ti','n','alpha','Ks','RMSETWT','RMSEVOL','RMSE','Converged'])
+legendounet=['ti','ts','n','alpha','Ks']
+gnifalou=df_params['ti'].unique()
+shortl=['tr','ts','n','alpha','Ks']
+
+
+
+fontouney=20
+for kk in gnifalou:
+    (f1, ax)= plt.subplots(5,5,figsize=(25,15))
+    norm=plt.Normalize(0,2)
+    df_params_cutted=df_params[(df_params['ti']==round(float(kk),2)) & (df_params['n']>=5)].copy()
+    for ii in range(5):
+        for jj in range(5):
+            if(ii==jj):
+                ax[ii,jj].hist(df_params_cutted[shortl[ii]], weights=np.zeros_like(df_params_cutted[shortl[ii]]) + 1. / df_params_cutted[shortl[ii]].size)
+                ax[ii,jj].set_xlabel(shortl[ii])
+                ax[ii,jj].set_ylabel('Rel Freq.')
+                ax[ii,jj].grid()
+                
+            else:
+                ax[ii,jj].scatter(df_params_cutted[shortl[ii]],df_params_cutted[shortl[jj]],c=df_params_cutted.RMSE,cmap = 'jet',norm=norm)
+                #plt.colorbar(sc,ax=ax[ii,jj])
+                ax[ii,jj].grid()
+                ax[ii,jj].set_xlabel(shortl[ii])
+                ax[ii,jj].set_ylabel(shortl[jj])
+
+    f1.suptitle(' ti = '+str(kk)+'n>=5', fontsize=fontouney)
+    f1.savefig('./plots/RMSETWT_Test_ti='+str(kk)+'n>=5.png',format='png')
+
+
+# for ii in range(2):
+#     for jj in range(2):
+#             ax[ii,jj].scatter(df_params_cutted[shortl[ii]],df_params_cutted[shortl[jj]],c=df_params_cutted.RMSE,cmap = 'jet',norm=norm)
+#             #plt.colorbar(sc,ax=ax[ii,jj])
+#             ax[ii,jj].grid()
+#             ax[ii,jj].set_xlabel(shortl[ii])
+#             ax[ii,jj].set_ylabel(shortl[jj])
+#             cc=cc+1
+    
+
+#%% 
 plt.close('all')
 legendounet=['ti','ts','n','alpha','Ks']
 #df_params=df_params[(df_params['tr']==0.03) & (df_params['Ks']<0.49) & (df_params['Ks']>0.07) & (df_params['n']<10.1) ]
@@ -128,7 +174,7 @@ plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspac
 # bordeldenomdedieudemerde=f1.colorbar(sc, ax=ax.ravel().tolist())
 # bordeldenomdedieudemerde.set_clim(0, 1)
 
-f1.savefig('./plots/RMSEVOLANDTWT_'+Nama+'.png',format='png')
+f1.savefig('./plots/RMSETWT_'+Nama+'.png',format='png')
 #df_params.to_csv('blibalou.csv',sep=',',encoding='utf-8')
 #plt.close(f1)
 #%% On va regarder la distribution des paramètres pour les 5% des meilleurs modeles
@@ -158,35 +204,50 @@ f2.savefig('./plots/Histo_'+str(100*pc)+'pc_'+Nama+'.png',format='png')
 
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Compa Un par un mais en boucle
-#hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/twt*.txt')
-#hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/vol*.txt')
+#hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/twt*.csv')
+#hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/vol*.csv')
 
-# hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/TWT*.txt')
-# hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/Vol*.txt')
-hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/Auffargis/Twts_*.csv')
-hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/Auffargis/Volumes_*.csv')
+#Poligny
+#hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/TWT*.csv')
+#CDC
+hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/twt*.csv')
+
+#hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/Vol*.txt')
+#hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/Auffargis/Twts_Auffar*.csv')
+#hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/Auffargis/Volumes_*.csv')
 
 
 lst=[]
 #%% Reading the folder names
-foldernama='./OUTdtrou30_rtrou2_tr10.0/'
+foldernama='./OUTdtrou30_rtrou4_tr5.0/'
 fname=next(os.walk(foldernama))[1]
 
 #%%
 #ouca='Poligny'
-#ouca='Bilbo'
-ouca='Auffargis_30'
+ouca='Bilb'
+#ouca='Auffargis_30'
 fontouney=20
-for filit,filiv in zip(hahat,hahav):
+for filit in hahat:
     lst=[]
+    fin=filit.find('.csv',-4)   
+    debut=filit.find(ouca)+len(ouca)
+    Nama=filit[debut:fin]
     #Nama=filit[-11:-4] #Poligny
     #Nama=filit[-12:-4]#Bilbo
-    Nama=filit[-12:-4]#Auffargis
-    #temp=np.genfromtxt(filit, delimiter=' ')
+    #Nama=filit[-12:-4]#Auffargis
+    #temp=np.genfromtxt(filit, delimiter=',')
     temp=np.genfromtxt(filit, delimiter=',',skip_header=1)
     TWT_XP=temp[:,1]
     Time_TWT_XP=temp[:,0]
-    temp=np.genfromtxt(filiv,delimiter=',',skip_header=1)
+    #Poligny
+    #temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/Volumes_'+
+                       #filit[-11:-4]+'.csv',delimiter=',',skip_header=1)
+    #Bilbo     
+    #cherchons
+
+    temp=np.genfromtxt('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/volumes_'+ouca+
+                       Nama+'.csv',delimiter=',',skip_header=1)                  
+    #temp=np.genfromtxt(filiv,delimiter=',',skip_header=1)
     VOL_XP_temp=temp[:,1]
     Time_VOL_XP=temp[:,0]
     VOL_XP=np.interp(Time_TWT_XP,Time_VOL_XP,VOL_XP_temp)
@@ -291,9 +352,34 @@ for filit,filiv in zip(hahat,hahav):
     f2.savefig('./plots/Histo_'+str(100*pc)+'pc_'+ouca+'-'+Nama+'.png',format='png')
 ###################
 
+#############Sensibility plot mais en coupant Ti
 
-
-
+    # plt.close('all')
+    # legendounet=['ti','ts','n','alpha','Ks']
+    # gnifalou=df_params['ti'].unique()
+    # shortl=['tr','ts','n','alpha','Ks']
+    
+    # fontouney=20
+    # for kk in gnifalou:
+    #     (f1, ax)= plt.subplots(5,5,figsize=(25,15))
+    #     norm=plt.Normalize(0,2)
+    #     df_params_cutted=df_params[df_params['ti']==round(float(kk),2)].copy()
+    #     for ii in range(5):
+    #         for jj in range(5):
+    #             if(ii==jj):
+    #                 ax[ii,jj].hist(df_params_cutted[shortl[ii]], weights=np.zeros_like(df_params_cutted[shortl[ii]]) + 1. / df_params_cutted[shortl[ii]].size)
+    #                 ax[ii,jj].set_xlabel(shortl[ii])
+    #                 ax[ii,jj].set_ylabel('Rel Freq.')
+    #                 ax[ii,jj].grid()
+                    
+    #             else:
+    #                 ax[ii,jj].scatter(df_params_cutted[shortl[ii]],df_params_cutted[shortl[jj]],c=df_params_cutted.RMSE,cmap = 'jet',norm=norm)
+    #                 #plt.colorbar(sc,ax=ax[ii,jj])
+    #                 ax[ii,jj].grid()
+    #                 ax[ii,jj].set_xlabel(shortl[ii])
+    #                 ax[ii,jj].set_ylabel(shortl[jj])   
+    #     f1.suptitle(' ti = '+str(kk), fontsize=fontouney)
+    #     f1.savefig('./plots/RMSEVOLANDTWT_'+ouca+'-'+Nama+'_ti='+str(kk)+'.png',format='png')
 
 
 
