@@ -7,16 +7,18 @@ Created on Wed May 20 14:22:11 2020
 """
 import matplotlib.pyplot as plt
 from param_acquisition import Geometry,ParamMVG, ParamGPRMAX
+import os
+os.chdir('/home/el/Codes/Porchet-GPR')
 
 #%% Param MVG
 # Teneur en eau résiduelle
-tr = 0.0101
+tr = 0.011
 # Teneur en eau à saturation
-ts = 0.37
+ts = 0.35
 # Teneur en eau initiale
 ti = 0.07
 # Perméabilité à saturation
-Ks = 0.2
+Ks = 0.215
 # param fitting retention n
 n = 5
 # param fitting retention alpha
@@ -40,9 +42,9 @@ geometry.dtrou = 30
 # elevation du fond du trou
 geometry.etrou = geometry.emax - geometry.dtrou
  # rayon du trou en cm
-geometry.r=3
+geometry.r=2.5
 # hauteur d'eau imposée au fond du trou en cm
-geometry.h_eau=5.0
+geometry.h_eau=10#5.0
 # pas de la maille en cm
 geometry.dx = 0.1
 #geometry.dx = 1
@@ -125,11 +127,10 @@ ax2.grid()
 ax2.set_ylabel('Volume(mL)')
 fig.legend()
 
-
 #%%
 from outils import rada_plot
 import h5py
-filepath='OUTTESTdtrou30_rtrou4_tr5.0/ts0.381_ti0.07_tr0.031_n5_alpha0.03_Ks0.2/'
+filepath='OUTTESRdtrou30_rtrou3_tr10/ts0.35_ti0.07_tr0.011_n5_alpha0.03_Ks0.215/'
 filename='radargram__merged.out'
 f = h5py.File(filepath + filename, 'r')
 

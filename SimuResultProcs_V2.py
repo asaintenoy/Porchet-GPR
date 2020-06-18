@@ -210,9 +210,9 @@ f2.savefig('./plots/Histo_'+str(100*pc)+'pc_'+Nama+'.png',format='png')
 #Poligny
 #hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/TWT*.csv')
 #CDC
-hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/twt*.csv')
+#hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/twt*.csv')
 #Auffargis
-#hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/Auffargis/Twts_Auffar*.csv')
+hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/Auffargis/Twts_Auffar*.csv')
 
 #hahav=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/Vol*.txt')
 #hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/Auffargis/Twts_Auffar*.csv')
@@ -222,15 +222,15 @@ hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-ave
 lst=[]
 #%% Reading the folder names
 #bilbo+Poligny
-foldernama='./OUTdtrou30_rtrou4_tr5.0/'
+#foldernama='./OUTdtrou30_rtrou4_tr5.0/'
 #Auffar
-#foldernama='./OUTdtrou30_rtrou2_tr10.0/'
+foldernama='./OUTdtrou30_rtrou2_tr10.0/'
 fname=next(os.walk(foldernama))[1]
 
 #%%
 #ouca='Poligny'
-ouca='Bilb'
-#ouca='Auffar'
+#ouca='Bilb'
+ouca='Auffar'
 fontouney=20
 for filit in hahat:
     lst=[]
@@ -249,7 +249,7 @@ for filit in hahat:
 
 
 
-    temp=np.genfromtxt(filit[0:guili]+'/'+'volumes_'+ouca+
+    temp=np.genfromtxt(filit[0:guili]+'/'+'Volumes_'+ouca+
                        Nama+'.csv',delimiter=',',skip_header=1)            
     VOL_XP_temp=temp[:,1]
     Time_VOL_XP=temp[:,0]
@@ -280,42 +280,42 @@ for filit in hahat:
     
     
 ################Sensibility plot
-    plt.close('all')
-    legendounet=['ti','ts','n','alpha','Ks']
-    #df_params=df_params[(df_params['tr']==0.03) & (df_params['Ks']<0.49) & (df_params['Ks']>0.07) & (df_params['n']<10.1) ]
+    # plt.close('all')
+    # legendounet=['ti','ts','n','alpha','Ks']
+    # #df_params=df_params[(df_params['tr']==0.03) & (df_params['Ks']<0.49) & (df_params['Ks']>0.07) & (df_params['n']<10.1) ]
     
-    (f1, ax)= plt.subplots(5,5,figsize=(25,15))
-    #cmap = mpl.cm.jet(vmin=0, vmax=1)
-    #norma = mpl.colors.Normalize(vmin=0, vmax=1)
-    norm=plt.Normalize(0,2)
-    for ii in range(5):
-        for jj in range(5):
-            if(ii==jj):
-                ax[ii,jj].hist(df_params[legendounet[ii]], weights=np.zeros_like(df_params[legendounet[ii]]) + 1. / df_params[legendounet[ii]].size)
-                ax[ii,jj].set_xlabel(legendounet[ii],fontsize=fontouney)
-                ax[ii,jj].set_ylabel('Rel Freq.',fontsize=fontouney)
-                ax[ii,jj].tick_params(axis='both', which='major', labelsize=fontouney)
-                ax[ii,jj].grid() 
+    # (f1, ax)= plt.subplots(5,5,figsize=(25,15))
+    # #cmap = mpl.cm.jet(vmin=0, vmax=1)
+    # #norma = mpl.colors.Normalize(vmin=0, vmax=1)
+    # norm=plt.Normalize(0,2)
+    # for ii in range(5):
+    #     for jj in range(5):
+    #         if(ii==jj):
+    #             ax[ii,jj].hist(df_params[legendounet[ii]], weights=np.zeros_like(df_params[legendounet[ii]]) + 1. / df_params[legendounet[ii]].size)
+    #             ax[ii,jj].set_xlabel(legendounet[ii],fontsize=fontouney)
+    #             ax[ii,jj].set_ylabel('Rel Freq.',fontsize=fontouney)
+    #             ax[ii,jj].tick_params(axis='both', which='major', labelsize=fontouney)
+    #             ax[ii,jj].grid() 
                 
-            else:
-                sc=ax[ii,jj].scatter(df_params[legendounet[ii]],df_params[legendounet[jj]],c=df_params.RMSE,cmap = 'jet',norm=norm)
-                #plt.colorbar(sc,ax=ax[ii,jj])
-                ax[ii,jj].grid()
-                ax[ii,jj].set_xlabel(legendounet[ii],fontsize=fontouney)
-                ax[ii,jj].set_ylabel(legendounet[jj],fontsize=fontouney)
-                ax[ii,jj].tick_params(axis='both', which='major', labelsize=fontouney)
+    #         else:
+    #             sc=ax[ii,jj].scatter(df_params[legendounet[ii]],df_params[legendounet[jj]],c=df_params.RMSE,cmap = 'jet',norm=norm)
+    #             #plt.colorbar(sc,ax=ax[ii,jj])
+    #             ax[ii,jj].grid()
+    #             ax[ii,jj].set_xlabel(legendounet[ii],fontsize=fontouney)
+    #             ax[ii,jj].set_ylabel(legendounet[jj],fontsize=fontouney)
+    #             ax[ii,jj].tick_params(axis='both', which='major', labelsize=fontouney)
 
      
     
-    left  = 0.045  # the left side of the subplots of the figure
-    right = 0.988    # the right side of the subplots of the figure
-    bottom = 0.049   # the bottom of the subplots of the figure
-    top = 0.987      # the top of the subplots of the figure
-    wspace = 0.224   # the amount of width reserved for blank space between subplots
-    hspace = 0.290   # the amount of height reserved for white space between subplots
-    plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspace, hspace=hspace)
+    # left  = 0.045  # the left side of the subplots of the figure
+    # right = 0.988    # the right side of the subplots of the figure
+    # bottom = 0.049   # the bottom of the subplots of the figure
+    # top = 0.987      # the top of the subplots of the figure
+    # wspace = 0.224   # the amount of width reserved for blank space between subplots
+    # hspace = 0.290   # the amount of height reserved for white space between subplots
+    # plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspace, hspace=hspace)
     
-    f1.savefig('./plots/'+ouca+'RMSEVOLANDTWT_'+ouca+'-'+Nama+'.png',format='png')
+    # f1.savefig('./plots/'+ouca+'/RMSEVOLANDTWT_'+ouca+'-'+Nama+'.png',format='png')
     
 ####################    
 ################### histogram
@@ -352,37 +352,37 @@ for filit in hahat:
     # ax[0,2].plot(Time_TWT_XP, TWT_XP, marker = '*', markersize = 10, mfc = 'k')
     # ax[1,2].plot(Time_TWT_XP, VOL_XP, marker = '*', markersize = 10, mfc = 'k')    
     # f2.suptitle(str(100*pc)+'% du meilleur modele '+ ouca+'-'+Nama, fontsize=fontouney)
-    # f2.savefig('./plots/Histo_'+str(100*pc)+'pc_'+ouca+'-'+Nama+'.png',format='png')
+    # f2.savefig('./plots/'+ouca+'/Histo_'+str(100*pc)+'pc_'+ouca+'-'+Nama+'.png',format='png')
 ###################
 
 #############Sensibility plot mais en coupant Ti
 
-    # plt.close('all')
-    # legendounet=['ti','ts','n','alpha','Ks']
-    # gnifalou=df_params['ti'].unique()
-    # shortl=['tr','ts','n','alpha','Ks']
+    plt.close('all')
+    legendounet=['ti','ts','n','alpha','Ks']
+    gnifalou=df_params['ti'].unique()
+    shortl=['tr','ts','n','alpha','Ks']
     
-    # fontouney=20
-    # for kk in gnifalou:
-    #     (f1, ax)= plt.subplots(5,5,figsize=(25,15))
-    #     norm=plt.Normalize(0,2)
-    #     df_params_cutted=df_params[df_params['ti']==round(float(kk),2)].copy()
-    #     for ii in range(5):
-    #         for jj in range(5):
-    #             if(ii==jj):
-    #                 ax[ii,jj].hist(df_params_cutted[shortl[ii]], weights=np.zeros_like(df_params_cutted[shortl[ii]]) + 1. / df_params_cutted[shortl[ii]].size)
-    #                 ax[ii,jj].set_xlabel(shortl[ii])
-    #                 ax[ii,jj].set_ylabel('Rel Freq.')
-    #                 ax[ii,jj].grid()
+    fontouney=20
+    for kk in gnifalou:
+        (f1, ax)= plt.subplots(5,5,figsize=(25,15))
+        norm=plt.Normalize(0,2)
+        df_params_cutted=df_params[df_params['ti']==round(float(kk),2)].copy()
+        for ii in range(5):
+            for jj in range(5):
+                if(ii==jj and df_params_cutted.empty==False):
+                    ax[ii,jj].hist(df_params_cutted[shortl[ii]], weights=np.zeros_like(df_params_cutted[shortl[ii]]) + 1. / df_params_cutted[shortl[ii]].size)
+                    ax[ii,jj].set_xlabel(shortl[ii])
+                    ax[ii,jj].set_ylabel('Rel Freq.')
+                    ax[ii,jj].grid()
                     
-    #             else:
-    #                 ax[ii,jj].scatter(df_params_cutted[shortl[ii]],df_params_cutted[shortl[jj]],c=df_params_cutted.RMSE,cmap = 'jet',norm=norm)
-    #                 #plt.colorbar(sc,ax=ax[ii,jj])
-    #                 ax[ii,jj].grid()
-    #                 ax[ii,jj].set_xlabel(shortl[ii])
-    #                 ax[ii,jj].set_ylabel(shortl[jj])   
-    #     f1.suptitle(' ti = '+str(kk), fontsize=fontouney)
-    #     f1.savefig('./plots/RMSEVOLANDTWT_'+ouca+'-'+Nama+'_ti='+str(kk)+'.png',format='png')
+                else:
+                    ax[ii,jj].scatter(df_params_cutted[shortl[ii]],df_params_cutted[shortl[jj]],c=df_params_cutted.RMSE,cmap = 'jet',norm=norm)
+                    #plt.colorbar(sc,ax=ax[ii,jj])
+                    ax[ii,jj].grid()
+                    ax[ii,jj].set_xlabel(shortl[ii])
+                    ax[ii,jj].set_ylabel(shortl[jj])   
+        f1.suptitle(' ti = '+str(kk), fontsize=fontouney)
+        f1.savefig('./plots/'+ouca+'/RMSEVOLANDTWT_'+ouca+'-'+Nama+'_ti='+str(kk)+'.png',format='png')
 
 
 

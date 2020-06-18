@@ -13,9 +13,11 @@ import warnings
 
 #Pour aider pyflakes à analyser il vaut mieux importer les fonctions explicitement
 from maillage_SWMS2D_EL import maillage_SWMS2D_EL
+from maillage_SWMS2D import maillage_SWMS2D
 from initial_conditions import initial_conditions
 from ecriture_fichiers_SWMS2D import ecriture_Selector_in, ecriture_Grid_in 
 from ecriture_fichiers_GPRMAX import ecriture_fichiers_GPRMAX
+from ecriture_fichiers_GPRMAX_EL import ecriture_fichiers_GPRMAX_EL
 from maillage_GPRMAX import maillage_GPRMAX
 from outils import showQuality
 from pygimli.meshtools import quality
@@ -101,8 +103,8 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     #from pygimli.meshtools import mesh
     #from pygimli.mplviewer import drawMesh
     
-    # from pygimli.viewer import showMesh
-    # showMesh(mesh,markers=True)
+    #from pygimli.viewer import showMesh
+    #showMesh(mesh,markers=True)
     
     #matplotlib.use('Agg')
     #figi=showQuality(mesh, quality(mesh))
@@ -193,7 +195,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 
                 
         # Writing a file.in for running GPRMAX
-        A = ecriture_fichiers_GPRMAX(xv.T*0.01, yv.T*0.01, grid_mat[i], i, nom, paramMVG, paramGPRMAX, geometry, dl, materiaux) 
+        A = ecriture_fichiers_GPRMAX_EL(xv.T*0.01, yv.T*0.01, grid_mat[i], i, nom, paramMVG, paramGPRMAX, geometry, dl, materiaux) 
         
         # plt.close('all')
         # fig = plt.figure()
