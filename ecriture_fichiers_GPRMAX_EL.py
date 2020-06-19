@@ -37,7 +37,7 @@ def ecriture_fichiers_GPRMAX_EL(X, Y, grid_z0, trace_number, nom, paramMVG, para
             VWC[k-1]=grid_z0[i,j]
             k = k+1
             
-    #SI EAU DOUCE INJECTEE        
+    #SI EAU DOUCE INJECTEE      
     for i in materiaux:
         fgrid.write("""#material: {} {} 1.0 0.0 {}\n""".format(i, sigma, materiaux[i][0]))
         
@@ -78,11 +78,12 @@ def ecriture_fichiers_GPRMAX_EL(X, Y, grid_z0, trace_number, nom, paramMVG, para
               count=count+1
             
     #On bouche le tuyau et on interpole la fermeture du bulbe 
+    
     fgrid.write("""------------------------------------------------\n""")
     o=np.where((A[:,0]<=w+dx/2+radius) & (A[:,0]>=w-dx/2-radius) & (A[:,1]>=etrou))
     ii=np.unique(A[o][:,1])
     blou=A[o]
-    eps=0.0000001
+    eps=10**(-19)
     for i in ii:
         a=np.where(A[o,1]==i)
         b=np.where((A[:,0]<=float(w)+dx/2+radius+eps) & (A[:,0]>=float(w)+dx/2+radius-eps)  & (A[:,1]==i))
