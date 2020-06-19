@@ -31,6 +31,8 @@ pVg.porosity = pVg.ts
 geometry=Geometry()
 
 #Domaine de calcul (en cm)
+#Tolerance
+geometry.tol=10**(-5)
 # largeur
 geometry.xmin=0 
 geometry.xmax=40

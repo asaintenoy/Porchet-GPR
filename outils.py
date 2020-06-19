@@ -10,11 +10,70 @@ import numpy as np
 import io
 import h5py
 import os
-
+import math
 import pygimli as pg
 #from pygimli.meshtools import polytools as plc
 #from pygimli.meshtools import quality
 from param_acquisition import Geometry, ParamMVG, ParamGPRMAX
+
+
+
+def comparaison_array_number(Array,number,tol):
+    """
+    
+
+    Parameters
+    ----------
+    Array : TYPE float
+        Generalemenet un array de float ou de float 64
+    number : TYPE float/int, on va le caster si besoin
+        Generalement un int ou un float, mais il faut bien verifier, dans le doute je caste
+
+    Returns
+    -------
+    Une array de True/False
+
+    """    
+    
+    return np.isclose(Array,np.float64(number), atol=tol)
+
+
+def comparaison_number_number(number1,number2,tol):
+    """
+    
+
+    Parameters
+    ----------
+
+    number : TYPE float/int, on va le caster si besoin
+        Generalement un int ou un float, mais il faut bien verifier, dans le doute je caste
+
+    Returns
+    -------
+    Un True/False
+
+    """    
+    
+    return math.isclose(np.float64(number1),np.float64(number2),abs_tol=tol)
+
+# def ineg_number_number(number1,number2,tol):
+#     """
+    
+
+#     Parameters
+#     ----------
+
+#     number : TYPE float/int, on va le caster si besoin
+#         Generalement un int ou un float, mais il faut bien verifier, dans le doute je caste
+
+#     Returns
+#     -------
+#     Un True/False
+
+#     """    
+    
+#     return math.isclose(np.abs(np.float64(number1)-np.float64(number2)),0,abs_tol=tol)
+
 
 def showQuality(mesh, qualities):
     fig, axes = plt.subplots(1, 2)
