@@ -12,7 +12,7 @@ os.chdir('/home/el/Codes/Porchet-GPR')
 
 #%% Param MVG
 # Teneur en eau résiduelle
-tr = 0.0105
+tr = 0.0101
 # Teneur en eau à saturation
 ts = 0.35
 # Teneur en eau initiale
