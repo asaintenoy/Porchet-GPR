@@ -32,7 +32,7 @@ geometry=Geometry()
 
 #Domaine de calcul (en cm)
 #Tolerance
-geometry.tol=10**(-5)
+geometry.tol=10**(-7)
 # largeur
 geometry.xmin=0 
 geometry.xmax=40
@@ -44,7 +44,7 @@ geometry.dtrou = 30
 # elevation du fond du trou
 geometry.etrou = geometry.emax - geometry.dtrou
  # rayon du trou en cm
-geometry.r=4
+geometry.r=2.5
 # hauteur d'eau imposée au fond du trou en cm
 geometry.h_eau=10#5.0
 # pas de la maille en cm
@@ -82,7 +82,7 @@ paramGPRMAX.xmax = geometry.xmax
 paramGPRMAX.zmin = geometry.emin
 paramGPRMAX.zmax = geometry.emax
 # Taille des mailles (cm)
-paramGPRMAX.dx = 1.0 
+paramGPRMAX.dx = 0.5
 # Electrical conductivity of the medium
 paramGPRMAX.sigma=0.0000
 # Relative dielectric permittivity of water

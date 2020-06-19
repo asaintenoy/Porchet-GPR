@@ -71,6 +71,7 @@ def comparaison_number_number(number1,number2,tol):
 #     Un True/False
 
 #     """    
+#     if(np.float64(number1)<=np.float64(number2)):
     
 #     return math.isclose(np.abs(np.float64(number1)-np.float64(number2)),0,abs_tol=tol)
 

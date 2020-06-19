@@ -19,7 +19,7 @@ from initial_conditions_EL import  initial_conditions_EL
 from ecriture_fichiers_SWMS2D import ecriture_Selector_in, ecriture_Grid_in 
 from ecriture_fichiers_GPRMAX import ecriture_fichiers_GPRMAX
 from ecriture_fichiers_GPRMAX_EL import ecriture_fichiers_GPRMAX_EL
-from maillage_GPRMAX import maillage_GPRMAX
+from maillage_GPRMAX_EL import maillage_GPRMAX_EL
 from outils import showQuality
 from pygimli.meshtools import quality
 #from picking_radargramme import picking
@@ -121,7 +121,6 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     os.system("mv Selector.in SWMS_2D.IN")
             
     #Lancement SWMS_2D
-    #os.system("/home/clemence/Porchet-GPR/source/HD2/H2D")
     start_running = time.time()
     end_running=[]
     error=os.system("timeout {} {}/HD2/H2D".format(tmax_SWMS2D,dir))
@@ -144,7 +143,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 
     #Interpolation du maillage triangulaire sur une grille rectangulaire pour gprMax
     #On crée un maillage rectangulaire avec les dimensions du modèle
-    [xv, yv, mx, my, mesh2, grid, grid_mat, eps_mat, sigma_grid_mat] = maillage_GPRMAX(paramGPRMAX, paramMVG, mesh, mesh_pos[:,:2], f_thetas, nT)
+    [xv, yv, mx, my, mesh2, grid, grid_mat, eps_mat, sigma_grid_mat] = maillage_GPRMAX_EL(paramGPRMAX, paramMVG, mesh, mesh_pos[:,:2], f_thetas, nT)
    
     # Lancement gprMax
 
@@ -209,7 +208,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
         #A_tab[i]=A
         #end_ecriture.append(time.time()-start_ecriture)
         #Lancement calcul gprMax
-        #fichier=nom+'_'+str(i+1)+'.in'
+
         fichier=nom+'_'+str(i+1)+'.in'
         
         command="./gprMax "+fichier
@@ -230,7 +229,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     os.popen(command2).readlines()
     end_running.append(time.time()-start_running)
 
-    os.popen("rm -rf *.in")
+    #os.popen("rm -rf *.in")
     print('Running GPR time:'+str(end_running))
     for i in range(0,nT+1) :
         os.popen("rm -rf "+ nom + "_" + str(i+1) + ".out")

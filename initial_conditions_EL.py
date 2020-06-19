@@ -27,7 +27,8 @@ def initial_conditions_EL(mesh_pos, geometry, paramMVG):
                 
     #Interpolation lineaire pour la valeur de charge au bord du trou sous l'eau
     #On considère que la charge est nulle à la surface de l'eau
-    rows = np.array(np.where((p[:,1] <= np.float64(geometry.etrou) + np.float64(geometry.h_eau) - geometry.tol) & (p[:,1] >= np.float64(geometry.etrou) + geometry.tol )\
+    
+    rows = np.array(np.where((p[:,1] <= np.float64(geometry.etrou) + np.float64(geometry.h_eau)) & (p[:,1] >= np.float64(geometry.etrou))\
                              & (comparaison_array_number(p[:,0],geometry.r,geometry.tol)))).T
     
     for i in range(1,len(rows)):

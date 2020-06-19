@@ -1,33 +1,36 @@
 import numpy as np
 import math
+from outils import comparaison_array_number,comparaison_number_number
 
 def ecriture_fichiers_GPRMAX_EL(X, Y, grid_z0, trace_number, nom, paramMVG, paramGPRMAX, geometry, dl, materiaux) :
 
     #attention, veut les param en m!!!!
-    etrou = geometry.etrou*0.01
-    h_eau = geometry.h_eau*0.01
-    radius = geometry.r*0.01
+    etrou = np.float64(geometry.etrou*0.01)
+    h_eau = np.float64(geometry.h_eau*0.01)
+    radius = np.float64(geometry.r*0.01)
     Ks = paramMVG.Ks
     sigma = paramGPRMAX.sigma
     nmedia=len(materiaux)+2
-    dx=float(abs((X)[0,1]-(X)[0,0]))
-    dy=float(abs((Y)[1,0]-(Y)[0,0]))
+    dx=np.float64(abs((X)[0,1]-(X)[0,0]))
+    dy=np.float64(abs((Y)[1,0]-(Y)[0,0]))
 
-    
+    if(dl>dx):
+        dl=dx
+        
     fgrid=open(nom+'_'+str(trace_number+1)+'.in',"w")
     fgrid.write("""------------------------------------------------\n""")
     #fgrid.write("""#number_of_media: {}\n""".format(nmedia+4))
-    fgrid.write("""#domain: {} {} {}\n""".format(round(2*max(X[0,:])+dx,2), round(max(Y[:,0])*2,2), dl))
-    fgrid.write("""#dx_dy_dz: {} {} {}\n""".format(dl, dl, dl))
+    fgrid.write("""#domain: {:.5f} {:.5f} {:.5f}\n""".format(2*max(X[0,:])+dx, 2*max(Y[:,0]), dl))
+    fgrid.write("""#dx_dy_dz: {:.5f} {:.5f} {:.5f}\n""".format(dl, dl, dl))
     fgrid.write("""#time_window: {}\n""".format(paramGPRMAX.time))
     #fgrid.write("""#time_step_stability_factor: {}\n""".format(fac_dt))
     #fgrid.write("""#abc_type: pml\n""")
     #fgrid.write("""#pml_cells: {}\n""".format(10))
     fgrid.write("""#waveform: ricker 1.0 {} Mydipole\n""".format(paramGPRMAX.wave_freq))
 
-    w=float(max(X[0,:]))+dx/2 #largeur
-    fgrid.write("""#hertzian_dipole: z {} {} {} Mydipole\n""".format(round(w+paramGPRMAX.d_emet,2), round(max(Y[:,0])+3/2*dy,2), 0.0))#TX
-    fgrid.write("""#rx: {} {} {} \n""".format(round(w+paramGPRMAX.d_recept,2), round(max(Y[:,0]+3/2*dy),2), 0.0))#RX
+    w=np.float64(max(X[0,:]))+dx/2 #largeur
+    fgrid.write("""#hertzian_dipole: z {:.5f} {:.5f} {:.5f} Mydipole\n""".format(w+paramGPRMAX.d_emet, max(Y[:,0])+3/2*dy, 0.0))#TX
+    fgrid.write("""#rx: {:.5f} {:.5f} {:.5f} \n""".format(w+paramGPRMAX.d_recept, max(Y[:,0]+3/2*dy), 0.0))#RX
     fgrid.write("""------------------------------------------------\n""")
     
     k=1
@@ -58,45 +61,45 @@ def ecriture_fichiers_GPRMAX_EL(X, Y, grid_z0, trace_number, nom, paramMVG, para
     d=dy/2  #hauteur
     k=1 #compteur
     count=0      
-    A=np.zeros([len(X[:,0])*len(X[0,:])*2, 3]) #Taille de la matrice = nombre de cellules du nouveau maillage*2
+    A=np.empty([len(X[:,0])*len(X[0,:])*2, 3],dtype="float64") #Taille de la matrice = nombre de cellules du nouveau maillage*2
     A_tab={}
       
     for ii in range(0,len(Y[:,0])) :
           for jj in range(0, len(grid_z0[0,:])) :
-              fgrid.write("""#box: {} {} {} {} {} {} {}\n""".format(round(w+X[ii,jj]-dx/2,2), round(d+Y[ii,jj]-dy/2,2), 0.0, round(w+X[ii,jj]+dx/2,2),round(d+Y[ii,jj]+dy/2,2), dl, materiaux[grid_z0[ii,jj]][0]))
-              A[count,0]=float(w)+float(X[ii,jj])-dx/2
-              A[count,1]=d+float(Y[ii,jj])-dy/2
+              fgrid.write("""#box: {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {}\n""".format(w+X[ii,jj]-dx/2, d+Y[ii,jj]-dy/2, 0.0, w+X[ii,jj]+dx/2,d+Y[ii,jj]+dy/2, dl, materiaux[grid_z0[ii,jj]][0]))
+              A[count,0]=w+X[ii,jj]-dx/2
+              A[count,1]=d+Y[ii,jj]-dy/2
               A[count,2]=grid_z0[ii,jj]
       
               count=count+1
-              fgrid.write("""#box: {} {} {} {} {} {} {}\n""".format(round(w-X[ii,jj]-dx/2,2), round(d+Y[ii,jj]-dy/2,2), 0.0, round(w-X[ii,jj]+dx/2,2),round(d+Y[ii,jj]+dy/2,2), dl, materiaux[grid_z0[ii,jj]][0]))
-              A[count,0]=float(w)-float(X[ii,jj])-dx/2
-              A[count,1]=d+float(Y[ii,jj])-dy/2
+              fgrid.write("""#box: {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {}\n""".format(w-X[ii,jj]-dx/2, d+Y[ii,jj]-dy/2, 0.0, w-X[ii,jj]+dx/2,d+Y[ii,jj]+dy/2, dl, materiaux[grid_z0[ii,jj]][0]))
+              A[count,0]=w-X[ii,jj]-dx/2
+              A[count,1]=d+Y[ii,jj]-dy/2
               A[count,2]=grid_z0[ii,jj]
 
               k=k+1
               count=count+1
             
     #On bouche le tuyau et on interpole la fermeture du bulbe 
-    
     fgrid.write("""------------------------------------------------\n""")
     o=np.where((A[:,0]<=w+dx/2+radius) & (A[:,0]>=w-dx/2-radius) & (A[:,1]>=etrou))
     ii=np.unique(A[o][:,1])
     blou=A[o]
-    eps=10**(-19)
+    #geometry.tol=10**(-4)
+    np.savetxt('bordel.csv',A,fmt='%.6f',delimiter=',')
     for i in ii:
-        a=np.where(A[o,1]==i)
-        b=np.where((A[:,0]<=float(w)+dx/2+radius+eps) & (A[:,0]>=float(w)+dx/2+radius-eps)  & (A[:,1]==i))
+        a=np.where(comparaison_array_number(A[o,1],i,geometry.tol))
+        b=np.where((comparaison_array_number(A[:,0],w+dx/2+radius,geometry.tol))&(comparaison_array_number(A[:,1],i,geometry.tol)))
         
         for ii in a[1]:
             blou[ii,2]=A[b,2]
             A[o]=blou   
-            fgrid.write("""#box: {} {} {} {} {} {} {}\n""".format(round(blou[ii,0],2), round(i,2),0.0, round(blou[ii,0]+dx,2),round(i+dy,2), dl, materiaux[blou[ii,2]][0]))
+            fgrid.write("""#box: {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {}\n""".format(blou[ii,0], i,0.0, blou[ii,0]+dx,i+dy, dl, materiaux[blou[ii,2]][0]))
     #Si premier pas de temps, on ajoute une boite d'eau
     if trace_number==0 :
         q=np.where((A[:,0]<=w+dx/2+radius) & (A[:,0]>=w-dx/2-radius) & (A[:,1]>=etrou) & (A[:,1]<=etrou+h_eau))
         A[q,2]=grid_z0.max()
-        fgrid.write("""#box: {} {} {} {} {} {} {}\n""".format(w-dx/2-radius, etrou, 0.0, w+dx/2+radius, etrou+h_eau, dl, materiaux[grid_z0.max()][0])) #materiaux[grid_z0.max()][0]
+        fgrid.write("""#box: {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {}\n""".format(w-dx/2-radius, etrou, 0.0, w+dx/2+radius, etrou+h_eau, dl, materiaux[grid_z0.max()][0])) #materiaux[grid_z0.max()][0]
     
     #Ajout du tuyau pvc dans le trou      
     #fgrid.write("""#box: {} {} {} {} {} {} pvc\n""".format(round(w-dx/2-radius,2), round(etrou+d,2), 0.0, round(w+dx/2+radius,2), round(max(Y[:,0])*1.1,2), dl)) #ajout du tuyau tout le long
