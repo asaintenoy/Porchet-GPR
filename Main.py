@@ -12,7 +12,7 @@ os.chdir('/home/el/Codes/Porchet-GPR')
 
 #%% Param MVG
 # Teneur en eau résiduelle
-tr = 0.0101
+tr = 0.01
 # Teneur en eau à saturation
 ts = 0.35
 # Teneur en eau initiale
@@ -44,7 +44,7 @@ geometry.dtrou = 30
 # elevation du fond du trou
 geometry.etrou = geometry.emax - geometry.dtrou
  # rayon du trou en cm
-geometry.r=2.5
+geometry.r=4
 # hauteur d'eau imposée au fond du trou en cm
 geometry.h_eau=10#5.0
 # pas de la maille en cm
@@ -82,7 +82,7 @@ paramGPRMAX.xmax = geometry.xmax
 paramGPRMAX.zmin = geometry.emin
 paramGPRMAX.zmax = geometry.emax
 # Taille des mailles (cm)
-paramGPRMAX.dx = 0.5
+paramGPRMAX.dx = 1
 # Electrical conductivity of the medium
 paramGPRMAX.sigma=0.0000
 # Relative dielectric permittivity of water
@@ -132,7 +132,7 @@ fig.legend()
 #%%
 from outils import rada_plot
 import h5py
-filepath='OUTTESRdtrou30_rtrou2.5_tr10/ts0.35_ti0.07_tr0.0105_n5_alpha0.03_Ks0.215/'
+filepath='OUTTESRdtrou30_rtrou4_tr10/ts0.35_ti0.07_tr0.01_n5_alpha0.03_Ks0.215/'
 filename='radargram__merged.out'
 f = h5py.File(filepath + filename, 'r')
 
