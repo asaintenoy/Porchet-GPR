@@ -47,18 +47,18 @@ def maillage_SWMS2D_EL(geometry):
 
     
 #=============================================================================
-    c1 = plc.createCircle(pos=[xmin+r/2, etrou+1], radius=20, area=geometry.area*0.3)
-    mesh1=pg.meshtools.createMesh(c1, quality=geometry.quality, area=geometry.area, smooth=geometry.smooth)
-    #pg.show(mesh1, markers=True, showMesh=True)
+    # c1 = plc.createCircle(pos=[xmin+r/2, etrou+1], radius=20, area=geometry.area*0.3)
+    # mesh1=pg.meshtools.createMesh(c1, quality=geometry.quality, area=geometry.area, smooth=geometry.smooth)
+    # #pg.show(mesh1, markers=True, showMesh=True)
     
-    for ii in range(mesh1.nodeCount()):
-        if(mesh1.node(ii)[1]>etrou):
-            if(mesh1.node(ii)[0]>xmin+r):
-                poly.createNode(mesh1.node(ii)[0],mesh1.node(ii)[1],0)
+    # for ii in range(mesh1.nodeCount()):
+    #     if(mesh1.node(ii)[1]>etrou):
+    #         if(mesh1.node(ii)[0]>xmin+r):
+    #             poly.createNode(mesh1.node(ii)[0],mesh1.node(ii)[1],0)
 
-        elif(mesh1.node(ii)[1]<etrou):
-            if(mesh1.node(ii)[0]>xmin):
-                poly.createNode(mesh1.node(ii)[0],mesh1.node(ii)[1],0)
+    #     elif(mesh1.node(ii)[1]<etrou):
+    #         if(mesh1.node(ii)[0]>xmin):
+    #             poly.createNode(mesh1.node(ii)[0],mesh1.node(ii)[1],0)
 
 
 
@@ -67,8 +67,8 @@ def maillage_SWMS2D_EL(geometry):
 
     
 
-    mesh=pg.meshtools.createMesh(poly, quality=geometry.quality, area=geometry.area, smooth=geometry.smooth)
-    #mesh=pg.meshtools.createMesh(poly, quality=34, area=0.5, smooth=geometry.smooth)
+    #mesh=pg.meshtools.createMesh(poly, quality=geometry.quality, area=geometry.area, smooth=geometry.smooth)
+    mesh=pg.meshtools.createMesh(poly, quality=34, area=0.5, smooth=geometry.smooth)
     poly.exportVTK('plc')
     mesh.exportVTK('mesh')
     pg_pos = mesh.positions()

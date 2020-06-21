@@ -26,7 +26,7 @@ from outils import read_parameters, rada_plot
 
 #%%
 
-where='./OUTTESRdtrou30_rtrou4_tr10/ts0.35_ti0.07_tr0.01_n5_alpha0.03_Ks0.215'
+where='./OUTTESRdtrou30_rtrou3_tr10/ts0.35_ti0.07_tr0.01_n5_alpha0.03_Ks0.215'
 TWT_EL=F_extractTWT(where+'_EL/')
 VOL_EL=np.genfromtxt(where+'_EL/Volumes_EL.csv',delimiter=',',skip_header=1)
 #VOL_EL=np.genfromtxt('./OUTTESRdtrou30_rtrou2_tr10/ts0.35_ti0.07_tr0.011_n5_alpha0.03_Ks0.215_EL/Volumes_EL.csv',delimiter=',',skip_header=1)

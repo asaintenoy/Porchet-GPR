@@ -81,7 +81,7 @@ def ecriture_Grid_in_EL(mesh, p):
         e=np.array(sorted(e, key=lambda colonne: colonne[1])) 
         f=np.array(sorted(f, key=lambda colonne: colonne[1]))
     
-        for i in range(0,len(a[:,0]-1)) :
+        for i in range(0,len(a[:,0])) :
             if i==0 : #Premier noeud
                 e[i,2] = ((math.pi)/3) * ( (e[i+1,1] + 2* e[i,1]) * (e[i+1,1]-e[i,1]))
             elif i==(len(a[:,0])-1) : #Dernier noeud
@@ -90,7 +90,7 @@ def ecriture_Grid_in_EL(mesh, p):
                 e[i,2] = ((math.pi)/3) * ( (e[i-1,1] + 2* e[i,1]) * (e[i,1]-e[i-1,1]) + (e[i+1,1] + 2* e[i,1]) * (e[i+1,1]-e[i,1]))
 
                 
-        for i in range (0,len(b[:,0]-1)) :
+        for i in range (0,len(b[:,0])-1) :
             if i==0 : #Premier noeud
                 f[i,2] = ((math.pi)/3) * ( (f[i+1,1] + 2* f[i,1]) * (f[i+1,1]-f[i,1]))
             elif i==(len(b[:,0])-1) : #Dernier noeud
@@ -160,7 +160,7 @@ def ecriture_Grid_in_EL(mesh, p):
     fgrid.write("""Width array:\n""")
     
     for i in range(0,len(e[:,0])) :
-        fgrid.write("""{:.3f} \t""".format(round(e[i,2],3)))
+        fgrid.write("""{:.4f} \t""".format(e[i,2]))
         k = k + 1
         if k==7 :
             fgrid.write("""\n""")
@@ -172,7 +172,7 @@ def ecriture_Grid_in_EL(mesh, p):
 
     if f.any() or f.size > 0:
         for i in range(0,len(f[:,0])) :
-            fgrid.write("""{:.3f} \t""".format(round(f[i,2],3)))
+            fgrid.write("""{:.4f} \t""".format(f[i,2]))
             k = k + 1
             if k==7 :
                 fgrid.write("""\n""")

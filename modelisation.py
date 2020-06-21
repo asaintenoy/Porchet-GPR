@@ -17,6 +17,8 @@ from maillage_SWMS2D import maillage_SWMS2D
 from initial_conditions import initial_conditions
 from initial_conditions_EL import  initial_conditions_EL
 from ecriture_fichiers_SWMS2D import ecriture_Selector_in, ecriture_Grid_in 
+from ecriture_fichiers_SWMS2D_EL import ecriture_Selector_in, ecriture_Grid_in_EL 
+
 from ecriture_fichiers_GPRMAX import ecriture_fichiers_GPRMAX
 from ecriture_fichiers_GPRMAX_EL import ecriture_fichiers_GPRMAX_EL
 from maillage_GPRMAX_EL import maillage_GPRMAX_EL
@@ -116,7 +118,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
 
     #Création des fichiers .in nécessaires pour SMWS_2D
     ecriture_Selector_in(mesh, paramMVG, temps, p)
-    ecriture_Grid_in(mesh, p)
+    ecriture_Grid_in_EL(mesh, p)
     os.system("mv Grid.in SWMS_2D.IN")
     os.system("mv Selector.in SWMS_2D.IN")
             

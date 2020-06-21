@@ -12,7 +12,7 @@ os.chdir('/home/el/Codes/Porchet-GPR')
 
 #%% Param MVG
 # Teneur en eau résiduelle
-tr = 0.01
+tr = 0.0110
 # Teneur en eau à saturation
 ts = 0.35
 # Teneur en eau initiale
@@ -44,7 +44,7 @@ geometry.dtrou = 30
 # elevation du fond du trou
 geometry.etrou = geometry.emax - geometry.dtrou
  # rayon du trou en cm
-geometry.r=4
+geometry.r=2.0
 # hauteur d'eau imposée au fond du trou en cm
 geometry.h_eau=10#5.0
 # pas de la maille en cm
@@ -88,7 +88,7 @@ paramGPRMAX.sigma=0.0000
 # Relative dielectric permittivity of water
 paramGPRMAX.eps_w=80.1
 # Relative dielectric permittivity of PVC
-paramGPRMAX.eps_pvc=3
+paramGPRMAX.eps_pvc=2
 # Relative dielectric permittivity of pure silice
 paramGPRMAX.eps_s=2.5
 # Ricker signal central frequency (Hz)
