@@ -69,7 +69,7 @@ def maillage_SWMS2D_EL(geometry):
 
     mesh=pg.meshtools.createMesh(poly, quality=geometry.quality, area=geometry.area, smooth=geometry.smooth)
     #mesh=pg.meshtools.createMesh(poly, quality=34, area=0.5, smooth=geometry.smooth)
-    poly.exportVTK('plc')
+    #poly.exportVTK('plc')
     mesh.exportVTK('mesh')
     pg_pos = mesh.positions()
     mesh_pos = np.array((np.array(pg.x(pg_pos)), np.array(pg.y(pg_pos)), np.array(pg.z(pg_pos)))).T #On crée une matrice contenant la position des noeuds

@@ -85,8 +85,8 @@ def ecriture_fichiers_GPRMAX_EL(X, Y, grid_z0, trace_number, nom, paramMVG, para
     o=np.where((A[:,0]<=w+dx/2+radius) & (A[:,0]>=w-dx/2-radius) & (A[:,1]>=etrou))
     ii=np.unique(A[o][:,1])
     blou=A[o]
-    #geometry.tol=10**(-4)
-    np.savetxt('bordel.csv',A,fmt='%.6f',delimiter=',')
+    
+    
     for i in ii:
         a=np.where(comparaison_array_number(A[o,1],i,geometry.tol))
         b=np.where((comparaison_array_number(A[:,0],w+dx/2+radius,geometry.tol))&(comparaison_array_number(A[:,1],i,geometry.tol)))
