@@ -90,7 +90,7 @@ def ecriture_Grid_in_EL(mesh, p):
                 e[i,2] = ((math.pi)/3) * ( (e[i-1,1] + 2* e[i,1]) * (e[i,1]-e[i-1,1]) + (e[i+1,1] + 2* e[i,1]) * (e[i+1,1]-e[i,1]))
 
                 
-        for i in range (0,len(b[:,0])-1) :
+        for i in range (0,len(b[:,0])) :
             if i==0 : #Premier noeud
                 f[i,2] = ((math.pi)/3) * ( (f[i+1,1] + 2* f[i,1]) * (f[i+1,1]-f[i,1]))
             elif i==(len(b[:,0])-1) : #Dernier noeud
