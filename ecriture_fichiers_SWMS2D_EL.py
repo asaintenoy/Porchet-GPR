@@ -138,13 +138,14 @@ def ecriture_Grid_in_EL(mesh, p):
     for i in range(0,len(e[:,0])) :
         fgrid.write("""{:d} \t""".format(int(e[i,0]+1)))
         k = k + 1
-        if k==7 :
+        if (k==7) :
             fgrid.write("""\n""")
             k = 1
-        
+    if(k!=1):
+        fgrid.write("""\n""")    
     k = 1
 
-    fgrid.write("""\n""")
+    #fgrid.write("""\n""")
     if f.any() or f.size > 0:
         for i in range(0,len(f[:,0])) :
             fgrid.write("""{:d} \t""".format(int(f[i,0]+1)))
@@ -152,10 +153,11 @@ def ecriture_Grid_in_EL(mesh, p):
             if k==7 :
                 fgrid.write("""\n""")
                 k = 1
-
-        k = 1 
-
+    if(k!=1):
         fgrid.write("""\n""")
+    k = 1 
+
+        
     
     fgrid.write("""Width array:\n""")
     
@@ -165,8 +167,8 @@ def ecriture_Grid_in_EL(mesh, p):
         if k==7 :
             fgrid.write("""\n""")
             k = 1
-    
-    fgrid.write("""\n""")
+    if(k!=1):
+        fgrid.write("""\n""")
 
     k = 1 
 
@@ -177,8 +179,9 @@ def ecriture_Grid_in_EL(mesh, p):
             if k==7 :
                 fgrid.write("""\n""")
                 k=1
-
+    if(k!=1):
         fgrid.write("""\n""")
+        
     fgrid.write("""Length:\n""")
     fgrid.write("""0\n""")
 

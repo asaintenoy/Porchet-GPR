@@ -12,7 +12,7 @@ os.chdir('/home/el/Codes/Porchet-GPR')
 
 #%% Param MVG
 # Teneur en eau résiduelle
-tr = 0.0110
+tr = 0.0108
 # Teneur en eau à saturation
 ts = 0.35
 # Teneur en eau initiale
@@ -44,12 +44,12 @@ geometry.dtrou = 30
 # elevation du fond du trou
 geometry.etrou = geometry.emax - geometry.dtrou
  # rayon du trou en cm
-geometry.r=2.0
+geometry.r=6
 # hauteur d'eau imposée au fond du trou en cm
 geometry.h_eau=10#5.0
 # pas de la maille en cm
-geometry.dx = 0.1
-#geometry.dx = 1
+#geometry.dx = 0.1
+geometry.dx = 1.0
 # profondeur sous le trou (cm) jusqu'où on souhaite un maillage affiné. 
 geometry.zaff= 20
 #largeur horizontal de la zone affinée (cm)
@@ -82,7 +82,8 @@ paramGPRMAX.xmax = geometry.xmax
 paramGPRMAX.zmin = geometry.emin
 paramGPRMAX.zmax = geometry.emax
 # Taille des mailles (cm)
-paramGPRMAX.dx = 1
+################################################
+paramGPRMAX.dx =0.5## attention ici
 # Electrical conductivity of the medium
 paramGPRMAX.sigma=0.0000
 # Relative dielectric permittivity of water

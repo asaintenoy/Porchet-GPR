@@ -165,8 +165,9 @@ def ecriture_Grid_in(mesh, p):
         if k==7 :
             fgrid.write("""\n""")
             k = 1
-    
-    fgrid.write("""\n""")
+    if(k!=1):
+        fgrid.write("""\n""")
+        
 
     k = 1 
 
