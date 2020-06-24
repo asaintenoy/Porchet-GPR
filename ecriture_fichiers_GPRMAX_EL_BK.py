@@ -14,15 +14,17 @@ def ecriture_fichiers_GPRMAX_EL(X, Y, grid_z0, trace_number, nom, paramMVG, para
     dx=np.float64(abs((X)[0,1]-(X)[0,0]))
     dy=np.float64(abs((Y)[1,0]-(Y)[0,0]))
 
-
+    # if(dl>dx):
+    #     dl=dx
+    #dl=0.007    
+    dl=dx*0.7
     fgrid=open(nom+'_'+str(trace_number+1)+'.in',"w")
     fgrid.write("""------------------------------------------------\n""")
     #fgrid.write("""#number_of_media: {}\n""".format(nmedia+4))
-    fgrid.write("""#domain: {:.5f} {:.5f} {:.5f}\n""".format(2*max(X[0,:])+dx, 2*max(Y[:,0]), dx))
-    fgrid.write("""#dx_dy_dz: {:.5f} {:.5f} {:.5f}\n""".format(dx, dx, dx))
-#    fgrid.write("""#time_step_stability_factor: {}\n""".format(paramGPRMAX.fac_dt))
+    fgrid.write("""#domain: {:.5f} {:.5f} {:.5f}\n""".format(2*max(X[0,:])+dx, 2*max(Y[:,0]), dl))
+    fgrid.write("""#dx_dy_dz: {:.5f} {:.5f} {:.5f}\n""".format(dl, dl, dl))
     fgrid.write("""#time_window: {}\n""".format(paramGPRMAX.time))
-   
+    #fgrid.write("""#time_step_stability_factor: {}\n""".format(paramGPRMAX.fac_dt))
     #fgrid.write("""#abc_type: pml\n""")
     #fgrid.write("""#pml_cells: {}\n""".format(10))
     fgrid.write("""#waveform: ricker 1.0 {} Mydipole\n""".format(paramGPRMAX.wave_freq))
@@ -65,20 +67,13 @@ def ecriture_fichiers_GPRMAX_EL(X, Y, grid_z0, trace_number, nom, paramMVG, para
       
     for ii in range(0,len(Y[:,0])) :
           for jj in range(0, len(grid_z0[0,:])) :
-              #fgrid.write("""#box: {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {}\n""".format(w+X[ii,jj]-dx/2, \
-              #          d+Y[ii,jj]-dy/2, 0.0, w+X[ii,jj]+dx/2,d+Y[ii,jj]+dy/2, dl,\
-              #              materiaux[grid_z0[ii,jj]][0]))
-              fgrid.write("""#box: {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {}\n""".format(w+X[ii,jj]-dx/2, \
-                             d+Y[ii,jj]-dy/2, 0.0, w+X[ii,jj]+dx/2,d+Y[ii,jj]+dy/2, dx,\
-                             materiaux[grid_z0[ii,jj]][0]))  
+              fgrid.write("""#box: {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {}\n""".format(w+X[ii,jj]-dx/2, d+Y[ii,jj]-dy/2, 0.0, w+X[ii,jj]+dx/2,d+Y[ii,jj]+dy/2, dl, materiaux[grid_z0[ii,jj]][0]))
               A[count,0]=w+X[ii,jj]-dx/2
               A[count,1]=d+Y[ii,jj]-dy/2
               A[count,2]=grid_z0[ii,jj]
       
               count=count+1
-              fgrid.write("""#box: {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {}\n""".format(w-X[ii,jj]-dx/2, \
-                             d+Y[ii,jj]-dy/2, 0.0, w-X[ii,jj]+dx/2,d+Y[ii,jj]+dy/2, dx,\
-                             materiaux[grid_z0[ii,jj]][0]))
+              fgrid.write("""#box: {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {}\n""".format(w-X[ii,jj]-dx/2, d+Y[ii,jj]-dy/2, 0.0, w-X[ii,jj]+dx/2,d+Y[ii,jj]+dy/2, dl, materiaux[grid_z0[ii,jj]][0]))
               A[count,0]=w-X[ii,jj]-dx/2
               A[count,1]=d+Y[ii,jj]-dy/2
               A[count,2]=grid_z0[ii,jj]
@@ -100,12 +95,12 @@ def ecriture_fichiers_GPRMAX_EL(X, Y, grid_z0, trace_number, nom, paramMVG, para
         for ii in a[1]:
             blou[ii,2]=A[b,2]
             A[o]=blou   
-            fgrid.write("""#box: {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {}\n""".format(blou[ii,0], i,0.0, blou[ii,0]+dx,i+dy, dx, materiaux[blou[ii,2]][0]))
+            fgrid.write("""#box: {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {}\n""".format(blou[ii,0], i,0.0, blou[ii,0]+dx,i+dy, dl, materiaux[blou[ii,2]][0]))
     #Si premier pas de temps, on ajoute une boite d'eau
     if trace_number==0 :
         q=np.where((A[:,0]<=w+dx/2+radius) & (A[:,0]>=w-dx/2-radius) & (A[:,1]>=etrou) & (A[:,1]<=etrou+h_eau))
         A[q,2]=grid_z0.max()
-        fgrid.write("""#box: {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {}\n""".format(w-dx/2-radius, etrou, 0.0, w+dx/2+radius, etrou+h_eau, dx, materiaux[grid_z0.max()][0])) #materiaux[grid_z0.max()][0]
+        fgrid.write("""#box: {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f} {}\n""".format(w-dx/2-radius, etrou, 0.0, w+dx/2+radius, etrou+h_eau, dl, materiaux[grid_z0.max()][0])) #materiaux[grid_z0.max()][0]
     
     #Ajout du tuyau pvc dans le trou      
     #fgrid.write("""#box: {} {} {} {} {} {} pvc\n""".format(round(w-dx/2-radius,2), round(etrou+d,2), 0.0, round(w+dx/2+radius,2), round(max(Y[:,0])*1.1,2), dl)) #ajout du tuyau tout le long

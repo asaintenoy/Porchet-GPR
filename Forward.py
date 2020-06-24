@@ -35,11 +35,11 @@ def Forward(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     Res['Volumes(ml)']=Vol
     Res['TWT(ns)'].to_csv(folderout + '/TWT_EL.csv',sep=',', encoding='utf-8', index=None, header=True)
     Res['Volumes(ml)'].to_csv(folderout + '/Volumes_EL.csv', sep=',', encoding='utf-8', index=None, header=True)
-    os.popen('rm -rf ' + folderout + '/*.in')
+    #os.popen('rm -rf ' + folderout + '/*.in')
     os.popen('rm -rf ' + folderout + '/SWMS_2D.IN/*.in')
-    os.popen('rm -rf ' + folderout + '/gprMax')
-    os.popen('rm -rf ' +folderout + '/gprMaxMerge')
-    os.popen('bzip2 -9 '+folderout+ '/radargram__merged.out SWMS_2D.OUT/th.out')
+    #os.popen('rm -rf ' + folderout + '/gprMax')
+    #os.popen('rm -rf ' +folderout + '/gprMaxMerge')
+    #os.popen('bzip2 -9 '+folderout+ '/radargram__merged.out SWMS_2D.OUT/th.out')
     os.popen('rm -rf ' + folderout + '/SWMS_2D.OUT/*.out')
       
     return TWT,Vol 

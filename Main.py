@@ -12,7 +12,7 @@ os.chdir('/home/el/Codes/Porchet-GPR')
 
 #%% Param MVG
 # Teneur en eau résiduelle
-tr = 0.0107
+tr = 0.008
 # Teneur en eau à saturation
 ts = 0.35
 # Teneur en eau initiale
@@ -44,12 +44,12 @@ geometry.dtrou = 30
 # elevation du fond du trou
 geometry.etrou = geometry.emax - geometry.dtrou
  # rayon du trou en cm
-geometry.r=2.0
+geometry.r=3.0
 # hauteur d'eau imposée au fond du trou en cm
 geometry.h_eau=10#5.0
 # pas de la maille en cm
 #geometry.dx = 0.1
-geometry.dx = 1.0
+geometry.dx = 1
 # profondeur sous le trou (cm) jusqu'où on souhaite un maillage affiné. 
 geometry.zaff= 20
 #largeur horizontal de la zone affinée (cm)
@@ -83,7 +83,7 @@ paramGPRMAX.zmin = geometry.emin
 paramGPRMAX.zmax = geometry.emax
 # Taille des mailles (cm)
 ################################################
-paramGPRMAX.dx =1## attention ici
+paramGPRMAX.dx =0.7## attention ici
 # Electrical conductivity of the medium
 paramGPRMAX.sigma=0.0000
 # Relative dielectric permittivity of water
@@ -105,7 +105,7 @@ paramGPRMAX.spatial_step = 5
 # Trace time window (ns)
 paramGPRMAX.time = 30e-9
 #time_step_stability_factor (pas utilisé pour le moment...)
-paramGPRMAX.fac_dt = 0.2 
+paramGPRMAX.fac_dt = 0.01
 #%% Forward
 from Forward import Forward
 [TWT,Vol]=Forward(geometry,pVg,paramGPRMAX,temps,tmax_SWMS2D)
@@ -133,7 +133,7 @@ fig.legend()
 #%%
 from outils import rada_plot
 import h5py
-filepath='OUTTESRdtrou30_rtrou4_tr10/ts0.35_ti0.07_tr0.01_n5_alpha0.03_Ks0.215/'
+filepath='./OUTTESRdtrou30_rtrou3.0_tr10/ts0.35_ti0.07_tr0.008_n5_alpha0.03_Ks0.215/'
 filename='radargram__merged.out'
 f = h5py.File(filepath + filename, 'r')
 
