@@ -231,7 +231,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     os.popen(command2).readlines()
     end_running.append(time.time()-start_running)
 
-    #os.popen("rm -rf *.in")
+    os.popen("rm -rf *.in")
     print('Running GPR time:'+str(end_running))
     for i in range(0,nT+1) :
         os.popen("rm -rf "+ nom + "_" + str(i+1) + ".out")
