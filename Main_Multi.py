@@ -12,13 +12,16 @@ from param_acquisition import ParamGPRMAX, ParamMVG, Geometry
 import itertools
 import numpy as np
 import dask
+import os
 #from joblib import Parallel, delayed
-
+os.chdir('/home/el/Codes/Porchet-GPR')
 #%% Geometrie
 #def des paramètres géométriques
 geometry=Geometry()
 
 #Domaine de calcul (en cm)
+#Tolerance
+geometry.tol=10**(-7)
 # largeur
 geometry.xmin=0 
 geometry.xmax=40
@@ -30,12 +33,12 @@ geometry.dtrou = 30
 # elevation du fond du trou
 geometry.etrou = geometry.emax - geometry.dtrou
  # rayon du trou en cm
-geometry.r=4
+geometry.r=2
 # hauteur d'eau imposée au fond du trou en cm
 geometry.h_eau=5.0
 # pas de la maille en cm
-geometry.dx = 0.1
-#geometry.dx = 1
+#geometry.dx = 0.1
+geometry.dx = 1
 # profondeur sous le trou (cm) jusqu'où on souhaite un maillage affiné. 
 geometry.zaff= 20
 #largeur horizontal de la zone affinée (cm)
@@ -115,10 +118,9 @@ for p in itertools.product(tr, ts, ti, Ks, n, alpha):
     # Définition des paramètres MVG
     paramMVG = ParamMVG(tr=p[0], ts=p[1],ti=p[2], Ks=p[3], n=p[4], alpha=p[5])
     paramMVG.porosity = paramMVG.ts
-    tasks.append(dask.delayed(Forward)(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D))
+    [twt,vol]=Forward(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D)
 
 
-dask.compute(tasks, scheduler='processes')
 
 
 
