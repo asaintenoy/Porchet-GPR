@@ -75,7 +75,7 @@ def run(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D):
     # try: c'est pour pouvoir prendre la main si ça foire.
     #try:
 
-    myDirName = "OUTTESR"+repr(geometry)+"/"+repr(paramMVG)
+    myDirName = "OUTRosetta"+repr(geometry)+"/"+repr(paramMVG)
     nom='radargram'
     filename = nom + '__merged.out'
 
