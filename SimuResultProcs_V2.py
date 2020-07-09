@@ -243,7 +243,7 @@ ouca='Bilb'
 #ouca='Auffar'
 #ouca='Tcherno'
 fontouney=20
-for filit in hahat[0:2]:
+for filit in hahat:
     lst=[]
     fin=filit.find('.csv',-4)   
     guili=filit.find('/',-40)
@@ -350,7 +350,7 @@ for filit in hahat[0:2]:
 
     df_params_sorted=df_params.sort_values(by=['RMSE'],inplace=False,ascending=False)
     df_params_sorted.reset_index(drop=True, inplace=True)
-    pc=0.01#percent
+    pc=0.1#percent
     
     df_params_sorted_cut=df_params_sorted[0:np.int(np.round(pc*len(df_params_sorted)))]
     df_params_sorted_cut.reset_index(drop=True, inplace=True)
@@ -361,8 +361,8 @@ for filit in hahat[0:2]:
 
     fig=px.parallel_coordinates(df_params_sorted_cut[['ti','ts','alpha', 'n', 'Ks','RMSE']], color='RMSE', labels={'ti','ts','alpha', 'n', 'Ks'},\
                             color_continuous_scale=px.colors.diverging.Tealrose)
-    fig.show()
-    fig.write_html('gni.html')
+    #fig.show()
+    fig.write_html('./plots/'+ouca+'/NormalizedRMSEParallelC_'+str(np.round(100*pc))+'pc_'+ouca+Nama+'.html')
  
 ################### histogram
     # df_params_sorted=df_params.sort_values(by=['RMSE'],inplace=False)
