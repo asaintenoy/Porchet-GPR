@@ -17,7 +17,7 @@ import dask
 #%% Geometrie
 #def des paramètres géométriques
 geometry=Geometry()
-
+geometry.tol=10**(-7)
 #Domaine de calcul (en cm)
 # largeur
 geometry.xmin=0 
@@ -68,7 +68,7 @@ paramGPRMAX.xmax = geometry.xmax
 paramGPRMAX.zmin = geometry.emin
 paramGPRMAX.zmax = geometry.emax
 # Taille des mailles (cm)
-paramGPRMAX.dx = 1.0 
+paramGPRMAX.dx = 0.5 
 # Electrical conductivity of the medium
 paramGPRMAX.sigma=0.0000
 # Relative dielectric permittivity of water
@@ -113,6 +113,7 @@ paramMVG.porosity = paramMVG.ts
 #%% Lancement du calcul
 tasks = []
 dd=np.arange(25, 35, 0.5, 'float')
+
 for p in dd:
     # profondeur du trou en cm
     geometry.dtrou = p
