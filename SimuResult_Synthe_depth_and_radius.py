@@ -49,7 +49,7 @@ fname=next(os.walk(foldernama))[1]
 
 
 
-#%%Data
+#%%pseudo data
 #CDC
 # hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/twt*.csv')
 # ouca='Bilb'
@@ -80,6 +80,8 @@ fname=next(os.walk(foldernama))[1]
 #     listounet.append([(TWT_XP),(VOL_XP),[255, 165, 0]])
 
 # df_params_XP=pd.DataFrame(listounet,columns=['TWT_XP','VOL_XP','Color']) 
+TWT_XP=F_extractTWT('./OUTFinalProfR/OUTProfdtrou30.0_rtrou4.0_tr5.0/ts0.36_ti0.09_tr0.03_n6_alpha0.025_Ks0.4/')
+VOL_XP=np.genfromtxt('./OUTFinalProfR/OUTProfdtrou30.0_rtrou4.0_tr5.0/ts0.36_ti0.09_tr0.03_n6_alpha0.025_Ks0.4'+'/Volumes_EL.csv',delimiter=',',skip_header=1)
 
 #%%
 #ouca='Poligny'
@@ -90,12 +92,16 @@ fontouney=20
 lst=[]
 for ii in fname: 
 
-    p=read_parameters(foldernama+ii)
+    p=read_parameters(foldernama+ii+'/'+'ts0.36_ti0.09_tr0.03_n6_alpha0.025_Ks0.4/')
     paramMVG = ParamMVG(tr=p[2], ts=p[0], ti=p[1], Ks=p[5], n=p[3], alpha=p[4])
     try:
         
-        temp=F_extractTWT(foldernama+ii)
-        vol=np.genfromtxt(foldernama+ii+'/Volumes_EL.csv',delimiter=',',skip_header=1)
+        temp=F_extractTWT(foldernama+ii+'/ts0.36_ti0.09_tr0.03_n6_alpha0.025_Ks0.4/')
+        vol=np.genfromtxt(foldernama+ii+'/ts0.36_ti0.09_tr0.03_n6_alpha0.025_Ks0.4'+'/Volumes_EL.csv',delimiter=',',skip_header=1)
+        rmseTwt=np.sqrt(np.mean((temp-TWT_XP)**2)/len(TWT_XP))/(max(TWT_XP)-min(TWT_XP))
+        rmsevol=np.sqrt(np.mean(((0.001*(vol-VOL_XP))**2))/len(VOL_XP))/(max(VOL_XP)-min(VOL_XP))
+            #rmsevol=0
+        rmse=np.sqrt(rmseTwt**2+rmsevol**2)
         #vol=np.nan
         bibi = 0
         #rmse=np.sqrt(rmseTwt**2+rmsevol**2)
@@ -105,9 +111,9 @@ for ii in fname:
         #rmsevol=np.nan
         rmse=np.nan
     
-    lst.append([paramMVG.tr,paramMVG.ts,paramMVG.ti,paramMVG.n,paramMVG.alpha,paramMVG.Ks,bibi,(temp),(vol)])
+    lst.append([paramMVG.tr,paramMVG.ts,paramMVG.ti,paramMVG.n,paramMVG.alpha,paramMVG.Ks,bibi,rmse,(temp),(vol),float(ii[-9:-6]),float(ii[-19:-15])])
     
-df_params=pd.DataFrame(lst,columns=['tr','ts','ti','n','alpha','Ks','Converged','TWT','VOL']) 
+df_params=pd.DataFrame(lst,columns=['tr','ts','ti','n','alpha','Ks','Converged','RMSE','TWT','VOL','radius','depth']) 
 
 df_params['alpha']=df_params['alpha']*100
 
@@ -150,64 +156,46 @@ ax[0].set_xlabel('Experimental time (min)',fontsize=fontouney)
 
 
 #%%
+
+
+
+
+
+
+
 ################Sensibility plot
 
-    df_params_sorted=df_params.sort_values(by=['RMSE'],inplace=False,ascending=False)
-    df_params_sorted.reset_index(drop=True, inplace=True)
-    pc=1#percent
-    
-    df_params_sorted_cut=df_params_sorted[0:np.int(np.round(pc*len(df_params_sorted)))]
-    df_params_sorted_cut.reset_index(drop=True, inplace=True)
-    
-    # df_params_sorted_cut=df_params_sorted[df_params_sorted['RMSE']<0.1]
-    # df_params_sorted_cut.reset_index(drop=True, inplace=True)
-    df_params=pd.DataFrame()
-    df_params=df_params_sorted_cut.copy()
 
-    plt.close('all')
-    legendounet=['ti','ts','n','alpha','Ks']
-    #df_params=df_params[(df_params['tr']==0.03) & (df_params['Ks']<0.49) & (df_params['Ks']>0.07) & (df_params['n']<10.1) ]
-    
-    (f1, ax)= plt.subplots(5,5,figsize=(25,15))
-    #cmap = mpl.cm.jet(vmin=0, vmax=1)
-    #norma = mpl.colors.Normalize(vmin=0, vmax=1)
-    maxi=df_params_sorted_cut['RMSE'][len(df_params)-1]
-    mini=df_params_sorted_cut['RMSE'][0]
-    #maxi=np.log10(1)
-    #mini=np.log10(0.05)
-    maxi=2
-    mini=0
-    #df_params['RMSE'] = df_params['RMSE'].apply(np.log10)
-    norm=plt.Normalize(mini,maxi)
-    for ii in range(5):
-        for jj in range(5):
-            if(ii==jj):
-                ax[ii,jj].hist(df_params[legendounet[ii]], weights=np.zeros_like(df_params_sorted_cut[legendounet[ii]]) + 1. / df_params_sorted_cut[legendounet[ii]].size)
-                ax[ii,jj].set_xlabel(legendounet[ii],fontsize=fontouney)
-                ax[ii,jj].set_ylabel('Rel Freq.',fontsize=fontouney)
-                ax[ii,jj].tick_params(axis='both', which='major', labelsize=fontouney)
-                ax[ii,jj].grid() 
-                
-            else:
-                sc=ax[ii,jj].scatter(df_params[legendounet[ii]],df_params[legendounet[jj]],c=df_params_sorted_cut.RMSE.apply(np.log10),cmap = 'jet',norm=norm)
-                #plt.colorbar(sc,ax=ax[ii,jj])
-                ax[ii,jj].grid()
-                ax[ii,jj].set_xlabel(legendounet[ii],fontsize=fontouney)
-                ax[ii,jj].set_ylabel(legendounet[jj],fontsize=fontouney)
-                ax[ii,jj].tick_params(axis='both', which='major', labelsize=fontouney)
 
-     
-    
-    left  = 0.045  # the left side of the subplots of the figure
-    right = 0.988    # the right side of the subplots of the figure
-    bottom = 0.049   # the bottom of the subplots of the figure
-    top = 0.987      # the top of the subplots of the figure
-    wspace = 0.224   # the amount of width reserved for blank space between subplots
-    hspace = 0.290   # the amount of height reserved for white space between subplots
-    plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspace, hspace=hspace)
-    
-    f1.savefig('./plots/'+ouca+'/RMSEVOLANDTWT_'+str(np.round(100*pc))+'pc_'+ouca+Nama+'.png',format='png')
-    
+plt.close('all')
+#df_params=df_params[(df_params['tr']==0.03) & (df_params['Ks']<0.49) & (df_params['Ks']>0.07) & (df_params['n']<10.1) ]
+
+(f1, ax)= plt.subplots(1,1,figsize=(25,15))
+#cmap = mpl.cm.jet(vmin=0, vmax=1)
+#norma = mpl.colors.Normalize(vmin=0, vmax=1)
+
+#maxi=np.log10(1)
+#mini=np.log10(0.05)
+#maxi=2
+#mini=0
+#df_params['RMSE'] = df_params['RMSE'].apply(np.log10)
+#norm=plt.Normalize(mini,maxi)
+sc=ax.scatter(df_params['radius'],df_params['depth'],c=df_params.RMSE,cmap = 'jet')
+ax.plot(4.0,30,marker='x',markersize=22)
+ax.set_xlabel('R',fontsize=fontouney)
+ax.set_ylabel('Depth',fontsize=fontouney)
+ax.tick_params(axis='both', which='major', labelsize=fontouney)
+ax.grid() 
+cbar=plt.colorbar(sc)
+cbar.ax.tick_params(labelsize=fontouney)         
+
+
+
+
+
+
+#f1.savefig('./plots/'+ouca+'/RMSEVOLANDTWT_'+str(np.round(100*pc))+'pc_'+ouca+Nama+'.png',format='png')
+#%%    
 ####################    
 ################### histogram
     # df_params_sorted=df_params.sort_values(by=['RMSE'],inplace=False)

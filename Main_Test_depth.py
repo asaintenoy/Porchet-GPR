@@ -113,10 +113,11 @@ paramMVG.porosity = paramMVG.ts
 #%% Lancement du calcul
 tasks = []
 dd=np.arange(25, 35, 0.5, 'float')
-
-for p in dd:
+rr=np.arange(2,6,0.5,'float')
+for p in itertools.product(dd, rr):
     # profondeur du trou en cm
-    geometry.dtrou = p
+    geometry.dtrou = p[0]
+    geometry.r=p[1]
     # elevation du fond du trou
     geometry.etrou = geometry.emax - geometry.dtrou
     #tasks.append(dask.delayed(Forward)(geometry,paramMVG,paramGPRMAX,temps,tmax_SWMS2D))
