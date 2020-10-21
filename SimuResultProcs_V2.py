@@ -285,7 +285,7 @@ for filit in hahat:
             vol=np.genfromtxt(foldernama+ii+'/Volumes_EL.csv',delimiter=',',skip_header=1)
             bibi = 0
             rmseTwt=np.sqrt(np.mean((temp-TWT_XP)**2)/len(TWT_XP))/(max(TWT_XP)-min(TWT_XP))
-            rmsevol=np.sqrt(np.mean(((0.001*(vol-VOL_XP))**2))/len(VOL_XP))/(max(VOL_XP)-min(VOL_XP))
+            rmsevol=np.sqrt(np.mean((((vol-VOL_XP))**2))/len(VOL_XP))/(max(VOL_XP)-min(VOL_XP))
             #rmsevol=0
             rmse=np.sqrt(rmseTwt**2+rmsevol**2)
         except:
@@ -304,7 +304,7 @@ for filit in hahat:
 
     df_params_sorted=df_params.sort_values(by=['RMSE'],inplace=False,ascending=False)
     df_params_sorted.reset_index(drop=True, inplace=True)
-    pc=1#percent
+    pc=0.1#percent
     
     df_params_sorted_cut=df_params_sorted[0:np.int(np.round(pc*len(df_params_sorted)))]
     df_params_sorted_cut.reset_index(drop=True, inplace=True)
@@ -318,12 +318,12 @@ for filit in hahat:
     (f1, ax)= plt.subplots(5,5,figsize=(25,15))
     #cmap = mpl.cm.jet(vmin=0, vmax=1)
     #norma = mpl.colors.Normalize(vmin=0, vmax=1)
-    #maxi=df_params_sorted_cut['RMSE'][len(df_params)-1]
-    #mini=df_params_sorted_cut['RMSE'][0]
+    mini=df_params_sorted_cut['RMSE'][len(df_params_sorted_cut)-1]
+    maxi=df_params_sorted_cut['RMSE'][0]
     #maxi=np.log10(1.5)
     #mini=np.log10(10**(-1))
-    maxi=0.3#0.6
-    mini=0.1
+    #maxi=0.4#0.4 pour 100%
+    #mini=0.1
     #df_params['RMSE'] = df_params['RMSE'].apply(np.log10)
     norm=plt.Normalize(mini,maxi)
     for ii in range(5):
@@ -336,7 +336,7 @@ for filit in hahat:
                 ax[ii,jj].grid() 
                 
             else:
-                sc=ax[ii,jj].scatter(df_params_sorted_cut[legendounet[ii]],df_params_sorted_cut[legendounet[jj]],c=df_params_sorted_cut.RMSE.apply(np.log10),cmap = 'jet',norm=norm)
+                sc=ax[ii,jj].scatter(df_params_sorted_cut[legendounet[ii]],df_params_sorted_cut[legendounet[jj]],c=df_params_sorted_cut.RMSE,cmap = 'jet',norm=norm)
                 #sc=ax[ii,jj].scatter(df_params_sorted_cut[legendounet[ii]],df_params_sorted_cut[legendounet[jj]],c=df_params_sorted_cut.RMSE,cmap = 'jet',norm=norm)
                 #plt.colorbar(sc,ax=ax[ii,jj])
                 ax[ii,jj].grid()
