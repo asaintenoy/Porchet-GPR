@@ -302,59 +302,59 @@ for filit in hahat:
     df_params['VOL']=df_params['VOL']*0.001
 ################Sensibility plot
 
-    df_params_sorted=df_params.sort_values(by=['RMSE'],inplace=False,ascending=False)
-    df_params_sorted.reset_index(drop=True, inplace=True)
-    pc=0.1#percent
+    # df_params_sorted=df_params.sort_values(by=['RMSE'],inplace=False,ascending=False)
+    # df_params_sorted.reset_index(drop=True, inplace=True)
+    # pc=0.1#percent
     
-    df_params_sorted_cut=df_params_sorted[0:np.int(np.round(pc*len(df_params_sorted)))]
-    df_params_sorted_cut.reset_index(drop=True, inplace=True)
+    # df_params_sorted_cut=df_params_sorted[0:np.int(np.round(pc*len(df_params_sorted)))]
+    # df_params_sorted_cut.reset_index(drop=True, inplace=True)
     
 
 
-    plt.close('all')
-    legendounet=['ti','ts','n','alpha','Ks']
-    #df_params=df_params[(df_params['tr']==0.03) & (df_params['Ks']<0.49) & (df_params['Ks']>0.07) & (df_params['n']<10.1) ]
+    # plt.close('all')
+    # legendounet=['ti','ts','n','alpha','Ks']
+    # #df_params=df_params[(df_params['tr']==0.03) & (df_params['Ks']<0.49) & (df_params['Ks']>0.07) & (df_params['n']<10.1) ]
     
-    (f1, ax)= plt.subplots(5,5,figsize=(25,15))
-    #cmap = mpl.cm.jet(vmin=0, vmax=1)
-    #norma = mpl.colors.Normalize(vmin=0, vmax=1)
-    mini=df_params_sorted_cut['RMSE'][len(df_params_sorted_cut)-1]
-    maxi=df_params_sorted_cut['RMSE'][0]
-    #maxi=np.log10(1.5)
-    #mini=np.log10(10**(-1))
-    #maxi=0.4#0.4 pour 100%
-    #mini=0.1
-    #df_params['RMSE'] = df_params['RMSE'].apply(np.log10)
-    norm=plt.Normalize(mini,maxi)
-    for ii in range(5):
-        for jj in range(5):
-            if(ii==jj):
-                ax[ii,jj].hist(df_params_sorted_cut[legendounet[ii]], weights=np.zeros_like(df_params_sorted_cut[legendounet[ii]]) + 1. / df_params_sorted_cut[legendounet[ii]].size)
-                ax[ii,jj].set_xlabel(legendounet[ii],fontsize=fontouney)
-                ax[ii,jj].set_ylabel('Rel Freq.',fontsize=fontouney)
-                ax[ii,jj].tick_params(axis='both', which='major', labelsize=fontouney)
-                ax[ii,jj].grid() 
+    # (f1, ax)= plt.subplots(5,5,figsize=(25,15))
+    # #cmap = mpl.cm.jet(vmin=0, vmax=1)
+    # #norma = mpl.colors.Normalize(vmin=0, vmax=1)
+    # mini=df_params_sorted_cut['RMSE'][len(df_params_sorted_cut)-1]
+    # maxi=df_params_sorted_cut['RMSE'][0]
+    # #maxi=np.log10(1.5)
+    # #mini=np.log10(10**(-1))
+    # #maxi=0.4#0.4 pour 100%
+    # #mini=0.1
+    # #df_params['RMSE'] = df_params['RMSE'].apply(np.log10)
+    # norm=plt.Normalize(mini,maxi)
+    # for ii in range(5):
+    #     for jj in range(5):
+    #         if(ii==jj):
+    #             ax[ii,jj].hist(df_params_sorted_cut[legendounet[ii]], weights=np.zeros_like(df_params_sorted_cut[legendounet[ii]]) + 1. / df_params_sorted_cut[legendounet[ii]].size)
+    #             ax[ii,jj].set_xlabel(legendounet[ii],fontsize=fontouney)
+    #             ax[ii,jj].set_ylabel('Rel Freq.',fontsize=fontouney)
+    #             ax[ii,jj].tick_params(axis='both', which='major', labelsize=fontouney)
+    #             ax[ii,jj].grid() 
                 
-            else:
-                sc=ax[ii,jj].scatter(df_params_sorted_cut[legendounet[ii]],df_params_sorted_cut[legendounet[jj]],c=df_params_sorted_cut.RMSE,cmap = 'jet',norm=norm)
-                #sc=ax[ii,jj].scatter(df_params_sorted_cut[legendounet[ii]],df_params_sorted_cut[legendounet[jj]],c=df_params_sorted_cut.RMSE,cmap = 'jet',norm=norm)
-                #plt.colorbar(sc,ax=ax[ii,jj])
-                ax[ii,jj].grid()
-                ax[ii,jj].set_xlabel(legendounet[ii],fontsize=fontouney)
-                ax[ii,jj].set_ylabel(legendounet[jj],fontsize=fontouney)
-                ax[ii,jj].tick_params(axis='both', which='major', labelsize=fontouney)
+    #         else:
+    #             sc=ax[ii,jj].scatter(df_params_sorted_cut[legendounet[ii]],df_params_sorted_cut[legendounet[jj]],c=df_params_sorted_cut.RMSE,cmap = 'jet',norm=norm)
+    #             #sc=ax[ii,jj].scatter(df_params_sorted_cut[legendounet[ii]],df_params_sorted_cut[legendounet[jj]],c=df_params_sorted_cut.RMSE,cmap = 'jet',norm=norm)
+    #             #plt.colorbar(sc,ax=ax[ii,jj])
+    #             ax[ii,jj].grid()
+    #             ax[ii,jj].set_xlabel(legendounet[ii],fontsize=fontouney)
+    #             ax[ii,jj].set_ylabel(legendounet[jj],fontsize=fontouney)
+    #             ax[ii,jj].tick_params(axis='both', which='major', labelsize=fontouney)
 
      
     
-    left  = 0.045  # the left side of the subplots of the figure
-    right = 0.988    # the right side of the subplots of the figure
-    bottom = 0.049   # the bottom of the subplots of the figure
-    top = 0.987      # the top of the subplots of the figure
-    wspace = 0.224   # the amount of width reserved for blank space between subplots
-    hspace = 0.290   # the amount of height reserved for white space between subplots
-    plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspace, hspace=hspace)
+    # left  = 0.045  # the left side of the subplots of the figure
+    # right = 0.988    # the right side of the subplots of the figure
+    # bottom = 0.049   # the bottom of the subplots of the figure
+    # top = 0.987      # the top of the subplots of the figure
+    # wspace = 0.224   # the amount of width reserved for blank space between subplots
+    # hspace = 0.290   # the amount of height reserved for white space between subplots
+    # plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspace, hspace=hspace)
     
-    f1.savefig('./plots/'+ouca+'/NormalizedLogRMSEVOLANDTWT_'+str(np.round(100*pc))+'pc_'+ouca+Nama+'.png',format='png')
+    # f1.savefig('./plots/'+ouca+'/NormalizedLogRMSEVOLANDTWT_'+str(np.round(100*pc))+'pc_'+ouca+Nama+'.png',format='png')
     
 ####################   Parallel coordinates
 
@@ -375,31 +375,31 @@ for filit in hahat:
     # fig.write_html('./plots/'+ouca+'/NormalizedRMSEParallelC_'+str(np.round(100*pc))+'pc_'+ouca+Nama+'.html')
  
 ################### histogram
-    # df_params_sorted=df_params.sort_values(by=['RMSE'],inplace=False)
-    # df_params_sorted.reset_index(drop=True, inplace=True)
-    # pc=0.1#10percent
+    df_params_sorted=df_params.sort_values(by=['RMSE'],inplace=False)
+    df_params_sorted.reset_index(drop=True, inplace=True)
+    pc=0.01#10percent
     
-    # df_params_sorted_cut=df_params_sorted[0:np.int(np.round(pc*len(df_params_sorted)))]
-    # df_params_sorted_cut.reset_index(drop=True, inplace=True)
+    df_params_sorted_cut=df_params_sorted[0:np.int(np.round(pc*len(df_params_sorted)))]
+    df_params_sorted_cut.reset_index(drop=True, inplace=True)
     
-    # #df_params_sorted_cut=df_params_sorted[df_params_sorted['RMSE']<0.1]
-    # #df_params_sorted_cut.reset_index(drop=True, inplace=True)
+    #df_params_sorted_cut=df_params_sorted[df_params_sorted['RMSE']<0.1]
+    #df_params_sorted_cut.reset_index(drop=True, inplace=True)
 
-    # plt.close('all')
-    # legendounet=['ts','n','alpha','Ks']
-    # (f2, ax)= plt.subplots(2,3,figsize=(25,15))
-    # kk=0
+    plt.close('all')
+    legendounet=['ts','n','alpha','Ks']
+    (f2, ax)= plt.subplots(2,3,figsize=(25,15))
+    kk=0
     
-    # for ii in range(2):
-    #     for jj in range(2):
-    #         ax[ii,jj].hist(df_params_sorted_cut[legendounet[kk]], weights=np.zeros_like(df_params_sorted_cut[legendounet[kk]]) + 1. / df_params_sorted_cut[legendounet[kk]].size)
-    #         ax[ii,jj].set_xlabel(legendounet[kk]+' Optim= '+str(df_params_sorted_cut[legendounet[kk]][0]),fontsize=fontouney)
-    #         ax[ii,jj].set_ylabel('Rel Freq.',fontsize=fontouney)
-    #         #ax[ii,jj].plot(df_params_sorted_cut[legendounet[kk]][0], 0.15, marker = '*', markersize = 10, mfc = 'k')
-    #         ax[ii,jj].tick_params(axis='both', which='major', labelsize=fontouney)
-    #         ax[ii,jj].grid() 
-    #         ax[ii,jj].set_ylim([0, 0.3])
-    #         kk=kk+1
+    for ii in range(2):
+        for jj in range(2):
+            ax[ii,jj].hist(df_params_sorted_cut[legendounet[kk]], weights=np.zeros_like(df_params_sorted_cut[legendounet[kk]]) + 1. / df_params_sorted_cut[legendounet[kk]].size)
+            ax[ii,jj].set_xlabel(legendounet[kk]+' Optim= '+str(df_params_sorted_cut[legendounet[kk]][0]),fontsize=fontouney)
+            ax[ii,jj].set_ylabel('Rel Freq.',fontsize=fontouney)
+            #ax[ii,jj].plot(df_params_sorted_cut[legendounet[kk]][0], 0.15, marker = '*', markersize = 10, mfc = 'k')
+            ax[ii,jj].tick_params(axis='both', which='major', labelsize=fontouney)
+            ax[ii,jj].grid() 
+            ax[ii,jj].set_ylim([0, 0.3])
+            kk=kk+1
 
 
 
@@ -417,27 +417,27 @@ for filit in hahat:
     # ax[ii,jj].grid() 
     # ax[ii,jj].set_ylim([0, 0.3])
     
-    # cmap = mpl.cm.jet((df_params_sorted_cut['RMSE'].values - df_params_sorted_cut['RMSE'].min())/\
-    # (df_params_sorted_cut['RMSE'].max() - df_params_sorted_cut['RMSE'].min()))    
-    # for  color, (index, row) in zip(cmap,df_params_sorted_cut.iterrows()):
-    #     ax[0,2].plot(Time_TWT_XP, row['TWT'], c=color)
-    #     #ax[1,2].plot(Time_TWT_XP, row['VOL'], c=color)
-    # ax[0,2].grid()
-    # ax[1,2].grid()
-    # ax[0,2].plot(Time_TWT_XP, TWT_XP, marker = '+', markersize = 10, mfc = 'k')
-    # ax[0,2].plot(Time_TWT_XP,df_params_sorted_cut['TWT'][0], marker = '*', markersize = 10, mfc = 'k')
-    # #ax[1,2].plot(Time_TWT_XP, 0.001*VOL_XP, marker = '+', markersize = 10, mfc = 'k') 
-    # #ax[1,2].plot(Time_TWT_XP,df_params_sorted_cut['VOL'][0], marker = '*', markersize = 10, mfc = 'k')
-    # ax[0,2].tick_params(axis='both', which='major', labelsize=fontouney)
-    # ax[1,2].tick_params(axis='both', which='major', labelsize=fontouney)
-    # ax[0,2].set_ylabel('TWT(ns)',fontsize=fontouney)
-    # ax[0,2].set_xlabel('Exp. Time (min)',fontsize=fontouney)
-    # #ax[1,2].set_ylabel('Vol. (l)',fontsize=fontouney)
-    # #ax[1,2].set_xlabel('Exp. Time (min)',fontsize=fontouney)
+    cmap = mpl.cm.jet((df_params_sorted_cut['RMSE'].values - df_params_sorted_cut['RMSE'].min())/\
+    (df_params_sorted_cut['RMSE'].max() - df_params_sorted_cut['RMSE'].min()))    
+    for  color, (index, row) in zip(cmap,df_params_sorted_cut.iterrows()):
+        ax[0,2].plot(Time_TWT_XP, row['TWT'], c=color)
+        ax[1,2].plot(Time_TWT_XP, row['VOL'], c=color)
+    ax[0,2].grid()
+    ax[1,2].grid()
+    ax[0,2].plot(Time_TWT_XP, TWT_XP, marker = '+', markersize = 10, mfc = 'k')
+    ax[0,2].plot(Time_TWT_XP,df_params_sorted_cut['TWT'][0], marker = '*', markersize = 10, mfc = 'k')
+    ax[1,2].plot(Time_TWT_XP, 0.001*VOL_XP, marker = '+', markersize = 10, mfc = 'k') 
+    ax[1,2].plot(Time_TWT_XP,df_params_sorted_cut['VOL'][0], marker = '*', markersize = 10, mfc = 'k')
+    ax[0,2].tick_params(axis='both', which='major', labelsize=fontouney)
+    ax[1,2].tick_params(axis='both', which='major', labelsize=fontouney)
+    ax[0,2].set_ylabel('TWT(ns)',fontsize=fontouney)
+    ax[0,2].set_xlabel('Exp. Time (min)',fontsize=fontouney)
+    #ax[1,2].set_ylabel('Vol. (l)',fontsize=fontouney)
+    #ax[1,2].set_xlabel('Exp. Time (min)',fontsize=fontouney)
     
     
-    # f2.suptitle(str(np.round(100*pc))+'% des modèles '+ ouca+'-'+Nama+'\n Nombre de modeles: '+str(len(df_params_sorted_cut))+', RMSE: ['+str(np.round(df_params_sorted_cut['RMSE'][0],4))+';'+str(np.round(df_params_sorted_cut['RMSE'][len(df_params_sorted_cut)-1],4))+'] (ns)', fontsize=fontouney)
-    # f2.savefig('./plots/'+ouca+'/Histo_'+'pc_'+str(round(100*pc))+'_'+ouca+'-'+Nama+'.png',format='png')
+    f2.suptitle(str(np.round(100*pc))+'% des modèles '+ ouca+'-'+Nama+'\n Nombre de modeles: '+str(len(df_params_sorted_cut))+', RMSE: ['+str(np.round(df_params_sorted_cut['RMSE'][0],4))+';'+str(np.round(df_params_sorted_cut['RMSE'][len(df_params_sorted_cut)-1],4))+'] (ns)', fontsize=fontouney)
+    f2.savefig('./plots/'+ouca+'/Histo_'+'pc_'+str(round(100*pc))+'_'+ouca+'-'+Nama+'.png',format='png')
 ###################
 
 #############Sensibility plot mais en coupant Ti
