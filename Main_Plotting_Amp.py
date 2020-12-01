@@ -87,10 +87,11 @@ df_params['alpha']=df_params['alpha']*100
 
 #%% plotting
 #cmap = mpl.cm.jet(len(df_params))
-gni=df_params.sample(10000)
+gni=pd.DataFrame()
+gni=df_params.sample(20)
 cmap = mpl.cm.jet(len(gni))
 (f2, ax)= plt.subplots(1,1,figsize=(25,15))
-for  color, (index, row) in zip(cmap,gni.iterrows()):
+for  index, row in gni.iterrows():
     ax.plot(Time_TWT_XP, row['Amp'])
     #ax[1,2].plot(Time_TWT_XP, row['VOL'], c=color)
 ax.grid()
