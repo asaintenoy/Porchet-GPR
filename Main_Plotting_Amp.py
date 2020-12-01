@@ -78,26 +78,82 @@ for ii in fname:
         #rmsevol=np.nan
         #rmse=np.nan
     
-    lst.append([paramMVG.tr,paramMVG.ts,paramMVG.ti,paramMVG.n,paramMVG.alpha,paramMVG.Ks,bibi,np.abs(Amp)])
+    lst.append([paramMVG.tr,paramMVG.ts,paramMVG.ti,paramMVG.n,paramMVG.alpha,paramMVG.Ks,bibi,temp,np.abs(Amp)])
     
-df_params=pd.DataFrame(lst,columns=['tr','ts','ti','n','alpha','Ks','Converged','Amp']) 
+df_params=pd.DataFrame(lst,columns=['tr','ts','ti','n','alpha','Ks','Converged','TWT','Amp']) 
 
 df_params['alpha']=df_params['alpha']*100
+df_params['Meany']=df_params['Amp'].apply(lambda x : np.mean(x))
 #df_params['VOL']=df_params['VOL']*0.001
 
 #%% plotting
 #cmap = mpl.cm.jet(len(df_params))
+plt.close('all')
 gni=pd.DataFrame()
-gni=df_params.sample(20)
-cmap = mpl.cm.jet(len(gni))
-(f2, ax)= plt.subplots(1,1,figsize=(25,15))
-for  index, row in gni.iterrows():
-    ax.plot(Time_TWT_XP, row['Amp'])
+gni=df_params.sample(30)
+cmap = plt.cm.jet(np.linspace(0,1,len(gni)))
+(f2, ax)= plt.subplots(1,2,figsize=(25,15))
+for  colo, (index, row) in zip(cmap,gni.iterrows()):
+    ax[0].plot(Time_TWT_XP, row['Amp'],c=colo)
+    ax[1].plot(Time_TWT_XP, row['TWT'],c=colo)
     #ax[1,2].plot(Time_TWT_XP, row['VOL'], c=color)
-ax.grid()
-
-ax.set_xlabel('Exp. Time (min)',fontsize=fontouney)
-ax.set_ylabel('Amp ',fontsize=fontouney)
+ax[0].grid()
+ax[1].grid()
+ax[0].set_xlabel('Exp. Time (min)',fontsize=fontouney)
+ax[0].set_ylabel('Amp ',fontsize=fontouney)
+ax[1].set_xlabel('Exp. Time (min)',fontsize=fontouney)
+ax[1].set_ylabel('TWT ',fontsize=fontouney)
 #ax[1,2].set_xlabel('Exp. Time (min)',fontsize=fontouney)
+
+
+#%% Histogramme de params
+plt.close('all')
+legendounet=['ts','n','alpha','Ks']
+#df_params=df_params[(df_params['tr']==0.03) & (df_params['Ks']<0.49) & (df_params['Ks']>0.07) & (df_params['n']<10.1) ]
+
+(f1, ax)= plt.subplots(2,2,figsize=(25,15))
+#cmap = mpl.cm.jet(vmin=0, vmax=1)
+#norma = mpl.colors.Normalize(vmin=0, vmax=1)
+norm=plt.Normalize(0,2)
+kk=0
+for ii in range(2):
+    for jj in range(2):
+        ax[ii,jj].hist(df_params[df_params['Meany'].isnull()][legendounet[kk]])
+        ax[ii,jj].set_xlabel(legendounet[kk])
+        ax[ii,jj].set_ylabel('Rel Freq.')
+        ax[ii,jj].grid()
+        kk=kk+1
+            
+
+ 
+#cbar_ax = f1.add_axes([0.85, 0.15, 0.05, 0.7])
+#enfoiros=f1.colorbar(sc, cax=cbar_ax)   
+#enfoiros.set_clim(0, 1)
+#f1.tight_layout()
+        #ax[ii,jj].xaxis.set_label_position('top') 
+
+#plt.colorbar().set_label('Wind speed',rotation=270)
+#plt.colorbar(sc)
+
+left  = 0.045  # the left side of the subplots of the figure
+right = 0.988    # the right side of the subplots of the figure
+bottom = 0.049   # the bottom of the subplots of the figure
+top = 0.987      # the top of the subplots of the figure
+wspace = 0.224   # the amount of width reserved for blank space between subplots
+hspace = 0.290   # the amount of height reserved for white space between subplots
+plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspace, hspace=hspace)
+# bordeldenomdedieudemerde=f1.colorbar(sc, ax=ax.ravel().tolist())
+# bordeldenomdedieudemerde.set_clim(0, 1)
+
+
+
+
+
+
+
+
+
+
+
 
 
