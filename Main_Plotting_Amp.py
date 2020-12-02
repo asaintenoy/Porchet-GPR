@@ -45,7 +45,7 @@ else:
 Time_TWT_XP = np.array([0, 0.25, 0.50, 0.75, 1.00, 1.50, 2.00, 2.50, 3.00, 4.00, 5.00, 6.00])    
  
 #%%
-foldernama='./OUT_20201121dtrou30_rtrou3_tr5.0/'
+foldernama='./OUT_20200722dtrou30_rtrou3_tr5.0/'
 fname=next(os.walk(foldernama))[1] 
 ouca='Poligny'
 #ouca='Bilb'
@@ -90,14 +90,15 @@ df_params['Meany']=df_params['Amp'].apply(lambda x : np.mean(x))
 #cmap = mpl.cm.jet(len(df_params))
 plt.close('all')
 gni=pd.DataFrame()
-gni=df_params.sample(30)
+gni=df_params.sample(10)
 cmap = plt.cm.jet(np.linspace(0,1,len(gni)))
 (f2, ax)= plt.subplots(1,2,figsize=(25,15))
 for  colo, (index, row) in zip(cmap,gni.iterrows()):
-    ax[0].plot(Time_TWT_XP, row['Amp'],c=colo)
+    ax[0].plot(Time_TWT_XP, row['Amp'],c=colo,label=str(np.round(row['Ks'],2))+'-'+str(np.round(row['alpha'],4))+'-'+str(row['n']))
     ax[1].plot(Time_TWT_XP, row['TWT'],c=colo)
     #ax[1,2].plot(Time_TWT_XP, row['VOL'], c=color)
 ax[0].grid()
+ax[0].legend()
 ax[1].grid()
 ax[0].set_xlabel('Exp. Time (min)',fontsize=fontouney)
 ax[0].set_ylabel('Amp ',fontsize=fontouney)
