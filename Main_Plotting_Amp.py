@@ -7,7 +7,6 @@ Created on Mon Nov 30 16:58:03 2020
 """
 
 import os
-import numpy as np
 import pandas as pd
 from pandas.plotting import parallel_coordinates
 import matplotlib as mpl
@@ -105,6 +104,126 @@ ax[0].set_ylabel('Amp ',fontsize=fontouney)
 ax[1].set_xlabel('Exp. Time (min)',fontsize=fontouney)
 ax[1].set_ylabel('TWT ',fontsize=fontouney)
 #ax[1,2].set_xlabel('Exp. Time (min)',fontsize=fontouney)
+
+
+#%%En log
+
+plt.close('all')
+gni=pd.DataFrame()
+gni=df_params.sample(30)
+cmap = plt.cm.jet(np.linspace(0,1,len(gni)))
+(f2, ax)= plt.subplots(1,1,figsize=(25,15))
+for  colo, (index, row) in zip(cmap,gni.iterrows()):
+    ax.plot(Time_TWT_XP[2:], np.log(row['Amp'][2:]/np.max(row['Amp'][2:])),c=colo,label=str(np.round(row['Ks'],2))+'-'+str(np.round(row['alpha'],4))+'-'+str(row['n']))
+            #ax[1,2].plot(Time_TWT_XP, row['VOL'], c=color)
+ax.grid()
+ax.legend()
+
+ax.set_xlabel('Exp. Time (min)',fontsize=fontouney)
+ax.set_ylabel('Amp ',fontsize=fontouney)
+
+
+#%% Fitting des droite
+from sklearn.linear_model import LinearRegression
+
+
+plt.close('all')
+gni=pd.DataFrame()
+gni=df_params.sample(30)
+cmap = plt.cm.jet(np.linspace(0,1,len(gni)))
+(f2, ax)= plt.subplots(1,1,figsize=(25,15))
+
+for  colo, (index, row) in zip(cmap,gni.iterrows()):
+    yy=np.log(row['Amp'][2:]/np.max(row['Amp'][2:]))
+    xx=Time_TWT_XP[2:].reshape(-1, 1)
+    model = LinearRegression().fit(xx, yy)
+    intercept = model.intercept_
+    slope = model.coef_
+
+    y_pred = intercept + slope * xx
+    ax.scatter(xx,yy,60,color=colo,marker='x')
+    ax.plot(xx,y_pred,color=colo,label=str(np.round(row['Ks'],2))+'-'+str(np.round(row['alpha'],4))+'-'+str(row['n']))
+    
+    #np.log(row['Amp'][2:]/np.max(np.abs(row['Amp'][1:])))
+            #ax[1,2].plot(Time_TWT_XP, row['VOL'], c=color)
+ax.grid()
+ax.legend()
+
+ax.set_xlabel('Exp. Time (min)',fontsize=fontouney)
+ax.set_ylabel('Amp ',fontsize=fontouney)
+
+
+
+#%% Appending les params
+
+slopy=[]
+intercepty=[]
+
+for  index, row in df_params.iterrows():
+    yy=np.log(row['Amp'][2:]/np.max(np.abs(row['Amp'][2:])))
+    xx=Time_TWT_XP[2:].reshape(-1, 1)
+    if(np.isnan(yy).any()):
+        intercept=np.nan
+        slope=np.nan
+    else:
+        model = LinearRegression().fit(xx, yy)
+        intercept = model.intercept_
+        slope = model.coef_[0]
+    
+    slopy.append(slope)
+    intercepty.append(intercept)
+    
+#%%
+df_params['Amp_slope']=np.array(slopy)
+df_params['Amp_intercept']=np.array(intercepty)
+df_params['SlopeSign']=np.sign(df_params['Amp_slope'])
+
+
+
+
+
+#%%
+import numpy
+import seaborn as sns
+plt.close('all')
+sns.color_palette("tab10")
+sns.pairplot(df_params, hue="species")
+#sns.distplot(df_params['Ks'])
+g = sns.distplot(data=df_params, x="Ks", hue="SlopeSign", palette="dark", alpha=.6, height=6)
+
+
+
+
+#%%
+import seaborn as sns
+plt.close('all')
+sns.color_palette("tab10")
+g = sns.pairplot(df_params[['tr', 'ts', 'ti', 'n', 'alpha', 'Ks','SlopeSign']], hue='SlopeSign',palette='Accent_r')
+#g.map_diag(sns.displot)
+#g.map_offdiag(sns.scatterplot)
+#g.map_upper(sns.scatterplot, s=15)
+#g.map_lower(sns.kdeplot)
+#g.map_diag(sns.histplot)
+#g.add_legend()
+#g.savefig("<ultidim.png",dpi=300)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #%% Histogramme de params

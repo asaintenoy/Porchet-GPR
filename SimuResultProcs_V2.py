@@ -26,6 +26,7 @@ from F_extract_volumes import F_extract_volumes
 import math
 import plotly.express as px
 from outils import read_parameters, rada_plot
+from sklearn.linear_model import LinearRegression
 
 
 pd.set_option('max_columns', 7)
@@ -75,6 +76,8 @@ for ii in fname:
         #temp = np.genfromtxt('./OUTdtrou30_rtrou4_tr5.0/'+ii+'/TWT_EL.csv', delimiter=',',skip_header=1)
         temp=F_extractTWT('./'+wata+ii)
         vol=np.genfromtxt('./'+wata+ii+'/Volumes_EL.csv',delimiter=',',skip_header=1)
+        Amp=np.genfromtxt('./'+wata+ii+'/AMP_EL.csv',skip_header=1)
+
         bibi = 0
         rmseTwt=np.sqrt(np.mean((temp-TWT_XP)**2))
         rmsevol=np.sqrt(np.mean(((0.001*(vol-VOL_XP))**2)))
@@ -207,10 +210,10 @@ f2.savefig('./plots/Histo_'+str(100*pc)+'pc_'+Nama+'.png',format='png')
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Compa Un par un mais en boucle
 
 #Poligny
-hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/TWT*.csv')
+#hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/TWT*.csv')
 
 #CDC
-#hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/twt*.csv')
+hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/Twt*.csv')
 
 #Auffargis
 #hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/Auffargis/Twts_Auffar*.csv')
@@ -246,29 +249,31 @@ fname=next(os.walk(foldernama))[1]
 
 
 #%%
-ouca='Poligny'
-#ouca='Bilb'
+#ouca='Poligny'
+ouca='Bilb'
 #ouca='Auffar'
 #ouca='Tcherno'
 #ouca='Cernay'
 fontouney=20
-for filit in hahat:
+for filit in hahat[:2]:
     lst=[]
     fin=filit.find('.csv',-4)   
     #guili=filit.find('/',-25)#Auffargis
     #guili=filit.find('/',-20)#CErnay
-    #guili=filit.find('/',-40)#Bilbo
-    guili=filit.find('/',-40)#Poligny
+    guili=filit.find('/',-40)#Bilbo
+    #guili=filit.find('/',-40)#Poligny
     debut=filit.find(ouca,guili)+len(ouca)
     
     #Nama=filit[debut:fin]
-    Nama=filit[-11:-4] #Poligny
-    #Nama=filit[-12:-4]#Bilbo
+    #Nama=filit[-11:-4] #Poligny
+    Nama=filit[-14:-4]#Bilbo
     #Nama=filit[-12:-4]#Auffargis
     #Nama=filit[-7:-4]#CErnay
     #temp=np.genfromtxt(filit, delimiter=',')
+    ##Lecture des fichier XP
+    #TWT
     temp=np.genfromtxt(filit, delimiter=',',skip_header=1)
-    #pour poiligny et autre merde a la con resempler
+    #pour poiligny et autre merde a la con resempler except pour cernay
     TWT_XP_RS = np.array([0, 0.25, 0.50, 0.75, 1.00, 1.50, 2.00, 2.50, 3.00, 4.00, 5.00, 6.00])    
     #TWT_XP_1=temp[:,1]
     #Time_TWT_XP_1=temp[:,0]
@@ -276,12 +281,20 @@ for filit in hahat:
     Time_TWT_XP=TWT_XP_RS
 
 
-
+    #Volume
     #temp=np.genfromtxt(filit[0:guili]+'/'+'volumes_'+ouca+Nama+'.csv',delimiter=',',skip_header=1)            
     temp=np.genfromtxt(filit[0:guili]+'/'+'Volumes_'+ouca+'_'+Nama+'.csv',delimiter=',',skip_header=1)  
     VOL_XP_temp=temp[:,1]
     Time_VOL_XP=temp[:,0]
     VOL_XP=np.interp(Time_TWT_XP,Time_VOL_XP,VOL_XP_temp)
+    
+    
+    #AMP
+    temp=np.genfromtxt(filit[0:guili]+'/'+'Amp_'+ouca+'_'+Nama+'.csv',delimiter=',',skip_header=1)
+    AMP_XP=temp[0]
+
+    
+    
     
     #Si tcherno
     
@@ -294,29 +307,41 @@ for filit in hahat:
         try:
             temp=F_extractTWT(foldernama+ii)
             vol=np.genfromtxt(foldernama+ii+'/Volumes_EL.csv',delimiter=',',skip_header=1)
+            Amp=np.genfromtxt(foldernama+ii+'/AMP_EL.csv',skip_header=1)
+            
+            yy=np.log(Amp[2:]/np.max(Amp[2:]))
+            xx=Time_TWT_XP[2:].reshape(-1, 1)
+            model = LinearRegression().fit(xx, yy)
+            #intercept = model.intercept_
+            slope = model.coef_
+
             ##
             bibi = 0
+            
             rmseTwt=np.sqrt(np.mean((temp-TWT_XP)**2)/len(TWT_XP))/(max(TWT_XP)-min(TWT_XP))
             rmsevol=np.sqrt(np.mean((((vol-VOL_XP))**2))/len(VOL_XP))/(max(VOL_XP)-min(VOL_XP))
+            rmseAmp=np.sqrt((slope[0]-AMP_XP)**2)
+            Amp=slope[0]
             ##Si thcerno
             #rmsevol=0
-            rmse=np.sqrt(rmseTwt**2+rmsevol**2)
+            rmse=np.sqrt(rmseTwt**2+rmsevol**2+rmseAmp**2)
         except:
             bibi=1
             rmseTwt=np.nan
             rmsevol=np.nan
+            Amp = np.nan
             rmse=np.nan
         
-        lst.append([paramMVG.tr,paramMVG.ts,paramMVG.ti,paramMVG.n,paramMVG.alpha,paramMVG.Ks,rmseTwt,rmsevol,rmse,bibi,(temp),(vol)])
+        lst.append([paramMVG.tr,paramMVG.ts,paramMVG.ti,paramMVG.n,paramMVG.alpha,paramMVG.Ks,rmseTwt,rmsevol,rmse,bibi,(temp),(vol),Amp])
         
-    df_params=pd.DataFrame(lst,columns=['tr','ts','ti','n','alpha','Ks','RMSETWT','RMSEVOL','RMSE','Converged','TWT','VOL']) 
+    df_params=pd.DataFrame(lst,columns=['tr','ts','ti','n','alpha','Ks','RMSETWT','RMSEVOL','RMSE','Converged','TWT','VOL','Amp']) 
     
     df_params['alpha']=df_params['alpha']*100
     df_params['VOL']=df_params['VOL']*0.001
+    df_params.loc[df_params['Amp']=<0,'RMSE']=np.nan
     
     
-    
-    pc=1#percent
+    pc=0.1#percent
     
 ################Sensibility plot
 
@@ -340,8 +365,8 @@ for filit in hahat:
     #mini=df_params_sorted_cut['RMSE'][0]
     #maxi=np.log10(1.5)
     #mini=np.log10(10**(-1))
-    maxi=0.1#0.06 pour 10% 0.03 pour 1%
-    mini=0.01
+    maxi=0.8#0.06 pour 10% 0.03 pour 1%
+    mini=0.1
     #df_params['RMSE'] = df_params['RMSE'].apply(np.log10)
     norm=plt.Normalize(mini,maxi)
     df_params_sorted_cut.sort_values(by=['RMSE'],inplace=True,ascending=False)
@@ -373,8 +398,8 @@ for filit in hahat:
     hspace = 0.290   # the amount of height reserved for white space between subplots
     plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspace, hspace=hspace)
     
-    f1.savefig('./plots/'+ouca+'/NormalizedRMSEVOLANDTWT_'+str(np.round(100*pc))+'pc_'+ouca+Nama+'.png',format='png')
-    
+    #f1.savefig('./plots/'+ouca+'/NormalizedRMSEVOLANDTWT_'+str(np.round(100*pc))+'pc_'+ouca+Nama+'.png',format='png')
+    input()
 ####################   Parallel coordinates
 
     # df_params_sorted=df_params.sort_values(by=['RMSE'],inplace=False,ascending=True)
