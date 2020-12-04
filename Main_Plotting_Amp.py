@@ -89,7 +89,7 @@ df_params['Meany']=df_params['Amp'].apply(lambda x : np.mean(x))
 #cmap = mpl.cm.jet(len(df_params))
 plt.close('all')
 gni=pd.DataFrame()
-gni=df_params.sample(10)
+gni=df_params.sample(50)
 cmap = plt.cm.jet(np.linspace(0,1,len(gni)))
 (f2, ax)= plt.subplots(1,2,figsize=(25,15))
 for  colo, (index, row) in zip(cmap,gni.iterrows()):
@@ -129,9 +129,9 @@ from sklearn.linear_model import LinearRegression
 
 plt.close('all')
 gni=pd.DataFrame()
-gni=df_params.sample(30)
+gni=df_params.sample(100)
 cmap = plt.cm.jet(np.linspace(0,1,len(gni)))
-(f2, ax)= plt.subplots(1,1,figsize=(25,15))
+(f2, ax)= plt.subplots(1,2,figsize=(25,15))
 
 for  colo, (index, row) in zip(cmap,gni.iterrows()):
     yy=np.log(row['Amp'][2:]/np.max(row['Amp'][2:]))
@@ -141,16 +141,17 @@ for  colo, (index, row) in zip(cmap,gni.iterrows()):
     slope = model.coef_
 
     y_pred = intercept + slope * xx
-    ax.scatter(xx,yy,60,color=colo,marker='x')
-    ax.plot(xx,y_pred,color=colo,label=str(np.round(row['Ks'],2))+'-'+str(np.round(row['alpha'],4))+'-'+str(row['n']))
-    
+    ax[0].scatter(xx,yy,60,color=colo,marker='x')
+    ax[0].plot(xx,y_pred,color=colo,label=str(np.round(row['Ks'],2))+'-'+str(np.round(row['alpha'],4))+'-'+str(row['n']))
+    ax[1].plot(Time_TWT_XP[2:], np.log(row['Amp'][2:]/(np.max(row['Amp'][2:])-np.min(row['Amp'][2:]))),color=colo)
     #np.log(row['Amp'][2:]/np.max(np.abs(row['Amp'][1:])))
             #ax[1,2].plot(Time_TWT_XP, row['VOL'], c=color)
-ax.grid()
-ax.legend()
-
-ax.set_xlabel('Exp. Time (min)',fontsize=fontouney)
-ax.set_ylabel('Amp ',fontsize=fontouney)
+ax[0].grid()
+ax[0].legend()
+ax[1].grid()
+ax[1].legend()
+ax[0].set_xlabel('Exp. Time (min)',fontsize=fontouney)
+ax[0].set_ylabel('Amp ',fontsize=fontouney)
 
 
 
