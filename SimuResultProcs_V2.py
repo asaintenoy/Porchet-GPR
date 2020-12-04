@@ -213,7 +213,7 @@ f2.savefig('./plots/Histo_'+str(100*pc)+'pc_'+Nama+'.png',format='png')
 #hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/190527-Poligny/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/TWT*.csv')
 
 #CDC
-hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/Twt*.csv')
+#hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-avec-baseOUTdtrou30_rtrou4_tr5.0/Twt*.csv')
 
 #Auffargis
 #hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/Auffargis/Twts_Auffar*.csv')
@@ -222,7 +222,7 @@ hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/061218-Cul-du-chien/Fit-ave
 #hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/Tcherno/*-20-30.csv')
 
 #CErnay 2020
-#hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/Cernay/Twts_Cernay_*.csv')
+hahat=glob.glob('/home/el/Data/Compil_data-Kriterres/Cernay/Twts_Cernay_*.csv')
 
 
 
@@ -250,25 +250,25 @@ fname=next(os.walk(foldernama))[1]
 
 #%%
 #ouca='Poligny'
-ouca='Bilb'
+#ouca='Bilb'
 #ouca='Auffar'
 #ouca='Tcherno'
-#ouca='Cernay'
+ouca='Cernay'
 fontouney=20
-for filit in hahat[:2]:
+for filit in hahat[2:]:
     lst=[]
     fin=filit.find('.csv',-4)   
     #guili=filit.find('/',-25)#Auffargis
-    #guili=filit.find('/',-20)#CErnay
-    guili=filit.find('/',-40)#Bilbo
+    guili=filit.find('/',-20)#CErnay
+    #guili=filit.find('/',-40)#Bilbo
     #guili=filit.find('/',-40)#Poligny
     debut=filit.find(ouca,guili)+len(ouca)
     
     #Nama=filit[debut:fin]
     #Nama=filit[-11:-4] #Poligny
-    Nama=filit[-14:-4]#Bilbo
+    #Nama=filit[-14:-4]#Bilbo
     #Nama=filit[-12:-4]#Auffargis
-    #Nama=filit[-7:-4]#CErnay
+    Nama=filit[-7:-4]#CErnay
     #temp=np.genfromtxt(filit, delimiter=',')
     ##Lecture des fichier XP
     #TWT
@@ -277,7 +277,7 @@ for filit in hahat[:2]:
     TWT_XP_RS = np.array([0, 0.25, 0.50, 0.75, 1.00, 1.50, 2.00, 2.50, 3.00, 4.00, 5.00, 6.00])    
     #TWT_XP_1=temp[:,1]
     #Time_TWT_XP_1=temp[:,0]
-    TWT_XP=np.interp(TWT_XP_RS,temp[:,0],temp[:,1])
+    TWT_XP=np.interp(TWT_XP_RS,temp[:,0],temp[:,2])
     Time_TWT_XP=TWT_XP_RS
 
 
@@ -320,7 +320,7 @@ for filit in hahat[:2]:
             
             rmseTwt=np.sqrt(np.mean((temp-TWT_XP)**2)/len(TWT_XP))/(max(TWT_XP)-min(TWT_XP))
             rmsevol=np.sqrt(np.mean((((vol-VOL_XP))**2))/len(VOL_XP))/(max(VOL_XP)-min(VOL_XP))
-            rmseAmp=np.sqrt((slope[0]-AMP_XP)**2)
+            rmseAmp=np.sqrt((slope[0]-AMP_XP)**2)/10
             Amp=slope[0]
             ##Si thcerno
             #rmsevol=0
@@ -332,16 +332,16 @@ for filit in hahat[:2]:
             Amp = np.nan
             rmse=np.nan
         
-        lst.append([paramMVG.tr,paramMVG.ts,paramMVG.ti,paramMVG.n,paramMVG.alpha,paramMVG.Ks,rmseTwt,rmsevol,rmse,bibi,(temp),(vol),Amp])
+        lst.append([paramMVG.tr,paramMVG.ts,paramMVG.ti,paramMVG.n,paramMVG.alpha,paramMVG.Ks,rmseTwt,rmsevol,rmseAmp,rmse,bibi,(temp),(vol),Amp])
         
-    df_params=pd.DataFrame(lst,columns=['tr','ts','ti','n','alpha','Ks','RMSETWT','RMSEVOL','RMSE','Converged','TWT','VOL','Amp']) 
+    df_params=pd.DataFrame(lst,columns=['tr','ts','ti','n','alpha','Ks','RMSETWT','RMSEVOL','RMSEAMP','RMSE','Converged','TWT','VOL','Amp']) 
     
     df_params['alpha']=df_params['alpha']*100
     df_params['VOL']=df_params['VOL']*0.001
-    df_params.loc[df_params['Amp']=<0,'RMSE']=np.nan
+    df_params.loc[df_params['Amp']>=0,'RMSE']=np.nan
     
     
-    pc=0.1#percent
+    pc=0.01#percent
     
 ################Sensibility plot
 
@@ -365,8 +365,8 @@ for filit in hahat[:2]:
     #mini=df_params_sorted_cut['RMSE'][0]
     #maxi=np.log10(1.5)
     #mini=np.log10(10**(-1))
-    maxi=0.8#0.06 pour 10% 0.03 pour 1%
-    mini=0.1
+    mini=0.7#0.06 pour 10% 0.03 pour 1%
+    maxi=0.8
     #df_params['RMSE'] = df_params['RMSE'].apply(np.log10)
     norm=plt.Normalize(mini,maxi)
     df_params_sorted_cut.sort_values(by=['RMSE'],inplace=True,ascending=False)
@@ -398,8 +398,7 @@ for filit in hahat[:2]:
     hspace = 0.290   # the amount of height reserved for white space between subplots
     plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspace, hspace=hspace)
     
-    #f1.savefig('./plots/'+ouca+'/NormalizedRMSEVOLANDTWT_'+str(np.round(100*pc))+'pc_'+ouca+Nama+'.png',format='png')
-    input()
+    f1.savefig('./plots/'+ouca+'/NormalizedRMSEVOLANDTWT_'+str(np.round(100*pc))+'pc_'+ouca+Nama+'.png',format='png')
 ####################   Parallel coordinates
 
     # df_params_sorted=df_params.sort_values(by=['RMSE'],inplace=False,ascending=True)
@@ -480,8 +479,9 @@ for filit in hahat[:2]:
     # ax[1,2].set_xlabel('Exp. Time (min)',fontsize=fontouney)
     
     
-    # f2.suptitle(str(np.round(100*pc))+'% des modèles '+ ouca+'-'+Nama+'\n Nombre de modeles: '+str(len(df_params_sorted_cut))+', RMSE: ['+str(np.round(df_params_sorted_cut['RMSE'][0],4))+';'+str(np.round(df_params_sorted_cut['RMSE'][len(df_params_sorted_cut)-1],4))+'] (ns)', fontsize=fontouney)
+    # f2.suptitle(str(np.round(100*pc))+'% des modèles '+ ouca+'-'+Nama+'\n Nombre de modeles: '+str(len(df_params_sorted_cut))+', RMSE: ['+str(np.round(df_params_sorted_cut['RMSE'][0],4))+';'+str(np.round(df_params_sorted_cut['RMSE'][len(df_params_sorted_cut)-1],4))+'] (ns)'+', RMSEAMP: ['+str(np.round(df_params_sorted_cut['RMSEAMP'][0],4)), fontsize=fontouney)
     # f2.savefig('./plots/'+ouca+'/Histo_'+'pc_'+str(round(100*pc))+'_'+ouca+'-'+Nama+'.png',format='png')
+    #input()
 ##################
 
 #############Sensibility plot mais en coupant Ti
